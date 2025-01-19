@@ -1,0 +1,88 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('background-image.jpg'); /* Replace with your background image */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .verify-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
+  }
+  
+  .verify-box {
+    background: #000;
+    color: #fff;
+    border-radius: 12px;
+    padding: 40px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .verify-box h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+  }
+  
+  .description {
+    margin-bottom: 20px;
+    color: #00baff;
+  }
+  
+  .highlight {
+    color: #00baff;
+    font-weight: bold;
+  }
+  
+  .code-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .code-inputs input {
+    width: 40px;
+    height: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    border: 1px solid #444;
+    border-radius: 8px;
+    background: #222;
+    color: #fff;
+  }
+  
+  .code-inputs input:focus {
+    outline: none;
+    border-color: #00baff;
+  }
+  
+  .resend-text {
+    color: #aaa;
+    margin-bottom: 20px;
+  }
+  
+  .timer {
+    color: #00baff;
+  }
+  
+  .confirm-button {
+    background: #d7ff3a;
+    border: none;
+    padding: 12px 20px;
+    color: #000;
+    font-size: 1em;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .confirm-button:hover {
+    background: #c0e637;
+  }
+  

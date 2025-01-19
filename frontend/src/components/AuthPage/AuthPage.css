@@ -1,0 +1,19 @@
+.AuthPage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  background-color: #242424;
+
+}
+
+.login-section {
+  padding: 20px;
+}
+@media (max-width: 850px)
+{
+  .login-section {
+    padding: 0;
+  }
+
+}

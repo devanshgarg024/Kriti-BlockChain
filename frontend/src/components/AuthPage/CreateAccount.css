@@ -1,0 +1,230 @@
+/* Full-page background styling */
+.create-account-page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent scroll due to overflowing content */
+}
+
+/* Logo container styling */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px; /* Add spacing below the logo */
+  z-index: 10;
+}
+
+.logo-text {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-align: center;
+  transition: font-size 0.3s ease, display 0.3s ease;
+}
+
+/* Create account container styling */
+.create-account-container {
+  background-color:  #242424;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+  height: auto;
+  width: 90%;
+  max-width: 400px;
+  min-width: 300px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  overflow: auto; /* Allow content to scroll if necessary */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 10;
+}
+
+/* Form title styling */
+.create-account-container h2 {
+  font-size: 1.8rem;
+  word-wrap: break-word;
+  margin-bottom: 8px;
+}
+
+/* Log in link styling */
+.create-account-container p {
+  color: #bbb;
+  margin: 10px 0;
+}
+
+.create-account-container p a {
+  color: #ffffff;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* Form styling */
+.create-account-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.create-account-form label {
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.create-account-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  box-sizing: border-box;
+  color:  #242424;
+}
+.username ,.country{
+  border-radius: 5px;
+  border-bottom-left-radius:0px ;
+  border-bottom-right-radius:0px ;
+  padding: 10px;
+  margin: 5px 0 15px 0;
+  margin-bottom: 0px;
+}
+.email,.telephone{
+  margin: 5px 0 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  border-top-left-radius:0px ;
+  border-top-right-radius:0px ;
+  margin-top: 0px;
+  border-top: 0px;
+}
+.password1,.dob{
+  border-radius: 5px;
+  margin-bottom: 0;
+}
+.dob{
+  cursor: pointer;
+}
+.sub-text{
+  /* margin: ; */
+  font-size:70%;
+  font-weight: lighter;
+  /* border: solid 2px red; */
+}
+.create-account-button {
+  background-color: #f9ff00;
+  color: black;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.create-account-button:hover {
+  background-color: #e5e600;
+}
+
+/* Terms text styling */
+.terms {
+  font-size: 0.8rem;
+  color: #bbb;
+  margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .create-account-container {
+    max-width: 320px;
+    padding: 15px;
+  }
+
+  .create-account-container h2 {
+    font-size: 1.6rem;
+  }
+
+  .create-account-form label {
+    font-size: 0.9rem;
+  }
+
+  .create-account-button {
+    font-size: 0.9rem;
+  }
+
+  .terms {
+    font-size: 0.7rem;
+  }
+}
+@media (max-width:700px) {
+.logo-text {
+  display: none; /* Hide the text logo on very small screens */
+}
+}
+@media (max-width:480px) {
+  .create-account-page {
+    padding: 5px;
+  }
+
+  .logo-text {
+    display: none; /* Hide the text logo on very small screens */
+  }
+
+  .create-account-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .create-account-container h2 {
+    font-size: 1.4rem;
+  }
+
+  .create-account-form label {
+    font-size: 0.85rem;
+  }
+
+  .create-account-button {
+    font-size: 0.85rem;
+    padding: 8px;
+  }
+
+  .terms {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width:320px) {
+  .logo-text {
+    display: none; /* Hide the text logo on very small screens */
+  }
+
+  .create-account-container {
+    height: 95%;
+    overflow-y: auto; /* Allow scrolling for content overflow */
+  }
+}
+
+.create-account-container.slide-out {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.create-account-container.slide-in {
+  transform: translateX(0%);
+  opacity: 1;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+

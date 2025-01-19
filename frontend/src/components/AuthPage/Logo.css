@@ -1,0 +1,23 @@
+.logo-container {
+  display: flex;
+  align-items: center;
+  position: absolute; /* Ensures it stays at the top-left */
+  top: 20px; /* Distance from the top of the screen */
+  left: 20px; /* Distance from the left of the screen */
+  /* border: solid 2px red; */
+}
+
+.logo-image {
+  width: 40px; /* Adjust the width of the logo image */
+  height: 40px; /* Adjust the height of the logo image */
+  margin-right: 10px; /* Spacing between the image and text */
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white; /* Adjust the text color as per your design */
+  font-family: 'Arial', sans-serif; /* Optional: Customize font */
+  position: relative;
+  top: -5px;
+}

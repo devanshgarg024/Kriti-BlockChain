@@ -11,17 +11,18 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.6); /* Semi-transparent overlay */
+    background-color:  #242424;
+    overflow-x: hidden;
   }
   
   .verify-box {
-    background: #000;
+    background-color:  #242424;
     color: #fff;
     border-radius: 12px;
     padding: 40px;
     width: 400px;
     text-align: center;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); */
   }
   
   .verify-box h2 {
@@ -53,7 +54,7 @@ body {
     font-size: 1.2em;
     border: 1px solid #444;
     border-radius: 8px;
-    background: #222;
+    background-color:  #242424;
     color: #fff;
   }
   
@@ -85,4 +86,55 @@ body {
   .confirm-button:hover {
     background: #c0e637;
   }
+
+
+  /* For tablets and medium-sized screens */
+@media (max-width: 800px) {
+  .verify-box {
+    padding: 30px; /* Adjust padding for smaller screens */
+    width: 350px; /* Reduce box width */
+  }
+
+  .code-inputs input {
+    width: 35px; /* Slightly reduce input width */
+    height: 45px; /* Slightly reduce input height */
+    font-size: 1em; /* Adjust font size */
+  }
+
+  .confirm-button {
+    padding: 10px 16px; /* Adjust button size */
+    font-size: 0.9em; /* Reduce button text size */
+  }
+}
+
+/* For mobile and small screens */
+@media (max-width: 480px) {
+  .verify-box {
+    padding: 20px; /* Further reduce padding */
+    width: 90%; /* Use almost full width of the screen */
+  }
+
+  .verify-box h2 {
+    font-size: 1.3em; /* Adjust heading size */
+  }
+
+  .description {
+    font-size: 0.9em; /* Adjust text size */
+  }
+
+  .code-inputs {
+    gap: 8px; /* Reduce gap between inputs */
+  }
+
+  .code-inputs input {
+    width: 30px; /* Further reduce input width */
+    height: 40px; /* Further reduce input height */
+    font-size: 0.9em; /* Adjust font size */
+  }
+
+  .confirm-button {
+    padding: 8px 14px; /* Smaller button padding */
+    font-size: 0.85em; /* Adjust button text size */
+  }
+}
   

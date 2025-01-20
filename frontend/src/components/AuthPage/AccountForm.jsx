@@ -84,7 +84,7 @@ const AccountForm = (props) => {
               <label>
                 <input
                 required
-                  className="password"
+                  className="password1"
                   type="password"
                   placeholder="Password"
                   name="password"

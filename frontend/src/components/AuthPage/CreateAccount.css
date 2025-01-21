@@ -40,7 +40,7 @@
   min-width: 300px;
   padding: 10px 20px;
   box-sizing: border-box;
-  overflow: auto; /* Allow content to scroll if necessary */
+  overflow:auto; /* Allow content to scroll if necessary */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -146,7 +146,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .create-account-container {
-    max-width: 320px;
+    max-width: 400px;
     padding: 15px;
   }
 
@@ -166,18 +166,9 @@
     font-size: 0.7rem;
   }
 }
-@media (max-width:700px) {
-.logo-text {
-  display: none; /* Hide the text logo on very small screens */
-}
-}
-@media (max-width:480px) {
+@media (max-width:520px) {
   .create-account-page {
     padding: 5px;
-  }
-
-  .logo-text {
-    display: none; /* Hide the text logo on very small screens */
   }
 
   .create-account-container {
@@ -205,9 +196,6 @@
 }
 
 @media (max-width:320px) {
-  .logo-text {
-    display: none; /* Hide the text logo on very small screens */
-  }
 
   .create-account-container {
     height: 95%;
@@ -215,16 +203,30 @@
   }
 }
 
+
+
+/* Sliding out the first container */
 .create-account-container.slide-out {
-  transform: translateX(-100%);
+  transform: translateX(-100%); /* Move out to the left */
   opacity: 0;
   transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
 
+/* Sliding in the new container */
 .create-account-container.slide-in {
-  transform: translateX(0%);
-  opacity: 1;
-  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  transform: translateX(100%); /* Start off-screen to the right */
+  opacity: 0; /* Initially hidden */
+  animation: slide-in-from-right 0.5s forwards ease-in-out; /* Slide in with animation */
 }
 
-
+/* Keyframes for the new container sliding in from the right */
+@keyframes slide-in-from-right {
+  0% {
+    transform: translateX(100%); /* Start off-screen to the right */
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0%); /* End at the center */
+    opacity: 1;
+  }
+}

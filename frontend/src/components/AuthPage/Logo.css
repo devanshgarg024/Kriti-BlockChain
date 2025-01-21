@@ -21,3 +21,19 @@
   position: relative;
   top: -5px;
 }
+@media (max-width:800px) {
+.logo-text {
+  display: none; /* Hide the text logo on very small screens */
+}
+}
+@media (max-width:480px) {
+  .logo-text {
+    display: none; /* Hide the text logo on very small screens */
+  }
+}
+
+@media (max-width:320px) {
+  .logo-text {
+    display: none; /* Hide the text logo on very small screens */
+  }
+}

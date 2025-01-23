@@ -1,13 +1,13 @@
-const createDatabaseForUser = require("../Models/createDatabaseForUser");
+const loginVerify = require ('../Models/loginVerify');
 
-const userData = async (req, res) => {
+const loginVerifyData = async (req, res) => {
   try {
     // Call the function to create the database and collection
-    const result = await createDatabaseForUser(req.body);
+    const result = await loginVerify(req.body);
 
     if (result.success) {
       res.status(200).json({
-        message: "Account created successfully",
+        message: "Verified",
         data: req.body,
       });
     } else {
@@ -23,4 +23,4 @@ const userData = async (req, res) => {
   }
 };
 
-module.exports = { userData };
+module.exports = { loginVerifyData };

@@ -9,8 +9,17 @@ import "./Logo.css";
 const CreateAccount = () => {
   const [showVerify, setShowVerify] = useState(false);
   const [animationClass, setAnimationClass] = useState("slide-in");
-
-  function detailsEntered() {
+    const [formData, setFormData] = useState({
+      username: "",
+      email: "",
+      dob: "",
+      password: "",
+      country: "",
+      telephone: "",
+    });
+  
+  function detailsEntered(updatedFormData) {
+    setFormData(updatedFormData);
     setAnimationClass("slide-out"); // Slide out the current container
     setTimeout(() => {
       setShowVerify(true);
@@ -25,7 +34,7 @@ const CreateAccount = () => {
         {!showVerify ? (
           <AccountForm continue={detailsEntered} />
         ) : (
-          <Verify />
+          <Verify updatedFormData={formData}/>
         )}
       </div>
     </div>

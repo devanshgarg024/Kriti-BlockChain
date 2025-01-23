@@ -87,13 +87,13 @@ const verifyOtp = (req, res) => {
     // Validate SMS OTP
     const smsValidation = validateOtp(otpStoreSms, telephone, otpsms);
     if (!smsValidation.success) {
-      return res.status(400).json({ error: smsValidation.error });
+      return res.status(400).json({ error: smsValidation.error,message:"Invalid OTP" });
     }
 
     // Validate Email OTP
     const emailValidation = validateOtp(otpStore, email, otpmail);
     if (!emailValidation.success) {
-      return res.status(400).json({ error: emailValidation.error });
+      return res.status(400).json({ error: emailValidation.error ,message:"Invalid OTP"});
     }
 
     console.log(`OTP verified for email: ${email} and telephone: ${telephone}`);

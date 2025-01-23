@@ -1,12 +1,12 @@
 import React from "react";
 import "./Logo.css";
-
+import logoImage from "../DashBoardPage/images/logo.png";
 const Logo = () => {
   return (
     <div className="logo-container">
       <a href="/">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJKLnf3uciOQDBdlA_GH6JkeedIHhw6hVkLw&s"
+          src={logoImage}
           alt="Company Logo"
           className="logo-image"
         />

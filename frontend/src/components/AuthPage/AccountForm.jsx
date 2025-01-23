@@ -36,25 +36,8 @@ const AccountForm = (props) => {
     };
     setFormData(updatedFormData);
 
-    try {
-      // Send POST request to the backend
-      const response = await axios.post(
-        "http://localhost:8080/user_info", // Replace with your backend API endpoint
-        updatedFormData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
 
-      console.log("Response from backend:", response.data);
-
-      // Pass the updated formData to the parent component
-      props.continue(updatedFormData);
-    } catch (error) {
-      console.error("Error while sending data to the backend:", error);
-    }
+    props.continue(updatedFormData);
 
 //Sending otp
 axios

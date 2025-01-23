@@ -1,5 +1,7 @@
-import React from "react";
+import React,{useState} from "react";
 import "./LoginForm.css";
+import CryptoJS from "crypto-js"; // Import the crypto-js library
+import axios from "axios";
 
 const LoginForm = () => {
   const googleAuth = () => {
@@ -12,19 +14,72 @@ const LoginForm = () => {
     window.open(`${apiUrl}/auth/google/callback`, "_self"); // Perform the redirect
   };
 
+
+    const [formData, setFormData] = useState({
+      email: "",
+      password: "",
+    });
+
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    };
+
+async function  handleSubmit(e){
+  e.preventDefault();
+    const hashedPassword = CryptoJS.SHA256(formData.password).toString(
+      CryptoJS.enc.Base64
+    );
+    const updatedFormData = {
+      ...formData,
+      password: hashedPassword,
+    };
+  try {
+    // Verify OTPs
+    await axios.post('http://localhost:8080/login/verify', updatedFormData);
+    await axios.post('http://localhost:8080/fetchUserData', updatedFormData);
+      // const response = await fetch("http://localhost:8080/userData", {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+
+      // const data = await response.json();
+      // console.log("data recieved from userData",data);
+
+  } catch (error) {
+    console.log(error);
+    alert("Incorrect Username or Password!!");
+
+  }
+
+}
   return (
     <div className="login-container">
       <div className="login-form">
         <h2>Log in to your account</h2>
-        <form  method="POST">
+        <form  method="POST" onSubmit={handleSubmit}>
           <label className="input-field">
-            <input type="text" className="consumer_id" placeholder="Username" />
+          <input
+           className="consumer_id"
+            type="email"
+            placeholder="Email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+          />
             <input
-              type="password"
-              className="password"
-              placeholder="Password"
-            />
-            
+            className="password"
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+          />
           </label>
           <button type="submit" className="login-button">
             Log in

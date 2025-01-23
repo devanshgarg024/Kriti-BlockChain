@@ -21,7 +21,7 @@
   position: relative;
   top: -5px;
 }
-@media (max-width:800px) {
+@media (max-width:1000px) {
 .logo-text {
   display: none; /* Hide the text logo on very small screens */
 }

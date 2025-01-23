@@ -26,7 +26,13 @@ const CreateAccount = () => {
       setAnimationClass("slide-in "); // Slide in the next container
     }, 500); // Matches the transition duration in CSS
   }
-
+  function goingBackToChange(){
+    setAnimationClass("slide-out"); // Slide out the verify page to the right
+  setTimeout(() => {
+    setShowVerify(false);
+    setAnimationClass("slide-in");
+  }, 500); // Matches the transition duration in CSS
+  }
   return (
     <div className="create-account-page">
       <Logo />
@@ -34,8 +40,9 @@ const CreateAccount = () => {
         {!showVerify ? (
           <AccountForm continue={detailsEntered} />
         ) : (
-          <Verify updatedFormData={formData}/>
+          <Verify  continue={goingBackToChange} updatedFormData={formData}/>
         )}
+        
       </div>
     </div>
   );

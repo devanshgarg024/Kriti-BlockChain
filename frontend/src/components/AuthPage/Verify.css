@@ -1,94 +1,97 @@
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-image: url('background-image.jpg'); /* Replace with your background image */
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .verify-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color:  #242424;
-    overflow-x: hidden;
-  }
-  
-  .verify-box {
-    background-color:  #242424;
-    color: #fff;
-    border-radius: 12px;
-    padding: 40px;
-    width: 400px;
-    text-align: center;
-    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); */
-  }
-  
-  .verify-box h2 {
-    margin-bottom: 20px;
-    font-size: 1.5em;
-  }
-  
-  .description {
-    margin-bottom: 20px;
-    color: #00baff;
-  }
-  
-  .highlight {
-    color: #00baff;
-    font-weight: bold;
-  }
-  
-  .code-inputs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .code-inputs input {
-    width: 40px;
-    height: 50px;
-    text-align: center;
-    font-size: 1.2em;
-    border: 1px solid #444;
-    border-radius: 8px;
-    background-color:  #242424;
-    color: #fff;
-  }
-  
-  .code-inputs input:focus {
-    outline: none;
-    border-color: #00baff;
-  }
-  
-  .resend-text {
-    color: #aaa;
-    margin-bottom: 20px;
-  }
-  
-  .timer {
-    color: #00baff;
-  }
-  
-  .confirm-button {
-    background: #d7ff3a;
-    border: none;
-    padding: 12px 20px;
-    color: #000;
-    font-size: 1em;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-  
-  .confirm-button:hover {
-    background: #c0e637;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url("background-image.jpg"); /* Replace with your background image */
+  background-size: cover;
+  background-position: center;
+}
 
+.verify-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+  background-color: #242424;
+  overflow-x: hidden;
+}
 
-  /* For tablets and medium-sized screens */
+.verify-box {
+  background-color: #242424;
+  color: #fff;
+  border-radius: 12px;
+  padding: 40px;
+  width: 400px;
+  text-align: center;
+  /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); */
+}
+
+.verify-box h2 {
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
+.description {
+  margin-bottom: 20px;
+  color: #00baff;
+}
+
+.highlight {
+  color: #00baff;
+  font-weight: bold;
+}
+
+.code-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.code-inputs input {
+  width: 40px;
+  height: 50px;
+  text-align: center;
+  font-size: 1.2em;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background-color: #242424;
+  color: #fff;
+}
+
+.code-inputs input:focus {
+  outline: none;
+  border-color: #00baff;
+}
+
+.resend-text {
+  color: #aaa;
+  margin-bottom: 20px;
+}
+
+.timer {
+  color: #00baff;
+}
+.back-button {
+  position: relative;
+  left: -50%;
+  color: #00baff;
+}
+.confirm-button {
+  background: #d7ff3a;
+  border: none;
+  padding: 12px 20px;
+  color: #000;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.confirm-button:hover {
+  background: #c0e637;
+}
+
+/* For tablets and medium-sized screens */
 @media (max-width: 800px) {
   .verify-box {
     padding: 30px; /* Adjust padding for smaller screens */
@@ -108,6 +111,11 @@ body {
 }
 
 /* For mobile and small screens */
+@media (max-width: 540px) {
+  .logo-image {
+    display: none;
+  }
+}
 @media (max-width: 480px) {
   .verify-box {
     padding: 20px; /* Further reduce padding */
@@ -137,4 +145,3 @@ body {
     font-size: 0.85em; /* Adjust button text size */
   }
 }
-  

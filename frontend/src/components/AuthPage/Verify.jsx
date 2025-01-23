@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './Verify.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Verify.css";
+import { useNavigate } from "react-router-dom";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Verify = (props) => {
+
   const navigate = useNavigate();
-  const [phoneCode, setPhoneCode] = useState(['', '', '', '', '', '']);
-  const [emailCode, setEmailCode] = useState(['', '', '', '', '', '']);
+  const [phoneCode, setPhoneCode] = useState(["", "", "", "", "", ""]);
+  const [emailCode, setEmailCode] = useState(["", "", "", "", "", ""]);
   const [timer, setTimer] = useState(50);
   const [showResend, setShowResend] = useState(false);
 
@@ -21,7 +23,7 @@ const Verify = (props) => {
 
   const handleInputChange = (e, index, type) => {
     const value = e.target.value.slice(0, 1); // Only allow one character
-    if (type === 'phone') {
+    if (type === "phone") {
       const updatedCode = [...phoneCode];
       updatedCode[index] = value;
       setPhoneCode(updatedCode);
@@ -89,17 +91,29 @@ const Verify = (props) => {
       }
     }
   };
-  
+  const onBackClick=()=>{
+    props.continue();
+  }
 
   return (
     <div className="verify-container">
       <div className="verify-box">
+        <div className="back-button">
+          <ArrowBackIcon
+            onClick={ onBackClick }
+            style={{ cursor: "pointer" }}
+          />
+        </div>
         <h2>Verify your identity</h2>
         <p className="description">
-          <span className="highlight">Two-Factor Authentication (2FA) process</span>
+          <span className="highlight">
+            Two-Factor Authentication (2FA) process
+          </span>
         </p>
 
-        <p>Enter the confirmation code we sent to your <b>phone number</b>.</p>
+        <p>
+          Enter the confirmation code we sent to your <b>phone number</b>.
+        </p>
         <div className="code-inputs">
           {phoneCode.map((char, index) => (
             <input
@@ -108,12 +122,14 @@ const Verify = (props) => {
               maxLength="1"
               value={char}
               placeholder="•"
-              onChange={(e) => handleInputChange(e, index, 'phone')}
+              onChange={(e) => handleInputChange(e, index, "phone")}
             />
           ))}
         </div>
 
-        <p>Enter the confirmation code we sent to your <b>email</b>.</p>
+        <p>
+          Enter the confirmation code we sent to your <b>email</b>.
+        </p>
         <div className="code-inputs">
           {emailCode.map((char, index) => (
             <input
@@ -122,7 +138,7 @@ const Verify = (props) => {
               maxLength="1"
               value={char}
               placeholder="•"
-              onChange={(e) => handleInputChange(e, index, 'email')}
+              onChange={(e) => handleInputChange(e, index, "email")}
             />
           ))}
         </div>

@@ -1,0 +1,86 @@
+/* Card container */
+.card-container {
+  background-color: #ffffff;
+  /* White background */
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Subtle shadow */
+  padding: 5px;
+  width: 260px;
+}
+
+/* Title */
+.card-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 5px;
+}
+
+/* Row container */
+.card-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* Icon */
+.card-icon {
+  background-color: #f1fdd7;
+  /* Light yellow-green */
+  color: #333333;
+  font-size: 24px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 16px;
+}
+
+/* Content container */
+.card-content {
+  flex: 1;
+}
+
+/* Value */
+.card-value {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+  margin: 0;
+}
+
+/* Change text */
+.card-change {
+  font-size: 14px;
+  color: #e74c3c;
+  /* Red color */
+  margin: 0;
+}
+
+/* Red arrow */
+.red-arrow {
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+/* Footer */
+.card-footer {
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Offset value */
+.offset-value {
+  background-color: #eef900;
+  /* Bright yellow */
+  color: #333333;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 8px 12px;
+}

@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 30%;
+  gap: 40%;
 }
 .sidebar-logo div .sidebar-logo-main{
   color:#E0FF20 ;
@@ -42,6 +42,7 @@
   padding: 0;
   margin: 0;
   flex: 1; /* Fills available space */
+  font-size: small;
 }
 .sidebar-item i {
   margin-right: 10px; /* Add spacing between the icon and label */

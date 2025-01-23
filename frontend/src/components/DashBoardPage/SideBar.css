@@ -1,0 +1,140 @@
+/* Sidebar container */
+.sidebar {
+  width: 17%;
+  height: 98vh;
+  background-color: #262626;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border-radius: 30px;
+  position: fixed;
+  margin-left: 7px;
+  margin-top: 7px;
+  z-index: 10;
+}
+
+/* Sidebar content wrapper */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 90%;
+  gap: 5%;
+}
+
+.sidebar-logo{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 30%;
+}
+.sidebar-logo div .sidebar-logo-main{
+  color:#E0FF20 ;
+}
+
+/* Sidebar title */
+/* Sidebar list styles */
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1; /* Fills available space */
+}
+.sidebar-item i {
+  margin-right: 10px; /* Add spacing between the icon and label */
+  font-size: 16px; /* Adjust icon size */
+  vertical-align: middle;
+}
+
+.sidebar-item {
+  padding: 15px 20px;
+  cursor: pointer;
+  color: #757575;
+  transition: background-color 0.3s, color 0.3s;
+  text-align: left;
+}
+
+.sidebar-item:hover {
+  background-color: #333; /* Slight hover effect */
+}
+
+.sidebar-item.active {
+  background-color: #E0FF20; /* Yellow highlight for the active item */
+  color: #262626; /* Dark text for contrast */
+  border-radius: 5px;
+}
+
+/* Sidebar footer (user info section) */
+.sidebar-footer {
+  padding: 15px 0;
+  /* background-color: #262626; Same as the sidebar background */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+  /* gap: 30%; */
+}
+
+/* User info */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background: #E0FF20;
+  color: #262626;
+  font-weight: bold;
+  font-size: 1.2em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-status {
+  color: #E0FF20;
+}
+
+.user-email {
+  margin-top: -20px;
+  font-size: 0.6em;
+  color: #bbb;
+}
+
+@media (max-width:1000px) {
+  .sidebar-list .label{
+     display:none;
+  }
+  .sidebar{
+    width: 10%;
+  }
+  .user-info h4 ,.user-info p{
+    display: none;
+  }
+  .sidebar-item .icon{
+    border-radius: 50px;
+    margin-left: 5px;
+  }
+  }
+  @media (max-width:540px) {
+    .logo-text {
+      display: none; /* Hide the text logo on very small screens */
+    }
+    .sidebar{
+      display: none;
+    }
+  }
+  
+  @media (max-width:320px) {
+    .logo-text {
+      display: none; /* Hide the text logo on very small screens */
+    }
+  }

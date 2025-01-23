@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom'; // Importing Routes and Route
 import AuthPage from './components/AuthPage/AuthPage.jsx';
 import CreateAccount from './components/AuthPage/CreateAccount.jsx';
 import Verify from './components/AuthPage/Verify.jsx';
-import Dashboard from './components/Dashboard/DashboardPage.jsx';
+import Dashboard from './components/DashBoardPage/DashBoardPage.jsx';
 const App = () => {
   return (
     <Routes>

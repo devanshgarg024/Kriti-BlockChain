@@ -1,30 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "./SideBar.jsx";
 import RightSidebar from "./rightSideBar.jsx";
 import CentrePage from "./centrePage.jsx";
 import TransactionsTable from "./transactiontable.jsx";
 import "./Sidebar.css";
 import "./RightSidebar.css";
+import "./DashBoardPage.css";
 
 const Dashboard = () => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        backgroundColor: "#D9D9D9",
-      }}
-    >
+  return ( 
+    <div className="dashboard-conatainer">
       <Sidebar />
-      <div
-        style={{
-          width: "60%",
-          height: "auto",
-          position: "relative",
-          left: "18.5%",
-          gap:"1%",
-        }}
-      >
+      <div className="centre-dashboard-div">
         <CentrePage />
         <TransactionsTable />
       </div>

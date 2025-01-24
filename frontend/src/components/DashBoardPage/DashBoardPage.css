@@ -1,0 +1,12 @@
+.dashboard-conatainer{
+  display: flex;
+  justify-content: space-between;
+  background-color: #D9D9D9;
+}
+.centre-dashboard-div{
+    width: 60%;
+    height: auto;
+    position: relative;
+    left: 18.5%;
+    gap:1%;
+}

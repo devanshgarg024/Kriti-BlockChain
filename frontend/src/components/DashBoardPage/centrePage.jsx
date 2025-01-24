@@ -45,7 +45,20 @@ const CentrePage = () => {
       setTokenAmount("");
     }
   };
+  const [showEarnCreditsPopup, setShowEarnCreditsPopup] = useState(false);
+  const [earnCreditsAnimation, setEarnCreditsAnimation] = useState("");
 
+  const openEarnCreditsPopup = () => {
+    setEarnCreditsAnimation("earncredits-pop-in");
+    setShowEarnCreditsPopup(true);
+  };
+
+  const closeEarnCreditsPopup = () => {
+    setEarnCreditsAnimation("earncredits-pop-out");
+    setTimeout(() => {
+      setShowEarnCreditsPopup(false);
+    }, 300); // Match the animation duration
+  };
   return (
     <div className="container">
       <nav className="navbar">
@@ -103,7 +116,7 @@ const CentrePage = () => {
             Earn <strong>Carbon Credit Tokens </strong>
             to offset your footprint or trade them in the marketplace
           </p>
-          <button className="earn-credit" onClick={Navigate("/")}>Earn Credit</button>
+          <button className="earn-credit" onClick={openEarnCreditsPopup}>Earn Credit</button>
         </div>
         <div className="mid-section">
           <p>

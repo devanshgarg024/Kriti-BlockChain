@@ -1,0 +1,214 @@
+/* Container for the transaction section */
+.table-container{
+  max-height: 40vh; /* Adjust height to display only 4 rows */
+  overflow-y: auto;
+}
+.transaction-table th {
+  position: sticky; 
+  top: 0;
+  z-index: 1;
+}
+.transaction-section {
+  width: 97%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 5px;
+  margin-bottom: 5px;
+  /* color: rgba(0, 0, 0, 1); */
+}
+
+/* Navbar styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: #FFFFFF;
+  padding: 10px 20px;
+  /* border-radius: 8px; */
+  border-bottom: 1px solid rgb(211, 211, 211);
+  font-size: small;
+}
+.nav-buttons{
+  display: flex;
+
+}
+.filter-button {
+  border: none;
+  background-color: #f5f5f5;
+  color: rgba(0, 0, 0, 1);
+  /* font-weight: bold; */
+  display: flex;
+  list-style: none;
+  margin: 0 5px;
+  padding: 8px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.filter-button.active {
+  background-color: #000;
+  color: #fff;
+}
+
+.filter-dropdown .filter-select {
+  margin: 0 5px;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: small;
+  outline: none;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(0, 0, 0, 1);
+}
+
+/* Table styles */
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 0.8rem;
+}
+
+.transaction-table th,
+.transaction-table td {
+  padding: 12px 10px;
+  text-align: left;
+  border-bottom: 1px solid #eaeaea;
+  color:rgba(0, 0, 0, 1);
+}
+
+.transaction-table th {
+  background-color: #f8f8f8;
+  font-weight: bold;
+}
+
+.transaction-table tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+/* Style for table checkboxes */
+.transaction-table input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  appearance: none; /* Remove default browser styles */
+  outline: none;
+  background-color: #fff;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+/* Add a custom checkbox style when checked */
+.transaction-table input[type="checkbox"]:checked {
+  background-color: #2ed13c;
+  position: relative;
+}
+
+/* Checkmark appearance */
+.transaction-table input[type="checkbox"]:checked::before {
+  content: '✅'; 
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  top: 0;
+  left: 0;
+}
+
+/* Hover effect for checkboxes */
+.transaction-table input[type="checkbox"]:hover {
+  box-shadow: 0 0 3px rgba(0, 123, 255, 0.7);
+  border-color: #007bff;
+}
+
+/* Selected row highlight */
+.selected-row {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Positive and negative transaction styles */
+/* Style for positive transaction values */
+.transaction-table td.positive{
+  color: green;
+  font-weight: bold;
+}
+
+/* Style for negative transaction values */
+.transaction-table td.negative {
+  color: red;
+  font-weight: bold;
+}
+
+/* Status badge styles */
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.status-badge.completed {
+  background-color: rgba(0, 192, 30, 0.15);
+  color: rgba(1, 171, 27, 1);
+  /* margin: 0 5px; */
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.status-badge.aborted {
+  background-color: rgba(225, 19, 0, 0.15);
+  color: rgba(225, 19, 0, 1);
+  /* margin: 0 5px; */
+  padding: 8px 20px;
+  border-radius: 5px;
+}
+
+/* Selected row highlight */
+.selected-row {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Load more button */
+.load-more {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.load-more:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .transaction-table th,
+  .transaction-table td {
+    font-size: 0.8rem;
+    padding: 10px 8px;
+  }
+
+  .filter-button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+
+  .filter-dropdown .filter-select {
+    font-size: 0.8rem;
+  }
+}

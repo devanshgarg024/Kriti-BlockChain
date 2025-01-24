@@ -1,13 +1,12 @@
 .container {
-  width: 60%;
+  width: 97%;
   padding: 20px;
   font-family: Arial, sans-serif;
   background-color: #FFFFFF;
   border-radius: 16px;
   color: #262626;
   height: auto;
-  position: relative;
-  left: 18%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-top: 7px;
 }
 

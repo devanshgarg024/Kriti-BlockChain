@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./centrePage.css";
 import graphImage from "./images/graph.png";
+import { Navigate } from "react-router-dom";
 
 const CentrePage = () => {
   const [credits, setCredits] = useState(95000);
@@ -102,7 +103,7 @@ const CentrePage = () => {
             Earn <strong>Carbon Credit Tokens </strong>
             to offset your footprint or trade them in the marketplace
           </p>
-          <button className="earn-credit">Earn Credit</button>
+          <button className="earn-credit" onClick={Navigate("/")}>Earn Credit</button>
         </div>
         <div className="mid-section">
           <p>

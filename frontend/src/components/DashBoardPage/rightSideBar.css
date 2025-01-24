@@ -1,14 +1,14 @@
 * {
-  font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 .rightsidebar {
-  width: 17%;
-  padding: 10px;
-  position: fixed; /* Fix the position on the screen */
-  top: 0; /* Start from the top of the viewport */
-  right: 0; /* Align it to the rightmost part of the screen */
-  height: 100vh; /* Full height of the viewport */
+    width: 17%;
+    padding: 10px;
+    position: fixed; /* Fix the position on the screen */
+    top: 0; /* Start from the top of the viewport */
+    right: 0; /* Align it to the rightmost part of the screen */
+    height: 100vh; /* Full height of the viewport */
   display: flex;
   flex-direction: column;
   margin-right: 30px;
@@ -16,39 +16,39 @@
 }
 
 .welcome-section {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 
 .welcome-section p {
-  margin: 10px;
-  color: black;
+    margin: 10px;
+    color: black;
 }
 
 .connect-btn {
-  display: flex;
-  justify-content: center;
-  font-weight: 100;
+    display: flex;
+    justify-content: center;
+    font-weight: 100;
 }
 
 .connect-btn button {
   background-color: #e0ff20;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  border-radius: 5px;
-  cursor: pointer;
-  color: black;
-  font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    border-radius: 5px;
+    cursor: pointer;
+    color: black;
+    font-size: 1rem;
 }
 
 .metamask-button {
   background-color: #e0ff20;
-  border: none;
+    border: none;
   padding: 10px 25px;
-  display: flex;
-  align-items: center;
-  border-radius: 5px;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
   width: 100%;
 }
 .metamask-button img

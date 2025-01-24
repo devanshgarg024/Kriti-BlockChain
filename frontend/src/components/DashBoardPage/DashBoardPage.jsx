@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Sidebar from "./SideBar.jsx";
-import RightSidebar from "./rightSideBar.jsx";
+import RightSidebar from "./RightSideBar.jsx";
 import CentrePage from "./centrePage.jsx";
 import TransactionsTable from "./transactiontable.jsx";
 import "./Sidebar.css";

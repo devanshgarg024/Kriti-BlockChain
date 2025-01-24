@@ -6,11 +6,21 @@ async function loginVerify(userData) {
     if (!client.topology?.isConnected()) {
       await client.connect();
     }
-    // console.log(userData.password);
+
     // Access the specific database for users
     const database = client.db("KritiUserData");
 
-    // Access the collection where user data is stored (e.g., 'users')
+    // Check if the collection exists
+    const collections = await database.listCollections().toArray();
+    const collectionExists = collections.some(
+      (collection) => collection.name === userData.email
+    );
+
+    if (!collectionExists) {
+      return { success: false, message: "No user found." };
+    }
+
+    // Access the collection where user data is stored (e.g., by user's email)
     const collection = database.collection(userData.email);
 
     // Find the user by email
@@ -18,11 +28,7 @@ async function loginVerify(userData) {
 
     if (user) {
       // If the user exists, check if the password matches
-      if (user.password === userData.password) {
-        return { success: true, message: "User logged in successfully.",email:userData.email };
-      } else {
-        return { success: false, message: "Wrong password." };
-      }
+         return user;
     } else {
       return { success: false, message: "No user found." };
     }

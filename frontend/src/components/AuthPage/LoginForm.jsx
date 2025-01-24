@@ -2,8 +2,11 @@ import React,{useState} from "react";
 import "./LoginForm.css";
 import CryptoJS from "crypto-js"; // Import the crypto-js library
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+    const navigate = useNavigate();
+  
   const googleAuth = () => {
     const apiUrl = import.meta.env.VITE_API_URL;
     if (!apiUrl) {
@@ -37,26 +40,21 @@ async function  handleSubmit(e){
       ...formData,
       password: hashedPassword,
     };
-  try {
-    // Verify OTPs
-    await axios.post('http://localhost:8080/login/verify', updatedFormData);
-    await axios.post('http://localhost:8080/fetchUserData', updatedFormData);
-      // const response = await fetch("http://localhost:8080/userData", {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
 
-      // const data = await response.json();
-      // console.log("data recieved from userData",data);
-
-  } catch (error) {
-    console.log(error);
-    alert("Incorrect Username or Password!!");
-
-  }
-
+    try {
+      const url = `${import.meta.env.VITE_REACT_APP_API_URL}/auth/login`; // Backend URL for local login
+      const { data } = await axios.post(
+        url,
+        updatedFormData,
+        { withCredentials: true }
+      );
+      // console.log(data);
+      if (data.success) {
+        navigate("/dashboard"); // Redirect to dashboard on successful login
+      } 
+    } catch (err) {
+      console.error("Login error:", err);
+    }
 }
   return (
     <div className="login-container">

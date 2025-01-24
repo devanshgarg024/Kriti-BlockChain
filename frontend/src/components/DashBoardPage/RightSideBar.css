@@ -1,20 +1,21 @@
-*{
+* {
     font-family: Arial, sans-serif;
 }
 
 .rightsidebar {
-    width: 250px; 
-    background-color: #f5f5f5;
+    width: 17%;
     padding: 10px;
-    border-left: 1px solid #ccc; /* Border on the left to differentiate from content */
     position: fixed; /* Fix the position on the screen */
     top: 0; /* Start from the top of the viewport */
     right: 0; /* Align it to the rightmost part of the screen */
     height: 100vh; /* Full height of the viewport */
+  display: flex;
+  flex-direction: column;
+  margin-right: 30px;
+  gap: 3%;
 }
 
-
-.welcome-section{
+.welcome-section {
     font-size: 1.5rem;
 }
 
@@ -23,15 +24,15 @@
     color: black;
 }
 
-.connect-btn{
+.connect-btn {
     display: flex;
     justify-content: center;
     font-weight: 100;
 }
 
-.connect-btn button{
-    background-color: #d8ff28;
-    width: 290px;
+.connect-btn button {
+  background-color: #e0ff20;
+  width: 100%;
     display: flex;
     justify-content: center;
     border-radius: 5px;
@@ -41,16 +42,23 @@
 }
 
 .metamask-button {
-    background-color: #ffca28;
+  background-color: #e0ff20;
     border: none;
-    padding: 10px 15px;
+  padding: 10px 25px;
     display: flex;
     align-items: center;
     border-radius: 5px;
     cursor: pointer;
+  width: 100%;
+}
+.metamask-button img
+{
+  height: 5vh;
+  width: 20%;
+  margin-right: 5px;
 }
 
-.card1 {
+/* .card1 {
     display: flex;
     justify-content: center;
     margin-top: 10px;
@@ -58,4 +66,4 @@
 
 .card2 {
     margin-top: 10px;
-}
+} */

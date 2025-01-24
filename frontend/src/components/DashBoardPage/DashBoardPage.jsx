@@ -7,15 +7,15 @@ import "./Sidebar.css";
 import "./RightSidebar.css";
 import "./DashBoardPage.css";
 
-const Dashboard = () => {
+const Dashboard = (e) => {
   return ( 
     <div className="dashboard-conatainer">
-      <Sidebar />
+      <Sidebar userData={e.userData} />
       <div className="centre-dashboard-div">
-        <CentrePage />
-        <TransactionsTable />
+        <CentrePage userData={e.userData} />
+        <TransactionsTable userData={e.userData} />
       </div>
-      <RightSidebar />
+      <RightSidebar userData={e.userData} />
     </div>
   );
 };

@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import "./SideBar.css";
 import Logo from "../AuthPage/logo.jsx";
 import "../AuthPage/Logo.css";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
+
+const Sidebar = (props) => {
+   const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState("Dashboard");
 
   const menuItems = [
@@ -136,6 +140,17 @@ const Sidebar = () => {
       ),
     },
   ];
+  async function handleLogOut(){
+    try {
+      const url = `${import.meta.env.VITE_REACT_APP_API_URL}/auth/logout`;
+      await axios.get(url, { withCredentials: true }); 
+      navigate('/'); 
+    } catch (err) {
+      console.error("Logout error:", err);
+      alert("Failed to log out. Please try again.");
+    }
+
+  }
 
   return (
     <div className="sidebar">
@@ -166,7 +181,12 @@ const Sidebar = () => {
                 className={`sidebar-item ${
                   activeItem === item.id ? "active" : ""
                 }`}
-                onClick={() => setActiveItem(item.id)}
+                onClick={() => {
+                  setActiveItem(item.id)
+                  if(item.id==="Log Out"){
+                    handleLogOut();
+                  }
+                }}
               >
                 <span className="icon">{item.icon}</span> <span className="label">{item.label}</span>
               </li>
@@ -175,8 +195,8 @@ const Sidebar = () => {
           <div className="user-info">
             <div className="avatar">TN</div>
             <div>
-              <h4>Shruti Narayan</h4>
-              <p className="user-email">hello@shrutinayaran.com</p>
+              <h4>{props.userData.username}</h4>
+              <p className="user-email">{props.userData.email}</p>
             </div>
           </div>
         </div>

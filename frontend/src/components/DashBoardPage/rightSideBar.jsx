@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import "./RightSideBar.css";
 import NetMeteringCard from "./NetMeteringCard";
 import CarbonCreditCard from "./CarbonCreditCard";
@@ -24,20 +23,20 @@ const RightSidebar = () => {
     return (
         <div className="rightsidebar">
             <div className="welcome-section">
-                <p>Hello <b>{userName || "User"}</b></p>
+                <p>Hello <b>Shruti</b></p>
                 <div className="connect-btn">
                     <button className="metamask-button">
-                        <img src="https://metamask.io/assets/icon.svg" /> Connect to Metamask
+                        🦁Connect to Metamask
                     </button>
                 </div>
             </div>
 
             <div className="card1">
-                <NetMeteringCard/>
+                <NetMeteringCard></NetMeteringCard>
             </div>
 
             <div className="card2">
-                <CarbonCreditCard/>
+                <CarbonCreditCard></CarbonCreditCard>
             </div>
         </div>
     );

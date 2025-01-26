@@ -195,8 +195,9 @@ const Sidebar = (props) => {
           <div className="user-info">
             <div className="avatar">TN</div>
             <div>
-              <h4>{props.userData.username}</h4>
-              <p className="user-email">{props.userData.email}</p>
+              {/* <h4>{props.userData.username}</h4> */}
+
+              {/* <p className="user-email">{props.userData.email}s</p> */}
             </div>
           </div>
         </div>

@@ -26,7 +26,7 @@ const App = () => {
   return (
     <Routes>
       <Route exact path="/" element={user ? <Navigate to="/dashboard" />:<AuthPage />} />
-      <Route exact path="/dashboard" element={user? <Dashboard userData={user} />:<Navigate to="/" />} />
+      <Route exact path="/dashboard" element={1? <Dashboard userData={user} />:<Navigate to="/" />} />
       <Route exact path="/signup" element={user ? <Navigate to="/dashboard" />:<CreateAccount />} />
       <Route exact path="/verify" element={<Verify />} />
     </Routes>

@@ -1,0 +1,134 @@
+/* Popup Overlay */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+}
+
+/* Popup Container */
+.popup-container {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 25px;
+  width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  text-align: center;
+}
+
+/* Close Button */
+.popup-close {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+}
+
+.popup-close:hover{
+  border: 0.5px solid white;
+  border-radius: 5px;
+}
+
+/* Popup Title */
+.popup-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+/* Popup Subtitle */
+.popup-subtitle {
+  font-size: 15px;
+  margin-bottom: 16px;
+  color: #cccccc;
+}
+
+/* Credit Details */
+.credit-details {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.credit-type {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.credit-timestamp {
+  font-size: 14px;
+  color: rgb(0, 157, 255);
+}
+
+/* Input Section */
+.input-container {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.input-label {
+  font-size: 14px;
+  color: #cccccc;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.input-field {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: #2a2a2a;
+  color: white;
+}
+
+.input-field::placeholder {
+  color: #888;
+}
+
+.input-select {
+  padding: 8px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: #2a2a2a;
+  color: white;
+}
+
+/* Confirm Button */
+.confirm-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #cddc39;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-button:hover {
+  background-color: #aabb27;
+}

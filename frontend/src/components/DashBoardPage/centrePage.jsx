@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./centrePage.css";
 import graphImage from "./images/graph.png";
-import { Navigate } from "react-router-dom";
+import EarnCreditsPopup from "./EarnCreditsPopup";
 
 const CentrePage = () => {
   const [credits, setCredits] = useState(95000);
@@ -11,6 +11,7 @@ const CentrePage = () => {
   const [lastPayment, setLastPayment] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
   const [unit, setUnit] = useState("CCT");
+  const [showEarnCreditsPopup, setShowEarnCreditsPopup] = useState(false);
 
   // Fetch data from the backend
   useEffect(() => {
@@ -45,20 +46,20 @@ const CentrePage = () => {
       setTokenAmount("");
     }
   };
-  const [showEarnCreditsPopup, setShowEarnCreditsPopup] = useState(false);
-  const [earnCreditsAnimation, setEarnCreditsAnimation] = useState("");
 
   const openEarnCreditsPopup = () => {
-    setEarnCreditsAnimation("earncredits-pop-in");
     setShowEarnCreditsPopup(true);
   };
 
   const closeEarnCreditsPopup = () => {
-    setEarnCreditsAnimation("earncredits-pop-out");
-    setTimeout(() => {
-      setShowEarnCreditsPopup(false);
-    }, 300); // Match the animation duration
+    setShowEarnCreditsPopup(false);
   };
+
+  const handleConfirmEarnCredits = () => {
+    console.log("Earn credits confirmed");
+    setShowEarnCreditsPopup(false);
+  };
+
   return (
     <div className="container">
       <nav className="navbar">
@@ -116,7 +117,9 @@ const CentrePage = () => {
             Earn <strong>Carbon Credit Tokens </strong>
             to offset your footprint or trade them in the marketplace
           </p>
-          <button className="earn-credit" onClick={openEarnCreditsPopup}>Earn Credit</button>
+          <button className="earn-credit" onClick={openEarnCreditsPopup}>
+            Earn Credit
+          </button>
         </div>
         <div className="mid-section">
           <p>
@@ -128,7 +131,7 @@ const CentrePage = () => {
               width="16"
               height="16"
               fill="currentColor"
-              class="bi bi-lightning-fill"
+              className="bi bi-lightning-fill"
               viewBox="0 0 16 16"
             >
               <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
@@ -165,7 +168,7 @@ const CentrePage = () => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-lightning-fill"
+                className="bi bi-lightning-fill"
                 viewBox="0 0 16 16"
               >
                 <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
@@ -181,7 +184,7 @@ const CentrePage = () => {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-lightning-fill"
+                className="bi bi-lightning-fill"
                 viewBox="0 0 16 16"
               >
                 <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
@@ -194,6 +197,14 @@ const CentrePage = () => {
       <div className="graph-container">
         <img src={graphImage} alt="Graph-Image" className="graph-image" />
       </div>
+
+      {showEarnCreditsPopup && (
+        <EarnCreditsPopup
+          isOpen={showEarnCreditsPopup}
+          onClose={closeEarnCreditsPopup}
+          onConfirm={handleConfirmEarnCredits}
+        />
+      )}
     </div>
   );
 };

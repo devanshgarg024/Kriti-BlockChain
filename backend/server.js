@@ -10,7 +10,6 @@ const bodyParser = require("body-parser");
 const authRoute = require("./routes/auth");
 const userInfo = require("./routes/userInfo");
 const otpRoutes = require("./routes/otp");
-const loginVerifyRoutes = require("./routes/loginVerify");
 const fetchUserData = require("./Models/fetchUserData");
 const passportStrategy = require("./passport"); // Ensure passport is configured properly here
 
@@ -68,7 +67,6 @@ app.get("/userData", (req, res) => {
 app.use("/auth", authRoute);
 app.use("/user_info", userInfo);
 app.use("/otp", otpRoutes);
-app.use("/login/verify", loginVerifyRoutes);
 
 // Start the server
 const port = process.env.PORT || 8080;

@@ -8,7 +8,7 @@ const LoginForm = () => {
     const navigate = useNavigate();
   
   const googleAuth = () => {
-    const apiUrl = import.meta.env.VITE_API_URL;
+    const apiUrl = import.meta.env.VITE_REACT_APP_API_URL;
     if (!apiUrl) {
       console.error("API URL is not defined!");
       return;

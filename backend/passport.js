@@ -2,6 +2,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 const passport = require("passport");
 const { client } = require("./Config/db");
+const createDatabaseForUser=require("./Models/createDatabaseForUser")
 
 // Google Strategy
 passport.use(
@@ -13,7 +14,12 @@ passport.use(
             scope: ["profile", "email"],
         },
         function (accessToken, refreshToken, profile, callback) {
-            callback(null, profile); // Save or find the user in the database
+            const userData={
+                username: profile.displayName,
+                email: profile.emails[0].value
+            }
+            createDatabaseForUser(userData);
+            callback(null, userData); // Save or find the user in the database
         }
     )
 );
@@ -60,9 +66,9 @@ passport.deserializeUser(async (email, done) => {
     try {
         const database = client.db("KritiUserData");
         const collection = database.collection(email);
-        const user = await collection.findOne({email });
-        if (user) {
-            done(null, user);
+        const documents = await collection.find({}).toArray();
+        if (documents) {
+            done(null, documents);
         } else {
             done(null, false);
         }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./SideBar.css";
 import Logo from "../AuthPage/logo.jsx";
 import "../AuthPage/Logo.css";
@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 const Sidebar = (props) => {
    const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState("Dashboard");
+  const [user, setUser] = useState(null);
+  useEffect(() => {setUser(props.userData)}, []); // Dependency array includes location to trigger on route changes
 
   const menuItems = [
     {
@@ -140,16 +142,16 @@ const Sidebar = (props) => {
       ),
     },
   ];
-  async function handleLogOut(){
+  async function handleLogOut() {
     try {
       const url = `${import.meta.env.VITE_REACT_APP_API_URL}/auth/logout`;
-      await axios.get(url, { withCredentials: true }); 
-      navigate('/'); 
+      const response = await axios.get(url, { withCredentials: true });
+      console.log("Logout response:", response.data); // Log server response
+      console.log("Navigating to start page...");
+      navigate('/');
     } catch (err) {
       console.error("Logout error:", err);
-      alert("Failed to log out. Please try again.");
     }
-
   }
 
   return (
@@ -195,8 +197,9 @@ const Sidebar = (props) => {
           <div className="user-info">
             <div className="avatar">TN</div>
             <div>
-              <h4>{props.userData.username}</h4>
-              <p className="user-email">{props.userData.email}</p>
+            <h4>{user?.username || "name"}</h4>
+            <p className="user-email">{user?.email || "email@gmail.com"}</p>
+
             </div>
           </div>
         </div>

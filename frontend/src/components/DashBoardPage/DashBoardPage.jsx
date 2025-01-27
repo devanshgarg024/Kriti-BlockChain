@@ -10,12 +10,12 @@ import "./DashBoardPage.css";
 const Dashboard = (e) => {
   return ( 
     <div className="dashboard-conatainer">
-      <Sidebar userData={e.userData} />
+      <Sidebar userData={e.userData[0]} />
       <div className="centre-dashboard-div">
-        <CentrePage userData={e.userData} />
+        <CentrePage userData={e.userData[0]} />
         <TransactionsTable userData={e.userData} />
       </div>
-      <RightSidebar userData={e.userData} />
+      <RightSidebar userData={e.userData[0]} />
     </div>
   );
 };

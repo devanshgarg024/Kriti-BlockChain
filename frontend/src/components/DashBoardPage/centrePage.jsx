@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./centrePage.css";
 import graphImage from "./images/graph.png";
-import EarnCreditsPopup from "./EarnCreditsPopup";
 
-const CentrePage = () => {
+const CentrePage = (props) => {
   const [credits, setCredits] = useState(95000);
   const [tokenAmount, setTokenAmount] = useState("");
   const [tab, setTab] = useState("month");
@@ -11,7 +10,6 @@ const CentrePage = () => {
   const [lastPayment, setLastPayment] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
   const [unit, setUnit] = useState("CCT");
-  const [showEarnCreditsPopup, setShowEarnCreditsPopup] = useState(false);
 
   // Fetch data from the backend
   useEffect(() => {
@@ -47,18 +45,6 @@ const CentrePage = () => {
     }
   };
 
-  const openEarnCreditsPopup = () => {
-    setShowEarnCreditsPopup(true);
-  };
-
-  const closeEarnCreditsPopup = () => {
-    setShowEarnCreditsPopup(false);
-  };
-
-  const handleConfirmEarnCredits = () => {
-    console.log("Earn credits confirmed");
-    setShowEarnCreditsPopup(false);
-  };
 
   return (
     <div className="container">
@@ -117,7 +103,7 @@ const CentrePage = () => {
             Earn <strong>Carbon Credit Tokens </strong>
             to offset your footprint or trade them in the marketplace
           </p>
-          <button className="earn-credit" onClick={openEarnCreditsPopup}>
+          <button className="earn-credit" onClick={()=>props.popup(true)}>
             Earn Credit
           </button>
         </div>
@@ -198,13 +184,7 @@ const CentrePage = () => {
         <img src={graphImage} alt="Graph-Image" className="graph-image" />
       </div>
 
-      {showEarnCreditsPopup && (
-        <EarnCreditsPopup
-          isOpen={showEarnCreditsPopup}
-          onClose={closeEarnCreditsPopup}
-          onConfirm={handleConfirmEarnCredits}
-        />
-      )}
+
     </div>
   );
 };

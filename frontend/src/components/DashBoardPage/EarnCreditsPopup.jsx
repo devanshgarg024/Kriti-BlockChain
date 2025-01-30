@@ -1,10 +1,9 @@
 import React from "react";
 
-const EarnCreditsPopup = ({ onClose }) => {
+const EarnCreditsPopup = (props) => {
   return (
-    <div className="popup-overlay">
-      <div className="popup-container">
-        <button className="popup-close" onClick={onClose}>
+      <div className="popup-container earnCreditPopup">
+        <button className="popup-close" onClick={()=>props.popup(false)}>
           &times;
         </button>
         <h2 className="popup-title">Earn Credits</h2>
@@ -34,7 +33,6 @@ const EarnCreditsPopup = ({ onClose }) => {
         </div>
         <button className="confirm-button">Confirm</button>
       </div>
-    </div>
   );
 };
 

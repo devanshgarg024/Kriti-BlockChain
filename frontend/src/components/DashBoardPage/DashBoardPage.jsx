@@ -26,8 +26,8 @@ const Dashboard = (e) => {
         </div>
           <div className="earnCreditPopup">
             {/* <EarnCreditsPopup popup={popup} /> */}
-            <ValidatingPopup popup={popup} />
-            {/* <ConfirmPopUp popup={popup} /> */}
+            {/* <ValidatingPopup popup={popup} /> */}
+            <ConfirmPopUp popup={popup} />
             
           </div>
           </>

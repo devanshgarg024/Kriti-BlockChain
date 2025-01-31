@@ -3,6 +3,7 @@ import "./EarnCreditsPopup.css";
 import "./ConfirmPopup.css";
 
 const ConfirmPopUp = (props) => {
+  console.log(props.CCTRecievedFromEnergy);
   return (
       <>
         <button className="popup-close" onClick={()=>props.popup(false)}>
@@ -10,9 +11,6 @@ const ConfirmPopUp = (props) => {
         </button>
         <div className="popup-title-parent">
         <h1 className="popup-title">Confirmed</h1>
-        <p className="popup-subtitle">
-          The available Carbon Credit Token shown below
-        </p>
         </div>
         <div class="success-container">
         <div class="success-circle">
@@ -23,19 +21,7 @@ const ConfirmPopUp = (props) => {
         </div>
     </div>
         <div className="input-container">
-          <div className="input-group">
-            <input
-              type="text"
-              id="power-output"
-              placeholder="Number of the tokens..."
-              className="input-field"
-            />
-            <select className="input-select">
-              <option value="kWh">CCT</option>
-              <option value="MW">KWH</option>
-            </select>
-          </div>
-          <button className="confirm-button">Claim Credit</button>
+          <button className="confirm-button"onClick={()=>props.popup(0)}>Claim Credit</button>
         </div>
         
       </>

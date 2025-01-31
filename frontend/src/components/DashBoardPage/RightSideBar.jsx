@@ -23,7 +23,7 @@ const RightSidebar = (props) => {
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
       const selectedAccount = accounts[0];  // Get the selected account
       setAccount(selectedAccount);  // Save the selected account to state (if using React)
-      
+      props.connectedToMetamask(selectedAccount);
       // Request the account's balance
       const result = await ethereum.request({
         method: "eth_getBalance",

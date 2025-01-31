@@ -9,6 +9,7 @@ const CentrePage = (props) => {
   const [tokenAmount, setTokenAmount] = useState("");
   const [tab, setTab] = useState("month");
   const [activeNav, setActiveNav] = useState("claimCredits");
+  const [isDeviceRegistered, setIsDeviceRegistered] = useState("Register Device");
   const [lastPayment, setLastPayment] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
   const [unit, setUnit] = useState("CCT");
@@ -16,23 +17,24 @@ const CentrePage = (props) => {
 
   // Fetch data from the backend
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/credits"); // Replace with your backend API endpoint
-        const data = await response.json();
+setAvailableCredits(props.userCCT);
 
-        // Update the state with fetched data
-        setCredits(data.totalCredits);
-        setLastPayment(data.lastPayment);
-        setAvailableCredits(data.availableCredits);
-      } catch (error) {
-        console.error("Error fetching data from the backend:", error);
-      }
-    };
+  }, [props.userCCT]);
 
-    fetchData();
-  }, []);
+  useEffect(() => {
 
+    setIsDeviceRegistered("Device Registered");
+    props.popup(0);
+    setActiveNav("claimCredits");
+    
+      }, [props.deviceRegistered]);
+
+  useEffect(() => {
+    if(activeNav==="RegisterDevice"){
+      props.popup(4);
+    }
+    
+      }, [activeNav]);
   const handleTokenChange = (e) => {
     setTokenAmount(e.target.value);
   };
@@ -47,6 +49,7 @@ const CentrePage = (props) => {
       setTokenAmount("");
     }
   };
+
 
 
   return (
@@ -73,9 +76,9 @@ const CentrePage = (props) => {
           </li>
           <li
             className={activeNav === "allTransactions" ? "active" : ""}
-            onClick={() => setActiveNav("allTransactions")}
+            onClick={() => setActiveNav("RegisterDevice")}
           >
-            All Transactions
+            Register Device
           </li>
         </ul>
         <ul className="nav-dates">
@@ -124,7 +127,6 @@ const CentrePage = (props) => {
         popup={props.popup}
       />
         : activeNav === "buyCredits" ? <h1>Yet to be created......</h1>
-        : activeNav === "allTransactions" ? <h1>Yet to be created......</h1>
         :"Unknown activeNav"}
       </div>
       <div className="graph-container">

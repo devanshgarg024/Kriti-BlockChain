@@ -1,8 +1,14 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import "./ClaimCredit.css";
 import "../centrePage.css";
 
 const ClaimCredit = (props) => {
+    const [availableCredits, setAvailableCredits] = useState(0);
+    useEffect(() => {
+    setAvailableCredits(Number(props.availableCredits)/1e18);
+  
+    }, [props.availableCredits]);
+  
   return (
     <>
       <div className="left-section">
@@ -10,7 +16,7 @@ const ClaimCredit = (props) => {
           Earn <strong>Carbon Credit Tokens </strong>
           to offset your footprint or trade them in the marketplace
         </p>
-        <button className="earn-credit" onClick={() => props.popup(true)}>
+        <button className="earn-credit" onClick={() => props.popup(1)}>
           Earn Credit
         </button>
       </div>
@@ -29,7 +35,7 @@ const ClaimCredit = (props) => {
           >
             <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
           </svg>{" "}
-          {props.credits} CCT
+          0 CCT
         </h5>
         <div className="pay-section">
           <input
@@ -82,7 +88,7 @@ const ClaimCredit = (props) => {
             >
               <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
             </svg>{" "}
-            {props.availableCredits} CCT
+            {availableCredits} CCT
           </h6>
         </div>
       </div>

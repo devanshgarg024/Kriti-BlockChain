@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./RightSideBar.css";
 import NetMeteringCard from "./NetMeteringCard";
 import CarbonCreditCard from "./CarbonCreditCard";
-
+import axios from "axios";
 const RightSidebar = (props) => {
   const [user, setUser] = useState(null);
   const [account, setAccount] = useState(null);
@@ -19,26 +19,34 @@ const RightSidebar = (props) => {
     }
 
     try {
-      // Request accounts
+      // Request accounts from MetaMask
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-      const selectedAccount = accounts[0];
-      setAccount(selectedAccount);
-      console.log("Connected account:", selectedAccount);
-
-      // Request balance
+      const selectedAccount = accounts[0];  // Get the selected account
+      setAccount(selectedAccount);  // Save the selected account to state (if using React)
+      
+      // Request the account's balance
       const result = await ethereum.request({
         method: "eth_getBalance",
         params: [selectedAccount, "latest"],
       });
-      const wei = parseInt(result, 16);
-      const ethBalance = wei / 10 ** 18;
-      setBalance(ethBalance.toFixed(4)); // Display up to 4 decimal places
-      console.log("Balance:", ethBalance + " ETH");
+      const wei = parseInt(result, 16);  // Convert from hex to integer
+      const ethBalance = wei / 10 ** 18;  // Convert from Wei to Ether
+      setBalance(ethBalance.toFixed(4));  // Set the balance, displaying up to 4 decimal places
+      
+      // Send the wallet address to your backend
+      axios.get(`http://localhost:8080/walletAddress?userWalletAddress=${selectedAccount}`)
+        .then(response => {
+          console.log('Response:', response.data);
+        })
+        .catch(error => {
+          console.error('Error connecting wallet to backend:', error);
+        });
+    
     } catch (error) {
       console.error("Error connecting to MetaMask:", error);
     }
   };
-
+  
   return (
     <div className="rightsidebar">
       <div className="welcome-section">

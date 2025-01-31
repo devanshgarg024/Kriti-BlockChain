@@ -19,10 +19,12 @@
   transform: translate(-50%, -50%);
   /* width: 300px; */
   padding: 20px;
-  background-color: white;
+  background-color: rgba(38, 38, 38, 1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  border-radius: 20px;
   z-index: 1000;
+  height: 75vh;
+  width: 30%;
 }
 
 

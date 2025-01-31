@@ -1,0 +1,60 @@
+h3 {
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.swap-icon{
+  background: rgba(224, 255, 32, 1);
+  color: black;
+  font-size: 20px;
+  font-weight: bolder;
+  padding: 5px 10px;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  margin-bottom: 10px;
+  position: relative;
+  left: 50%;
+}
+
+.sell-button {
+  background-color: rgba(224, 255, 32, 1);
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  padding: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.sell-button:hover {
+  background-color: #c6e000;
+}
+
+.left-section-sell{
+  height: 38vh;
+}
+.mid-section-sell .pay-section-sell .pay-credit-sell {
+  margin-top: 10%;
+  width: 80%;
+  background-color: rgba(237, 237, 237, 1);
+  font-weight: bold;
+  padding: 15px 10px;
+}
+.mid-section-sell .pay-section-sell {
+  margin-top: 25%;
+}
+.mid-section-sell{
+  text-align: center;
+  background-color:rgba(38, 38, 38, 1);
+  color: rgba(255, 255, 255, 1);
+  font-weight: bold;
+  border-radius: 18px;
+  width: 50%;
+}
+.mid-section-sell .pay-section-sell .unit-section-sell{
+  background-color: rgba(237, 237, 237, 1);
+  font-weight: bold;
+}

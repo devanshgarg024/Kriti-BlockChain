@@ -1,0 +1,64 @@
+
+.ValidatingPage-spinner {
+  width: 50px;
+  height: 50px;
+  border: 15px solid rgba(255, 255, 255, 0.3);
+  border-top: 15px solid #ffffff;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+  margin-bottom: 20px;
+  position: relative;
+  left: 30%;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.ValidatingPage-text {
+  /* font-size: 20px; */
+  font-weight: bold;
+}
+
+.sub-text {
+  font-size: small;
+  color: rgba(255, 255, 255, 1);
+  margin-bottom: 20px;
+}
+
+.ValidatingPage-button {
+  font-weight: bold;
+  border: none;
+  /* padding: 10px 20px; */
+  cursor: not-allowed;
+  display: flex;
+  align-items: center;
+  gap: 65%;
+  position: relative;
+  padding-top: 0px;
+  padding-bottom: 5px;
+  margin-top: 0px;
+  text-align: center;
+
+}
+
+.button-spinner {
+  width: 3px;
+  height: 3px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top: 2px solid black;
+  border-radius: 50%;
+  animation: spin 1.5s linear infinite;
+  position: relative;
+  /* right: 5%; */
+  bottom: 20%;
+}
+
+.ValidatingPage-text-parent,.ValidatingPage-spinner,.Loading-container{
+  margin: 16% 10%;
+}

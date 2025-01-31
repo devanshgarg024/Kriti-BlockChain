@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import "./SideBar.css";
 import Logo from "../AuthPage/logo.jsx";
 import "../AuthPage/Logo.css";
-import axios from 'axios';
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 const Sidebar = (props) => {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [activeItem, setActiveItem] = useState("Dashboard");
   const [user, setUser] = useState(null);
-  useEffect(() => {setUser(props.userData)}, []); // Dependency array includes location to trigger on route changes
+  useEffect(() => {
+    setUser(props.userData);
+  }, []); // Dependency array includes location to trigger on route changes
 
   const menuItems = [
     {
@@ -148,12 +149,23 @@ const Sidebar = (props) => {
       const response = await axios.get(url, { withCredentials: true });
       console.log("Logout response:", response.data); // Log server response
       console.log("Navigating to start page...");
-      navigate('/');
+      navigate("/");
     } catch (err) {
       console.error("Logout error:", err);
     }
   }
+  const getInitials = () => {
+    if (!user) return ""; // Handle empty input
 
+    const nameParts = user.username.trim().split(" "); // Split by space and trim
+    const firstInitial = nameParts[0] ? nameParts[0][0].toUpperCase() : ""; // First name initial
+    const lastInitial =
+      nameParts.length > 1
+        ? nameParts[nameParts.length - 1][0].toUpperCase()
+        : ""; // Last name initial
+
+    return firstInitial + lastInitial; // Combine initials
+  };
   return (
     <div className="sidebar">
       <div className="sidebar-content">
@@ -170,7 +182,8 @@ const Sidebar = (props) => {
                 }`}
                 onClick={() => setActiveItem(item.id)}
               >
-                <span className="icon">{item.icon}</span> <span className="label">{item.label}</span>
+                <span className="icon">{item.icon}</span>{" "}
+                <span className="label">{item.label}</span>
               </li>
             ))}
           </ul>
@@ -184,22 +197,28 @@ const Sidebar = (props) => {
                   activeItem === item.id ? "active" : ""
                 }`}
                 onClick={() => {
-                  setActiveItem(item.id)
-                  if(item.id==="Log Out"){
+                  setActiveItem(item.id);
+                  if (item.id === "Log Out") {
                     handleLogOut();
                   }
                 }}
               >
-                <span className="icon">{item.icon}</span> <span className="label">{item.label}</span>
+                <span className="icon">{item.icon}</span>{" "}
+                <span className="label">{item.label}</span>
               </li>
             ))}
           </ul>
           <div className="user-info">
-            <div className="avatar">TN</div>
+            <div className="avatar">
+              {user?.username
+                .split(" ")
+                .map((word) => word[0])
+                .join("")
+                .toUpperCase()||""}
+            </div>
             <div>
-            <h4>{user?.username || "name"}</h4>
-            <p className="user-email">{user?.email || "email@gmail.com"}</p>
-
+              <h4>{user?.username || "name"}</h4>
+              <p className="user-email">{user?.email || "email@gmail.com"}</p>
             </div>
           </div>
         </div>

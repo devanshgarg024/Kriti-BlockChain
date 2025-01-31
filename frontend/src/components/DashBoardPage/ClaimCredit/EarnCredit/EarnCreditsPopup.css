@@ -1,14 +1,14 @@
 /* Popup Container */
-.popup-container {
+/* .popup-container {
   background-color: #1a1a1a;
   color: white;
   padding: 25px;
-  width: 400px;
+  width: 100%;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   position: relative;
   text-align: center;
-}
+} */
 
 /* Close Button */
 .popup-close {
@@ -16,13 +16,14 @@
   justify-content: center;
   align-items: center;
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 2%;
+  right: 2%;
   background: none;
   border: none;
-  font-size: 18px;
-  color: white;
+  font-size: medium;
+  color: rgba(0, 0, 0, 1);
   cursor: pointer;
+  background-color: rgba(237, 237, 237, 1);
 }
 
 .popup-close:hover{
@@ -32,7 +33,7 @@
 
 /* Popup Title */
 .popup-title {
-  font-size: 24px;
+  /* font-size: 24px; */
   font-weight: bold;
   margin-bottom: 8px;
 }
@@ -57,7 +58,7 @@
 
 .credit-timestamp {
   font-size: 14px;
-  color: rgb(0, 157, 255);
+  color: rgba(60, 190, 255, 1);
 }
 
 /* Input Section */
@@ -79,16 +80,17 @@
   gap: 8px;
 }
 
-.input-field {
+.input-field-earn {
   flex: 1;
   padding: 8px;
   border: 1px solid #333;
   border-radius: 6px;
-  background-color: #2a2a2a;
-  color: white;
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(38, 38, 38, 1);
+  font-weight: bold;
 }
 
-.input-field::placeholder {
+.input-field-earn::placeholder {
   color: #888;
 }
 
@@ -96,12 +98,13 @@
   padding: 8px;
   border: 1px solid #333;
   border-radius: 6px;
-  background-color: #2a2a2a;
-  color: white;
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(38, 38, 38, 1);
+  font-weight: bold;
 }
 
 /* Confirm Button */
-.confirm-button {
+.confirm-button,.ValidatingPage-button {
   width: 100%;
   padding: 12px;
   background-color: #cddc39;
@@ -112,8 +115,19 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-top:5%;
 }
 
-.confirm-button:hover {
+.confirm-button:hover,.ValidatingPage-button:hover {
   background-color: #aabb27;
+}
+
+
+
+
+
+
+.popup-title-parent,.credit-details,.input-container{
+  /* border: 2px solid red; */
+  margin: 16% 10%;
 }

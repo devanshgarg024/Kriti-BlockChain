@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import ClaimCredit from "./ClaimCredit/ClaimCredit.jsx";
+import SellCredit from "./SellCredit/SellCredit.jsx";
 import "./centrePage.css";
 import graphImage from "./images/graph.png";
 
@@ -10,6 +12,7 @@ const CentrePage = (props) => {
   const [lastPayment, setLastPayment] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
   const [unit, setUnit] = useState("CCT");
+  // const [pageoptions, setPageOptions] = useState(["Claim","Sell","Buy","AllTxn"]);
 
   // Fetch data from the backend
   useEffect(() => {
@@ -98,93 +101,35 @@ const CentrePage = (props) => {
       </nav>
 
       <div className="main-content">
-        <div className="left-section">
-          <p>
-            Earn <strong>Carbon Credit Tokens </strong>
-            to offset your footprint or trade them in the marketplace
-          </p>
-          <button className="earn-credit" onClick={()=>props.popup(true)}>
-            Earn Credit
-          </button>
-        </div>
-        <div className="mid-section">
-          <p>
-            Total <strong>Carbon Credit</strong> due for April, 2025:
-          </p>
-          <h5 className="primary">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              className="bi bi-lightning-fill"
-              viewBox="0 0 16 16"
-            >
-              <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
-            </svg>{" "}
-            {credits} CCT
-          </h5>
-          <div className="pay-section">
-            <input
-              type="text"
-              placeholder="Enter token amount"
-              value={tokenAmount}
-              onChange={handleTokenChange}
-              className="token-input"
-            />
-            <select
-              value={unit}
-              onChange={handleUnitChange}
-              className="unit-select"
-            >
-              <option value="CCT">CCT</option>
-              <option value="KWH">KWH</option>
-            </select>
-            <button className="pay-credit" onClick={payCarbonCredit}>
-              Pay Carbon Credit
-            </button>
-          </div>
-        </div>
-        <div className="right-section">
-          <div className="error-div">
-            <p>Last credit payment</p>
-            <h6 className="error">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-lightning-fill"
-                viewBox="0 0 16 16"
-              >
-                <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
-              </svg>{" "}
-              {lastPayment} CCT
-            </h6>
-          </div>
-          <div className="success-div">
-            <p>Available credits</p>
-            <h6 className="success">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-lightning-fill"
-                viewBox="0 0 16 16"
-              >
-                <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
-              </svg>{" "}
-              {availableCredits} CCT
-            </h6>
-          </div>
-        </div>
+      {activeNav === "claimCredits" ? <ClaimCredit
+        credits={availableCredits}
+        tokenAmount={tokenAmount}
+        handleTokenChange={handleTokenChange}
+        unit={unit}
+        handleUnitChange={handleUnitChange}
+        payCarbonCredit={payCarbonCredit}
+        lastPayment={lastPayment}
+        availableCredits={availableCredits}
+        popup={props.popup}
+      />
+        : activeNav === "sellCredits" ? <SellCredit
+        credits={availableCredits}
+        tokenAmount={tokenAmount}
+        handleTokenChange={handleTokenChange}
+        unit={unit}
+        handleUnitChange={handleUnitChange}
+        payCarbonCredit={payCarbonCredit}
+        lastPayment={lastPayment}
+        availableCredits={availableCredits}
+        popup={props.popup}
+      />
+        : activeNav === "buyCredits" ? <h1>Yet to be created......</h1>
+        : activeNav === "allTransactions" ? <h1>Yet to be created......</h1>
+        :"Unknown activeNav"}
       </div>
       <div className="graph-container">
         <img src={graphImage} alt="Graph-Image" className="graph-image" />
       </div>
-
-
     </div>
   );
 };

@@ -3,7 +3,10 @@ import Sidebar from "./SideBar.jsx";
 import RightSidebar from "./RightSideBar.jsx";
 import CentrePage from "./centrePage.jsx";
 import TransactionsTable from "./transactiontable.jsx";
-import EarnCreditsPopup from "./EarnCreditsPopup";
+import EarnCreditsPopup from "./ClaimCredit/EarnCredit/EarnCreditsPopup.jsx";
+import ValidatingPopup from "./ClaimCredit/EarnCredit/ValidatingPopup.jsx";
+import ConfirmPopUp from "./ClaimCredit/EarnCredit/ConfirmPopup.jsx";
+
 import "./Sidebar.css";
 import "./RightSidebar.css";
 import "./DashBoardPage.css";
@@ -22,7 +25,10 @@ const Dashboard = (e) => {
         <div className="popup-overlay" onClick={() => popup(false)}>
         </div>
           <div className="earnCreditPopup">
-            <EarnCreditsPopup popup={popup} />
+            {/* <EarnCreditsPopup popup={popup} /> */}
+            <ValidatingPopup popup={popup} />
+            {/* <ConfirmPopUp popup={popup} /> */}
+            
           </div>
           </>
       )}

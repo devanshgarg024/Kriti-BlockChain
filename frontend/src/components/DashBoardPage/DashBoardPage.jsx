@@ -7,6 +7,7 @@ import EarnCreditsPopup from "./ClaimCredit/EarnCredit/EarnCreditsPopup.jsx";
 import ValidatingPopup from "./ClaimCredit/EarnCredit/ValidatingPopup.jsx";
 import ConfirmPopUp from "./ClaimCredit/EarnCredit/ConfirmPopup.jsx";
 import RegisterDevicePopUp from "./RegisterDevicePopUp.jsx";
+import SetTokenRate from "./SellCredit/popups/SetTokenRate.jsx";
 import axios from "axios";
 import contractArtifact from "../../blockchain_files/CCToken.json";
 import { ethers } from "ethers";
@@ -89,7 +90,9 @@ const Dashboard = (e) => {
         <div className="popup-overlay" onClick={() => popup(false)}></div>
         <div className="earnCreditPopup">
           {showEarnCreditPopup === 1 ? (
-            <EarnCreditsPopup popup={popup} handleEarnCredit={handleEarnCredit} />
+            // <EarnCreditsPopup popup={popup} handleEarnCredit={handleEarnCredit} />
+            // <SellCreditsPopup popup={popup} handleEarnCredit={handleEarnCredit} />
+            <SetTokenRate popup={popup} handleEarnCredit={handleEarnCredit} />
           ) : showEarnCreditPopup === 2 ? (
             <ValidatingPopup popup={popup} />
           ) : showEarnCreditPopup === 3 ? (

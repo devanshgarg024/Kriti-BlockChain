@@ -1,0 +1,9 @@
+.credit-details h2 svg{
+  margin-left: 10px;
+  background-color:#FFE600 ;
+  padding: 2px;
+  border-radius: 10px;
+  position: relative;
+  top: 2px;
+  color: black;
+}

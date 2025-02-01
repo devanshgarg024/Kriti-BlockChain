@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import "./EarnCreditsPopup.css";
+import "./SellCreditPopUp.css";
+import "../../ClaimCredit/EarnCredit/EarnCreditsPopup.css";
 
-const EarnCreditsPopup = (props) => {
+const SellCreditPopUp = (props) => {
 
   
   const [powerOutput, setPowerOutput] = useState(0);
@@ -20,28 +21,38 @@ const EarnCreditsPopup = (props) => {
   }
 
   return (
-    // <div className="popup-container earnCreditPopup">
     <>
       <button className="popup-close" onClick={() => props.popup(false)}>
         &times;
       </button>
-      <h2 className="popup-title">Earn Credits</h2>
+      <h2 className="popup-title">Sell Credits</h2>
       <p className="popup-subtitle">
-        Earn Carbon credit token through your carbon offset
+        Sell Carbon credit tokens in our marketplace.
       </p>
       <div className="credit-details">
-        <h3 className="credit-type">New Renewal Energy Credit</h3>
-        <p className="credit-timestamp">27-05-2024 13:11:57</p>
+        <h2>Available Credits</h2>
+        <h2>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            className="bi bi-lightning-fill"
+            viewBox="0 0 16 16"
+          >
+            <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
+          </svg>{" "} 0 CCT
+        </h2>
       </div>
       <div className="input-container">
         <label htmlFor="power-output" className="input-label">
-          Please provide your current power output
+          How much you want to sell?
         </label>
         <div className="input-group">
           <input
             type="number"
             id="power-output"
-            placeholder="Power output"
+            placeholder="Enter the amount"
             className="input-field"
             value={powerOutput}
             onChange={(e) => setPowerOutput(e.target.value)}
@@ -51,14 +62,14 @@ const EarnCreditsPopup = (props) => {
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
           >
+            <option value="CCT">CCT</option>
             <option value="kWh">kWh</option>
-            <option value="MW">MW</option>
           </select>
         </div>
       </div>
-      <button className="confirm-button" onClick={handleEarnCredit}>Confirm</button>
+      <button className="confirm-button" onClick={handleEarnCredit}>Sell</button>
     </>
   );
 };
 
-export default EarnCreditsPopup;
+export default SellCreditPopUp;

@@ -1,0 +1,39 @@
+.credit-details h3 img{
+  margin-left: 10px;
+  background-color:rgba(227, 227, 227, 1) ;
+  padding: 2px;
+  border-radius: 10px;
+  position: relative;
+  top: 2px;
+  /* color: black; */
+}
+.credit-details h3 svg{
+  margin-left: 10px;
+  background-color:#FFE600 ;
+  padding: 2px;
+  border-radius: 10px;
+  position: relative;
+  top: 2px;
+  color: black;
+}
+
+.reload-button {
+  color: white;
+  border: none;
+  /* padding: 10px 20px; */
+  font-size: 16px;
+  /* border-radius: 5px; */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background: transparent;
+}
+
+
+.reload-button:active {
+  transform: scale(0.95);
+}
+
+.credit-details-settoken{
+  display: flex;
+  gap: 1%;
+}

@@ -52,7 +52,7 @@ const SellConfirmPopUp = (props) => {
         </h3>
       </div>
       <div className="input-container">
-        <button className="confirm-button" onClick={() => props.popup(0)}>
+        <button className="confirm-button" onClick={() => props.popup(5)}>
           Confirm
         </button>
       </div>

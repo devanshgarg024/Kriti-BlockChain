@@ -5,7 +5,7 @@ import "./BuySortedTable.css";
 
 const BuySortedTable = (props) => {
   const handleBuyCredit = () => {
-    return props.popupBuy(3);
+    return props.popup(3);
   };
 
   const transactions = [

@@ -109,7 +109,7 @@ const Dashboard = (e) => {
         return; // Exit function early if an error occurs
       }
   
-      setShowSellCreditPopup(3);
+      setShowSellCreditPopup(4);
     } catch (error) {
       console.error("Unexpected error:", error);
     }

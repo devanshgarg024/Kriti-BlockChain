@@ -26,15 +26,21 @@ const SetTokenRate = (props) => {
     props.popup(2);
   }
 
+  
+  const handleSellCredit=()=>{
+    return props.popup(3);
+  }
   return (
     <>
       <button className="popup-close" onClick={() => props.popup(false)}>
         &times;
       </button>
+      <div className="popup-title-parent">
       <h2 className="popup-title">Set Token Rate</h2>
       <p className="popup-subtitle">
         You have the flexibility set your own token rate tied to ETH.
       </p>
+      </div>
       <div className="credit-details">
         <h3>Floor Price</h3>
         <div className="credit-details-settoken">
@@ -64,7 +70,7 @@ const SetTokenRate = (props) => {
             type="text"
             id="power-output"
             placeholder="Enter the amount"
-            className="input-field"
+            className="input-field-settoken"
             value={pricePerToken}
             onChange={(e) => setPricePertoken(e.target.value)}
           />
@@ -76,10 +82,11 @@ const SetTokenRate = (props) => {
             <option value="ETH">ETH</option>
           </select>
         </div>
-      </div>
-      <button className="confirm-button" onClick={handleSellCredit}>
+        <button className="confirm-button" onClick={handleSellCredit}>
         Next
       </button>
+      </div>
+      
     </>
   );
 };

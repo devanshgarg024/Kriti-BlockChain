@@ -8,7 +8,9 @@ import ValidatingPopup from "./ClaimCredit/EarnCredit/ValidatingPopup.jsx";
 import ConfirmPopUp from "./ClaimCredit/EarnCredit/ConfirmPopup.jsx";
 import RegisterDevicePopUp from "./RegisterDevicePopUp.jsx";
 import SetTokenRate from "./SellCredit/popups/SetTokenRate.jsx";
-import SellCreditPopUp from "./SellCredit/popups/SellCreditPopUp.jsx";
+import SellCreditsPopup from "./SellCredit/popups/SellCreditPopUp.jsx";
+import SellConfirmPopUp from "./SellCredit/popups/SellConfirmPopup.jsx";
+import SellSuccessfull from "./SellCredit/popups/SellSuccessfull.jsx";
 import axios from "axios";
 import contractArtifact from "../../blockchain_files/CCToken.json";
 import { ethers } from "ethers";
@@ -18,7 +20,8 @@ import "./RightSidebar.css";
 import "./DashBoardPage.css";
 
 const Dashboard = (e) => {
-  const [showPopup, setShowPopup] = useState(0);
+  const [showEarnCreditPopup, setShowEarnCreditPopup] = useState(0);
+  const [showSellCreditPopup, setShowSellCreditPopup] = useState(0);
   const [account, setAccount] = useState(null);
   const [orderId, setOrderId] = useState(0);
   const [amountToSell, setAmountToSell] = useState(0);
@@ -26,9 +29,7 @@ const Dashboard = (e) => {
   const [deviceRegistered, setDeviceRegistered] = useState(false);
     const contractABI = contractArtifact.abi;
     const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
-  const popup = (x) => {
-    setShowPopup(x);
-  };
+
   const handleSellCredit = async (pricePerToken) => {
     try {
       const am = ethers.parseUnits(amountToSell.toFixed(18), 18);
@@ -103,57 +104,58 @@ const Dashboard = (e) => {
         return; // Exit function early if an error occurs
       }
   
-      popup(3);
+      setShowSellCreditPopup(3);
     } catch (error) {
       console.error("Unexpected error:", error);
     }
   };
+  const popupEarn = (x) => {
+    setShowEarnCreditPopup(x);
+  };
+  const popupSell = (x) => {
+    setShowSellCreditPopup(x);
+  };
   const handleEarnCredit = async(energyProduced) => {
-    setShowPopup(2);
+    setShowEarnCreditPopup(2);
 
-    let userWalletAddress=null;
-    await fetch('http://localhost:8080/getWalletAddress')
-    .then(response => response.json())  // Parse the JSON from the response
-    .then(data => {
-      userWalletAddress=data.walletAddress;
-      // Use the data as needed
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
-    
+    let userWalletAddress = null;
+    await fetch("http://localhost:8080/getWalletAddress")
+      .then((response) => response.json()) // Parse the JSON from the response
+      .then((data) => {
+        userWalletAddress = data.walletAddress;
+        // Use the data as needed
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
     const timestamp = Date.now();
 
-    await axios.post('http://localhost:8080/logSmartMeterData', {
-      userWalletAddress: userWalletAddress, 
-      energyProduced: energyProduced, 
-      timestamp :timestamp
-    })
-    .then(response => {
-      console.log('Response:', response.data);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    await axios
+      .post("http://localhost:8080/logSmartMeterData", {
+        userWalletAddress: userWalletAddress,
+        energyProduced: energyProduced,
+        timestamp: timestamp,
+      })
+      .then((response) => {
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
 
     const provider = new ethers.BrowserProvider(window.ethereum); // For ethers v6
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
-    
-    
-    const tx = await contract.earnCarbonCredit(
-      energyProduced,
-      timestamp
-    );
+
+    const tx = await contract.earnCarbonCredit(energyProduced, timestamp);
     console.log(`earn credit Transaction sent: ${tx.hash}`);
     await tx.wait();
     console.log(`earn credit Transaction confirmed`);
-    setShowPopup(3);
-    let userCredits=await contract.balanceOf(userWalletAddress);
+    setShowEarnCreditPopup(3);
+    let userCredits = await contract.balanceOf(userWalletAddress);
     setAvailableCredits(userCredits);
     console.log(userCredits);
-
-
   };
   async function connectedToMetamask(acnt){
     setAccount(acnt);
@@ -163,7 +165,7 @@ const Dashboard = (e) => {
     const userCredits=await contract.balanceOf(acnt);
     setAvailableCredits(userCredits);
   }
-  function deviceRegister(x){
+  function deviceRegister(x) {
     setDeviceRegistered(x);
   }
   function handleAmountToSell(x){
@@ -171,35 +173,71 @@ const Dashboard = (e) => {
   }
   return (
     <>
-    {(showPopup!=0) && (
-      <>
-        <div className="popup-overlay" onClick={() => popup(false)}></div>
-        <div className="earnCreditPopup">
-          {showPopup === 1 ? (
-            <EarnCreditsPopup popup={popup} handleEarnCredit={handleEarnCredit} />
-          ) : showPopup === 2 ? (
-            <ValidatingPopup popup={popup} />
-          ) : showPopup === 3 ? (
-            <ConfirmPopUp popup={popup}  />
-          ) : showPopup === 4 ?(
-            <RegisterDevicePopUp popup={popup} deviceRegistered={deviceRegister} />
-          ) : showPopup === 5 ?(
-            <SellCreditPopUp popup={popup} handleSellCredit={handleAmountToSell} />
-          ) : showPopup === 6 ?(
-            <SetTokenRate popup={popup} handleSellCredit={handleSellCredit} />
-          ) :(
-            <ConfirmPopUp popup={popup}  />
-          )}
-        </div>
-      </>
-    )}
+      {showEarnCreditPopup != 0 ? (
+        <>
+          <div className="popup-overlay" onClick={() => popupEarn(false)}></div>
+          <div className="earnCreditPopup">
+            {showEarnCreditPopup === 1 ? (
+              <EarnCreditsPopup
+                popup={popupEarn}
+                handleEarnCredit={handleEarnCredit}
+              />
+            ) :
+            showEarnCreditPopup === 2 ? (
+              <ValidatingPopup popup={popupEarn} />
+            ) : showEarnCreditPopup === 3 ? (
+              <ConfirmPopUp popup={popupEarn} />
+            ) : (
+              <RegisterDevicePopUp
+                popup={popupEarn}
+                deviceRegistered={deviceRegister}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        (showSellCreditPopup !=0) && (
+          <>
+            <div
+              className="popup-overlay"
+              onClick={() => popupSell(false)}
+            ></div>
+            <div className="earnCreditPopup">
+              {showSellCreditPopup === 1 ? (
+                <SellCreditsPopup
+                  popup={popupSell}
+                  handleSellCredit={handleAmountToSell}
+                />
+              ) : 
+              showSellCreditPopup === 2 ? (
+                <SetTokenRate popup={popupSell} handleSellCredit={handleSellCredit} />
+              ) :showSellCreditPopup === 3 ?(
+                 <ValidatingPopup popup={popupSell} />
+              ):showSellCreditPopup === 4 ?(
+                <SellConfirmPopUp popup={popupSell} handleSellCredit={handleSellCredit} />
+              ):(
+                <SellSuccessfull popup={popupSell} handleSellCredit={handleSellCredit} />
+              )}
+            </div>
+          </>
+        )
+      )}
       <div className="dashboard-conatainer">
         <Sidebar userData={e.userData[0]} />
         <div className="centre-dashboard-div">
-          <CentrePage userData={e.userData[0]} popup={popup} userCCT={availableCredits} deviceRegistered={deviceRegistered} />
+          <CentrePage
+            userData={e.userData[0]}
+            popupEarn={popupEarn}
+            popupSell = {popupSell}
+            userCCT={availableCredits}
+            deviceRegistered={deviceRegistered}
+          />
           <TransactionsTable userData={e.userData} />
         </div>
-        <RightSidebar userData={e.userData[0]} connectedToMetamask={connectedToMetamask} />
+        <RightSidebar
+          userData={e.userData[0]}
+          connectedToMetamask={connectedToMetamask}
+        />
       </div>
     </>
   );

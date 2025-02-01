@@ -25,10 +25,12 @@ const EarnCreditsPopup = (props) => {
       <button className="popup-close" onClick={() => props.popup(false)}>
         &times;
       </button>
-      <h2 className="popup-title">Earn Credits</h2>
+     <div className="popup-title-parent">
+     <h2 className="popup-title">Earn Credits</h2>
       <p className="popup-subtitle">
         Earn Carbon credit token through your carbon offset
       </p>
+     </div>
       <div className="credit-details">
         <h3 className="credit-type">New Renewal Energy Credit</h3>
         <p className="credit-timestamp">27-05-2024 13:11:57</p>
@@ -42,7 +44,7 @@ const EarnCreditsPopup = (props) => {
             type="number"
             id="power-output"
             placeholder="Power output"
-            className="input-field"
+            className="input-field-earn"
             value={powerOutput}
             onChange={(e) => setPowerOutput(e.target.value)}
           />
@@ -55,8 +57,9 @@ const EarnCreditsPopup = (props) => {
             <option value="MW">MW</option>
           </select>
         </div>
+        <button className="confirm-button" onClick={handleEarnCredit}>Confirm</button>
       </div>
-      <button className="confirm-button" onClick={handleEarnCredit}>Confirm</button>
+      
     </>
   );
 };

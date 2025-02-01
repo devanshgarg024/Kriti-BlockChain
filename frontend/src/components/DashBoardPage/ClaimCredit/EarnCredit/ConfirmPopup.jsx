@@ -3,7 +3,6 @@ import "./EarnCreditsPopup.css";
 import "./ConfirmPopup.css";
 
 const ConfirmPopUp = (props) => {
-  console.log(props.CCTRecievedFromEnergy);
   return (
       <>
         <button className="popup-close" onClick={()=>props.popup(false)}>

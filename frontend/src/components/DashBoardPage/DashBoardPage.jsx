@@ -93,7 +93,7 @@ const Dashboard = (e) => {
           ) : showEarnCreditPopup === 2 ? (
             <ValidatingPopup popup={popup} />
           ) : showEarnCreditPopup === 3 ? (
-            <ConfirmPopUp popup={popup} CCTRecievedFromEnergy={CCTRecievedFromEnergy} />
+            <ConfirmPopUp popup={popup}  />
           ) : (
             <RegisterDevicePopUp popup={popup} deviceRegistered={deviceRegister} />
           )}

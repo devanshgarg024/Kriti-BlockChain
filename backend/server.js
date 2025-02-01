@@ -13,6 +13,7 @@ const{ JsonRpcProvider } =require("ethers");
 
 // Import custom modules and routes
 const authRoute = require("./routes/auth");
+const sellOrderRoutes = require("./routes/sellOrder");
 const userInfo = require("./routes/userInfo");
 const otpRoutes = require("./routes/otp");
 const fetchUserData = require("./Models/fetchUserData");
@@ -171,8 +172,10 @@ app.post("/logSmartMeterData", async (req, res) => {
   
 app.post("/handleGenerateAndVerifyProof", async (req, res) => {
     try {
+        console.log("ss");
       console.log(`amountToSell:- ${req.body.amountToSell}`);
       console.log(`totalBalance :- ${req.body.totalBalance}`);
+      console.log("se");
   
       const { amountToSell, totalBalance } = req.body;
   
@@ -225,6 +228,7 @@ app.get("/userData", (req, res) => {
 app.use("/auth", authRoute);
 app.use("/user_info", userInfo);
 app.use("/otp", otpRoutes);
+app.use("/sellOrder", sellOrderRoutes);
 
 // Start the server
 const port = process.env.PORT || 8080;

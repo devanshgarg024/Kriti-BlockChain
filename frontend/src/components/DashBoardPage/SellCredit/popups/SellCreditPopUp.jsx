@@ -3,18 +3,28 @@ import "./SellCreditPopUp.css";
 import "../../ClaimCredit/EarnCredit/EarnCreditsPopup.css";
 
 const SellCreditPopUp = (props) => {
-  const [powerOutput, setPowerOutput] = useState(0);
-  const [unit, setUnit] = useState("kWh");
 
-  async function handleEarnCredit() {
-    let energyProduced = 0;
-    if (unit === "kWh") {
-      energyProduced = powerOutput;
-    } else {
-      energyProduced = powerOutput * 1000;
-    }
-    props.handleEarnCredit(energyProduced);
-  }
+  
+  const [amountToSell, setAmountToSell] = useState(null);
+  const [unit, setUnit] = useState("CCT");
+
+ async function handleSellCredit() {
+  let sellingAmount;
+  if (!isNaN(amountToSell) && amountToSell.trim() !== '') {
+    // Convert the string to a number
+    const num = parseFloat(amountToSell);
+
+    // Find the number of decimal places
+    const decimalPlaces = (amountToSell.split('.')[1] || '').length;
+
+    // Convert to integer by truncating based on decimal places
+    sellingAmount=Math.floor(num * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
+} else {
+    alert("add a valid amount");
+}
+    props.handleSellCredit(sellingAmount);
+    props.popup(6);
+}
 
   const handleSellCredit=()=>{
     return props.popup(2);
@@ -53,12 +63,12 @@ const SellCreditPopUp = (props) => {
         </label>
         <div className="input-group">
           <input
-            type="number"
+            type="text"
             id="power-output"
             placeholder="Enter the amount"
             className="input-field-sell"
-            value={powerOutput}
-            onChange={(e) => setPowerOutput(e.target.value)}
+            value={amountToSell}
+            onChange={(e) => setAmountToSell(e.target.value)}
           />
           <select
             className="input-select"
@@ -66,7 +76,6 @@ const SellCreditPopUp = (props) => {
             onChange={(e) => setUnit(e.target.value)}
           >
             <option value="CCT">CCT</option>
-            <option value="kWh">kWh</option>
           </select>
         </div>
         <button className="confirm-button" onClick={handleSellCredit}>
@@ -77,5 +86,4 @@ const SellCreditPopUp = (props) => {
     </>
   );
 };
-
 export default SellCreditPopUp;

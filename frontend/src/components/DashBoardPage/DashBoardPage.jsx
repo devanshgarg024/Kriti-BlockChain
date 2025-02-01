@@ -11,6 +11,8 @@ import SetTokenRate from "./SellCredit/popups/SetTokenRate.jsx";
 import SellCreditsPopup from "./SellCredit/popups/SellCreditPopUp.jsx";
 import SellConfirmPopUp from "./SellCredit/popups/SellConfirmPopup.jsx";
 import SellSuccessfull from "./SellCredit/popups/SellSuccessfull.jsx";
+import BuyCreditsPopup from "./BuyCredits/BuyCreditsPopup.jsx";
+import BuySortedTable from "./BuyCredits/BuySortedTable.jsx";
 import axios from "axios";
 import contractArtifact from "../../blockchain_files/CCToken.json";
 import { ethers } from "ethers";
@@ -22,8 +24,10 @@ import "./DashBoardPage.css";
 const Dashboard = (e) => {
   const [showEarnCreditPopup, setShowEarnCreditPopup] = useState(0);
   const [showSellCreditPopup, setShowSellCreditPopup] = useState(0);
+  const [showBuyCreditPopup, setShowBuyCreditPopup] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
   const [deviceRegistered, setDeviceRegistered] = useState(false);
+    const [buyamount, setBuyAmount] = useState(0);
   const contractABI = contractArtifact.abi;
   const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
   const popupEarn = (x) => {
@@ -31,6 +35,9 @@ const Dashboard = (e) => {
   };
   const popupSell = (x) => {
     setShowSellCreditPopup(x);
+  };
+  const popupBuy = (x) => {
+    setShowBuyCreditPopup(x);
   };
 
   const handleEarnCredit = async (energyProduced) => {
@@ -86,6 +93,11 @@ const Dashboard = (e) => {
     setTimeout(5000);
     setShowSellCreditPopup(3);
   };
+  const handleBuyCredit = async () => {
+    setShowBuyCreditPopup(2);
+    setTimeout(5000);
+    setShowBuyCreditPopup(3);
+  };
   async function connectedToMetamask(account) {
     const provider = new ethers.BrowserProvider(window.ethereum); // For ethers v6
     const signer = await provider.getSigner();
@@ -120,8 +132,8 @@ const Dashboard = (e) => {
             )}
           </div>
         </>
-      ) : (
-        (showSellCreditPopup !=0) && (
+      ) : 
+        (showSellCreditPopup !=0) ? (
           <>
             <div
               className="popup-overlay"
@@ -145,6 +157,32 @@ const Dashboard = (e) => {
               )}
             </div>
           </>
+        
+      ):(
+        (showBuyCreditPopup !=0) && (
+          <>
+            <div
+              className="popup-overlay"
+              onClick={() => popupBuy(false)}
+            ></div>
+            <div className="earnCreditPopup">
+              {showBuyCreditPopup === 1 ? (
+                <BuyCreditsPopup
+                  popup={popupBuy}
+                  handleBuyCredit={handleBuyCredit}
+                  buyamount ={buyamount}
+                  setBuyAmount={setBuyAmount}
+                />
+              ) : 
+              showBuyCreditPopup === 2 ? (
+                <BuySortedTable popup={popupBuy}  buyamount={buyamount} setBuyAmount={setBuyAmount}  handleBuyCredit={handleBuyCredit} />
+              ) :showBuyCreditPopup === 3 ?(
+                 <ValidatingPopup popup={popupBuy} />
+              ):(
+                <SellSuccessfull popup={popupBuy} handleBuyCredit={handleBuyCredit} />
+              )}
+            </div>
+          </>
         )
       )}
       <div className="dashboard-conatainer">
@@ -154,6 +192,7 @@ const Dashboard = (e) => {
             userData={e.userData[0]}
             popupEarn={popupEarn}
             popupSell = {popupSell}
+            popupBuy = {popupBuy}
             userCCT={availableCredits}
             deviceRegistered={deviceRegistered}
           />

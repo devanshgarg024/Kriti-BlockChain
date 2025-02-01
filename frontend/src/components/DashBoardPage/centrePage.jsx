@@ -72,7 +72,7 @@ setAvailableCredits(props.userCCT);
           </li>
           <li
             className={activeNav === "buyCredits" ? "active" : ""}
-            onClick={() => setActiveNav("buyCredits")}
+            onClick={() => (props.popupBuy(1))&&(setActiveNav("buyCredits"))}
           >
             Buy Credits
           </li>
@@ -117,7 +117,6 @@ setAvailableCredits(props.userCCT);
         availableCredits={availableCredits}
         popup={props.popupEarn}
       />
-        : activeNav === "buyCredits" ? <h1>Yet to be created......</h1>
         :"Unknown activeNav"}
       </div>
       <div className="graph-container">

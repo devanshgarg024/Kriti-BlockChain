@@ -1,0 +1,24 @@
+.transaction-container-Buy{
+  border-radius: 10px;
+  background-color: white;
+  cursor: pointer;
+  margin: 16% 0;
+}
+.popup-title-parent svg{
+  margin-left: 10px;
+  background-color:#FFE600 ;
+  padding: 2px;
+  border-radius: 10px;
+  position: relative;
+  top: 2px;
+  color: black;
+}
+.verify{
+background-color: rgb(109, 155, 216);
+}
+.not-verified{
+  background-color: red;
+}
+.buy{
+  background-color: green;
+}

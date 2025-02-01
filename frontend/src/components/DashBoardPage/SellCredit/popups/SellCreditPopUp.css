@@ -7,3 +7,16 @@
   top: 2px;
   color: black;
 }
+.input-field-sell {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(38, 38, 38, 1);
+  font-weight: bold;
+}
+
+.input-field-sell::placeholder {
+  color: #888;
+}

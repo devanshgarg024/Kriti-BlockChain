@@ -24,14 +24,14 @@ setAvailableCredits(props.userCCT);
   useEffect(() => {
 
     setIsDeviceRegistered("Device Registered");
-    props.popup(0);
+    props.popupEarn(0);
     setActiveNav("claimCredits");
     
       }, [props.deviceRegistered]);
 
   useEffect(() => {
     if(activeNav==="RegisterDevice"){
-      props.popup(4);
+      props.popupEarn(4);
     }
     
       }, [activeNav]);
@@ -50,7 +50,9 @@ setAvailableCredits(props.userCCT);
     }
   };
 
-
+// const CallSellCredit = ()=>{
+//   return ();
+// }
 
   return (
     <div className="container">
@@ -64,7 +66,7 @@ setAvailableCredits(props.userCCT);
           </li>
           <li
             className={activeNav === "sellCredits" ? "active" : ""}
-            onClick={() => setActiveNav("sellCredits")}
+            onClick={() => (props.popupSell(1))&&(setActiveNav("SellCredits"))}
           >
             Sell Credits
           </li>
@@ -113,18 +115,7 @@ setAvailableCredits(props.userCCT);
         payCarbonCredit={payCarbonCredit}
         lastPayment={lastPayment}
         availableCredits={availableCredits}
-        popup={props.popup}
-      />
-        : activeNav === "sellCredits" ? <SellCredit
-        credits={availableCredits}
-        tokenAmount={tokenAmount}
-        handleTokenChange={handleTokenChange}
-        unit={unit}
-        handleUnitChange={handleUnitChange}
-        payCarbonCredit={payCarbonCredit}
-        lastPayment={lastPayment}
-        availableCredits={availableCredits}
-        popup={props.popup}
+        popup={props.popupEarn}
       />
         : activeNav === "buyCredits" ? <h1>Yet to be created......</h1>
         :"Unknown activeNav"}

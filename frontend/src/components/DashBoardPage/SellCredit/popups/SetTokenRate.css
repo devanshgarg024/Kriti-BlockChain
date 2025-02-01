@@ -36,4 +36,19 @@
 .credit-details-settoken{
   display: flex;
   gap: 1%;
+  margin-bottom: -10%;
+}
+
+.input-field-settoken{
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #333;
+  border-radius: 6px;
+  background-color: rgba(255, 255, 255, 1);
+  color: rgba(38, 38, 38, 1);
+  font-weight: bold;
+}
+
+.input-field-settoken::placeholder {
+  color: #888;
 }

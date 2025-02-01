@@ -23,12 +23,9 @@ const SellCreditPopUp = (props) => {
     alert("add a valid amount");
 }
     props.handleSellCredit(sellingAmount);
-    props.popup(6);
+    props.popup(2);
 }
 
-  const handleSellCredit=()=>{
-    return props.popup(2);
-  }
 
   return (
     <>

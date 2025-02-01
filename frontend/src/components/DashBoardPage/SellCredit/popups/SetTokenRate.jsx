@@ -23,13 +23,11 @@ const SetTokenRate = (props) => {
       alert("add a valid amount");
   }
     props.handleSellCredit(perTokenAmount);
-    props.popup(2);
+    props.popup(3);
   }
 
   
-  const handleSellCredit=()=>{
-    return props.popup(3);
-  }
+
   return (
     <>
       <button className="popup-close" onClick={() => props.popup(false)}>

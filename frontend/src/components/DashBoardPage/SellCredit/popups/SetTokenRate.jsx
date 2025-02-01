@@ -1,21 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./SellCreditPopUp.css";
 import "./SetTokenRate.css";
 import "../../ClaimCredit/EarnCredit/EarnCreditsPopup.css";
 import ethsvg from "./eth.svg";
 
 const SetTokenRate = (props) => {
-  const [powerOutput, setPowerOutput] = useState(0);
+  const [pricePerToken, setPricePertoken] = useState(null);
   const [unit, setUnit] = useState("kWh");
 
-  async function handleEarnCredit() {
-    let energyProduced = 0;
-    if (unit === "kWh") {
-      energyProduced = powerOutput;
-    } else {
-      energyProduced = powerOutput * 1000;
-    }
-    props.handleEarnCredit(energyProduced);
+  async function handleSellCredit() {
+    let perTokenAmount;
+    if (!isNaN(pricePerToken) && pricePerToken.trim() !== '') {
+      // Convert the string to a number
+      const num = parseFloat(pricePerToken);
+  
+      // Find the number of decimal places
+      const decimalPlaces = (pricePerToken.split('.')[1] || '').length;
+  
+      // Convert to integer by truncating based on decimal places
+      perTokenAmount=Math.floor(num * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
+  } else {
+      alert("add a valid amount");
+  }
+    props.handleSellCredit(perTokenAmount);
+    props.popup(2);
   }
 
   return (
@@ -53,12 +61,12 @@ const SetTokenRate = (props) => {
         </label>
         <div className="input-group">
           <input
-            type="number"
+            type="text"
             id="power-output"
             placeholder="Enter the amount"
             className="input-field"
-            value={powerOutput}
-            onChange={(e) => setPowerOutput(e.target.value)}
+            value={pricePerToken}
+            onChange={(e) => setPricePertoken(e.target.value)}
           />
           <select
             className="input-select"
@@ -66,11 +74,10 @@ const SetTokenRate = (props) => {
             onChange={(e) => setUnit(e.target.value)}
           >
             <option value="ETH">ETH</option>
-            <option value="kWh">kWh</option>
           </select>
         </div>
       </div>
-      <button className="confirm-button" onClick={handleEarnCredit}>
+      <button className="confirm-button" onClick={handleSellCredit}>
         Next
       </button>
     </>

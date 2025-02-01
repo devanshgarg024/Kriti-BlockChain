@@ -33,6 +33,9 @@ setAvailableCredits(props.userCCT);
     if(activeNav==="RegisterDevice"){
       props.popup(4);
     }
+    else if(activeNav==="sellCredits"){
+      props.popup(5);
+    }
     
       }, [activeNav]);
   const handleTokenChange = (e) => {

@@ -13,6 +13,7 @@ import SellConfirmPopUp from "./SellCredit/popups/SellConfirmPopup.jsx";
 import SellSuccessfull from "./SellCredit/popups/SellSuccessfull.jsx";
 import BuyCreditsPopup from "./BuyCredits/BuyCreditsPopup.jsx";
 import BuySortedTable from "./BuyCredits/BuySortedTable.jsx";
+import BuySuccessfull from "./BuyCredits/BuySuccessfull.jsx";
 import axios from "axios";
 import contractArtifact from "../../blockchain_files/CCToken.json";
 import { ethers } from "ethers";
@@ -32,8 +33,8 @@ const Dashboard = (e) => {
   const [deviceRegistered, setDeviceRegistered] = useState(false);
   const [buyamount, setBuyAmount] = useState(0);
 
-    const contractABI = contractArtifact.abi;
-    const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
+  const contractABI = contractArtifact.abi;
+  const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
 
   const handleSellCredit = async (pricePerToken) => {
     try {
@@ -41,74 +42,85 @@ const Dashboard = (e) => {
 
       const ac2 = BigInt(Math.round(Number(availableCredits) * 1e18));
       const am2 = BigInt(Math.round(Number(amountToSell) * 1e18));
-      
+
       try {
-        const response = await axios.post('http://localhost:8080/handleGenerateAndVerifyProof', {
-          amountToSell: am2.toString(), 
-          totalBalance: ac2.toString()
-        });
-  
-        console.log('Response:', response.data);
-        
-        if (response.data.Output === '0') {
+        const response = await axios.post(
+          "http://localhost:8080/handleGenerateAndVerifyProof",
+          {
+            amountToSell: am2.toString(),
+            totalBalance: ac2.toString(),
+          }
+        );
+
+        console.log("Response:", response.data);
+
+        if (response.data.Output === "0") {
           alert("Insufficient Credits");
           return; // Exit function early
         }
       } catch (error) {
-        console.error('Error in proof generation:', error);
+        console.error("Error in proof generation:", error);
         return; // Exit function early if an error occurs
       }
-  
+
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
+      const contract = new ethers.Contract(
+        CONTRACT_ADDRESS,
+        contractABI,
+        signer
+      );
       // console.log("d");
       // Approve the marketplace contract to spend tokens on behalf of the user
       const approveTx = await contract.approve(CONTRACT_ADDRESS, am);
       console.log(`Approval transaction sent: ${approveTx.hash}`);
       await approveTx.wait();
       console.log("Approval confirmed");
-  
+
       const ps = ethers.parseUnits(pricePerToken.toFixed(18), 18);
 
-  
       // Call placeSellOrder
       const sellTx = await contract.placeSellOrder(am, ps);
       console.log(`Sell order transaction sent: ${sellTx.hash}`);
-  
+
       // Wait for transaction confirmation
       const receipt = await sellTx.wait();
       console.log("Sell order placed successfully");
-  
+
       // Extract orderId from event logs
-      const event = receipt.logs.find(log => log.fragment.name === "SellOrderPlaced");
-  
+      const event = receipt.logs.find(
+        (log) => log.fragment.name === "SellOrderPlaced"
+      );
+
       let orderId = null;
       if (event) {
-          orderId = Number(event.args[0]); // Extract orderId from event arguments
-          console.log(`Order placed successfully with ID: ${orderId}`);
+        orderId = Number(event.args[0]); // Extract orderId from event arguments
+        console.log(`Order placed successfully with ID: ${orderId}`);
       } else {
-          console.log("SellOrderPlaced event not found in transaction logs");
-          return; // Exit function if order ID is not found
+        console.log("SellOrderPlaced event not found in transaction logs");
+        return; // Exit function if order ID is not found
       }
-  
+
       const timestamp = Date.now();
-  
+
       try {
-        const orderResponse = await axios.post('http://localhost:8080/sellOrder', {
-          orderId: orderId, 
-          seller: account, 
-          amountToSell: amountToSell,
-          pricePerToken: pricePerToken,
-          timestamp: timestamp,
-        });
-  
-        console.log('Order Response:', orderResponse.data);
+        const orderResponse = await axios.post(
+          "http://localhost:8080/sellOrder",
+          {
+            orderId: orderId,
+            seller: account,
+            amountToSell: amountToSell,
+            pricePerToken: pricePerToken,
+            timestamp: timestamp,
+          }
+        );
+
+        console.log("Order Response:", orderResponse.data);
       } catch (error) {
-        console.error('Error in placing sell order:', error);
+        console.error("Error in placing sell order:", error);
         return; // Exit function early if an error occurs
       }
-  
+
       setShowSellCreditPopup(4);
     } catch (error) {
       console.error("Unexpected error:", error);
@@ -167,10 +179,7 @@ const Dashboard = (e) => {
     console.log(userCredits);
   };
 
-
-
-//
-
+  //
 
   // const handleSellCredit = async () => {
   //   setShowSellCreditPopup(2);
@@ -182,18 +191,18 @@ const Dashboard = (e) => {
     setTimeout(5000);
     setShowBuyCreditPopup(3);
   };
-  async function connectedToMetamask(acnt){
+  async function connectedToMetamask(acnt) {
     setAccount(acnt);
     const provider = new ethers.BrowserProvider(window.ethereum); // For ethers v6
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
-    const userCredits=await contract.balanceOf(acnt);
+    const userCredits = await contract.balanceOf(acnt);
     setAvailableCredits(userCredits);
   }
   function deviceRegister(x) {
     setDeviceRegistered(x);
   }
-  function handleAmountToSell(x){
+  function handleAmountToSell(x) {
     setAmountToSell(x);
   }
   return (
@@ -207,8 +216,7 @@ const Dashboard = (e) => {
                 popup={popupEarn}
                 handleEarnCredit={handleEarnCredit}
               />
-            ) :
-            showEarnCreditPopup === 2 ? (
+            ) : showEarnCreditPopup === 2 ? (
               <ValidatingPopup popup={popupEarn} />
             ) : showEarnCreditPopup === 3 ? (
               <ConfirmPopUp popup={popupEarn} />
@@ -220,34 +228,38 @@ const Dashboard = (e) => {
             )}
           </div>
         </>
-      ) : 
-        (showSellCreditPopup !=0) ? (
-          <>
-            <div
-              className="popup-overlay"
-              onClick={() => popupSell(false)}
-            ></div>
-            <div className="earnCreditPopup">
-              {showSellCreditPopup === 1 ? (
-                <SellCreditsPopup
-                  popup={popupSell}
-                  handleSellCredit={handleAmountToSell}
-                />
-              ) : 
-              showSellCreditPopup === 2 ? (
-                <SetTokenRate popup={popupSell} handleSellCredit={handleSellCredit} />
-              ) :showSellCreditPopup === 3 ?(
-                 <ValidatingPopup popup={popupSell} />
-              ):showSellCreditPopup === 4 ?(
-                <SellConfirmPopUp popup={popupSell} handleSellCredit={handleSellCredit} />
-              ):(
-                <SellSuccessfull popup={popupSell} handleSellCredit={handleSellCredit} />
-              )}
-            </div>
-          </>
-        
-      ):(
-        (showBuyCreditPopup !=0) && (
+      ) : showSellCreditPopup != 0 ? (
+        <>
+          <div className="popup-overlay" onClick={() => popupSell(false)}></div>
+          <div className="earnCreditPopup">
+            {showSellCreditPopup === 1 ? (
+              <SellCreditsPopup
+                popup={popupSell}
+                handleSellCredit={handleAmountToSell}
+                availableCredits={availableCredits}
+              />
+            ) : showSellCreditPopup === 2 ? (
+              <SetTokenRate
+                popup={popupSell}
+                handleSellCredit={handleSellCredit}
+              />
+            ) : showSellCreditPopup === 3 ? (
+              <ValidatingPopup popup={popupSell} />
+            ) : showSellCreditPopup === 4 ? (
+              <SellConfirmPopUp
+                popup={popupSell}
+                handleSellCredit={handleSellCredit}
+              />
+            ) : (
+              <SellSuccessfull
+                popup={popupSell}
+                handleSellCredit={handleSellCredit}
+              />
+            )}
+          </div>
+        </>
+      ) : (
+        showBuyCreditPopup != 0 && (
           <>
             <div
               className="popup-overlay"
@@ -258,16 +270,26 @@ const Dashboard = (e) => {
                 <BuyCreditsPopup
                   popup={popupBuy}
                   handleBuyCredit={handleBuyCredit}
-                  buyamount ={buyamount}
+                  buyamount={buyamount}
                   setBuyAmount={setBuyAmount}
                 />
-              ) : 
-              showBuyCreditPopup === 2 ? (
-                <BuySortedTable popup={popupBuy}  buyamount={buyamount} setBuyAmount={setBuyAmount}  handleBuyCredit={handleBuyCredit} />
-              ) :showBuyCreditPopup === 3 ?(
-                 <ValidatingPopup popup={popupBuy} />
-              ):(
-                <SellSuccessfull popup={popupBuy} handleBuyCredit={handleBuyCredit} />
+              ) : showBuyCreditPopup === 2 ? (
+                <BuySortedTable
+                  popup={popupBuy}
+                  buyamount={buyamount}
+                  setBuyAmount={setBuyAmount}
+                  handleBuyCredit={handleBuyCredit}
+                />
+              ) : showBuyCreditPopup === 3 ? (
+                <>
+                  <ValidatingPopup popup={popupBuy} />
+                  {setTimeout(() => popupBuy(4), 5000) && null}
+                </>
+              ) : (
+                <BuySuccessfull
+                  popup={popupBuy}
+                  handleBuyCredit={handleBuyCredit}
+                />
               )}
             </div>
           </>
@@ -279,8 +301,8 @@ const Dashboard = (e) => {
           <CentrePage
             userData={e.userData[0]}
             popupEarn={popupEarn}
-            popupSell = {popupSell}
-            popupBuy = {popupBuy}
+            popupSell={popupSell}
+            popupBuy={popupBuy}
             userCCT={availableCredits}
             deviceRegistered={deviceRegistered}
           />

@@ -41,6 +41,7 @@ const ClaimCredit = (props) => {
           <input
             type="text"
             placeholder="Enter token amount"
+             defaultValue=""
             value={props.tokenAmount}
             onChange={props.handleTokenChange}
             className="token-input"

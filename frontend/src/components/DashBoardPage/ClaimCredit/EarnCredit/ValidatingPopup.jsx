@@ -3,6 +3,7 @@ import "./ValidatingPopup.css";
 import "./EarnCreditsPopup.css";
 
 const ValidatingPopup = (props) => {
+  
   return (
     // <div className="ValidatingaPage-container">
     <>

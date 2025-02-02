@@ -6,57 +6,58 @@ const TransactionsTable = () => {
   const [transactions, setTransactions] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [filter, setFilter] = useState("All");
+  const [verificationStatus, setVerificationStatus] = useState({});
+  const [userId, setUserId] = useState("user123"); // Replace this with the actual logged-in user's ID
 
   useEffect(() => {
     async function getTableData() {
       try {
         const response = await axios.get("http://localhost:8080/sellOrder");
 
-        // Ensure that response data is an array before setting state
         if (Array.isArray(response.data.data)) {
           setTransactions(response.data.data);
+
+          // Initialize verification status
+          const initialStatus = response.data.data.reduce((acc, transaction) => {
+            acc[transaction._id] = "Verify";
+            return acc;
+          }, {});
+          setVerificationStatus(initialStatus);
         } else {
           console.error("Unexpected data format:", response.data);
-          setTransactions([]); // Ensure it's always an array
+          setTransactions([]);
         }
       } catch (error) {
         console.error("Error fetching transactions:", error);
-        setTransactions([]); // Set an empty array to prevent errors
+        setTransactions([]);
       }
     }
 
     getTableData();
   }, []);
 
-  // Ensure transactions is an array before filtering
-  const filteredTransactions = Array.isArray(transactions)
-    ? transactions.filter((transaction) =>
-        filter === "All" ? true : transaction.status === filter
-      )
-    : [];
-
-  // Toggle row selection for checkboxes
-  const toggleRowSelection = (id) => {
-    setSelectedRows((prevSelectedRows) =>
-      prevSelectedRows.includes(id)
-        ? prevSelectedRows.filter((rowId) => rowId !== id)
-        : [...prevSelectedRows, id]
-    );
+  // Toggle verification status
+  const handleVerifyClick = (id) => {
+    setVerificationStatus((prevStatus) => ({
+      ...prevStatus,
+      [id]: prevStatus[id] === "Verify" ? "Buy":"Not-Verified",
+    }));
   };
 
-  // Toggle all selections
-  const toggleSelectAll = () => {
-    if (!Array.isArray(filteredTransactions)) return;
-
-    const allVisibleIds = filteredTransactions.map((transaction) => transaction._id);
-    if (allVisibleIds.every((id) => selectedRows.includes(id))) {
-      setSelectedRows((prevSelectedRows) =>
-        prevSelectedRows.filter((id) => !allVisibleIds.includes(id))
-      );
-    } else {
-      setSelectedRows((prevSelectedRows) => [...new Set([...prevSelectedRows, ...allVisibleIds])]);
+  // Delete transaction
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/deleteOrder/${id}`);
+      setTransactions((prevTransactions) => prevTransactions.filter((t) => t._id !== id));
+    } catch (error) {
+      console.error("Error deleting order:", error);
     }
   };
+
+  // Filter transactions based on "My Orders" or "All Orders"
+  const filteredTransactions = transactions.filter((transaction) =>
+    filter === "My Orders" ? transaction.userId === userId : true
+  );
 
   return (
     <div className="transaction-section">
@@ -92,58 +93,40 @@ const TransactionsTable = () => {
         <table className="transaction-table">
           <thead>
             <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={
-                    Array.isArray(filteredTransactions) &&
-                    filteredTransactions.length > 0 &&
-                    filteredTransactions.every((transaction) =>
-                      selectedRows.includes(transaction._id)
-                    )
-                  }
-                  onChange={toggleSelectAll}
-                />
-              </th>
               <th style={{ minWidth: "10%" }}>Sl. No.</th>
               <th style={{ minWidth: "20%" }}>Order ID</th>
               <th style={{ minWidth: "30%" }}>Time</th>
               <th style={{ minWidth: "20%" }}>Price per Token</th>
               <th style={{ minWidth: "20%" }}>Amount to Sell</th>
-              <th style={{ minWidth: "20%" }}>Status</th>
+              <th style={{ minWidth: "20%" }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {filteredTransactions.map((transaction, index) => (
-              <tr
-                key={transaction._id}
-                className={selectedRows.includes(transaction._id) ? "selected-row" : ""}
-              >
-                <td>
-                  <input
-                    className="checkBox"
-                    type="checkbox"
-                    checked={selectedRows.includes(transaction._id)}
-                    onChange={() => toggleRowSelection(transaction._id)}
-                  />
-                </td>
+              <tr key={transaction._id}>
                 <td>{index + 1}</td>
                 <td>{transaction.orderId}</td>
                 <td>{new Date(transaction.timestamp).toLocaleString()}</td>
                 <td>₹{transaction.pricePerToken.toFixed(5)}</td>
                 <td>{transaction.amountToSell}</td>
                 <td>
-                  <span
-                    className={`status-badge ${
-                      transaction.status === "Completed"
-                        ? "completed"
-                        : transaction.status === "Aborted"
-                        ? "aborted"
-                        : "pending"
-                    }`}
-                  >
-                    {transaction.status || "Pending"}
-                  </span>
+                  {transaction.userId === userId ? (
+                    // Show delete button if order belongs to user
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDelete(transaction._id)}
+                    >
+                      Delete
+                    </button>
+                  ) : (
+                    // Show verify button for non-user orders
+                    <button
+                      className={`verify-button ${verificationStatus[transaction._id].toLowerCase()}`}
+                      onClick={() => handleVerifyClick(transaction._id)}
+                    >
+                      {verificationStatus[transaction._id]}
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

@@ -14,11 +14,30 @@
   color: black;
 }
 .verify{
-background-color: rgb(109, 155, 216);
+  font-weight: bold;
+background-color: rgb(134, 177, 234);
+color: rgb(76, 76, 230);
+
+}
+.verify:hover{
+  border: 1px solid rgb(76, 76, 230);
 }
 .not-verified{
-  background-color: red;
+  font-weight: bold;
+  background-color:rgba(225, 19, 0, 0.15);
+  color: rgba(225, 19, 0, 1);
+
+  cursor: not-allowed;
+}
+.not-verified:hover{
+  border: 1px solid rgb(225, 19, 0, 1);
 }
 .buy{
-  background-color: green;
+  font-weight: bold;
+  background-color: rgba(0, 192, 30, 0.15);
+  color: rgba(1, 171, 27, 1);
+
+}
+.buy:hover{
+  border: 1px solid rgba(1, 171, 27, 1);
 }

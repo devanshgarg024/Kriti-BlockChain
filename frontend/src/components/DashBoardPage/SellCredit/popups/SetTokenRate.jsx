@@ -69,6 +69,7 @@ const SetTokenRate = (props) => {
             id="power-output"
             placeholder="Enter the amount"
             className="input-field-settoken"
+             defaultValue=""
             value={pricePerToken}
             onChange={(e) => setPricePertoken(e.target.value)}
           />

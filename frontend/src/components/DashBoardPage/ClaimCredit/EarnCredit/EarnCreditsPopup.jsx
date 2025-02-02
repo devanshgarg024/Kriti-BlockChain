@@ -18,7 +18,8 @@ const EarnCreditsPopup = (props) => {
     props.handleEarnCredit(energyProduced);
 
   }
-
+  const timestamp = Date.now();
+  const formattedDate = new Date(timestamp).toLocaleString();
   return (
     // <div className="popup-container earnCreditPopup">
     <>
@@ -33,7 +34,7 @@ const EarnCreditsPopup = (props) => {
      </div>
       <div className="credit-details">
         <h3 className="credit-type">New Renewal Energy Credit</h3>
-        <p className="credit-timestamp">27-05-2024 13:11:57</p>
+        <p className="credit-timestamp">{formattedDate}</p>
       </div>
       <div className="input-container">
         <label htmlFor="power-output" className="input-label">
@@ -45,6 +46,7 @@ const EarnCreditsPopup = (props) => {
             id="power-output"
             placeholder="Power output"
             className="input-field-earn"
+             defaultValue=""
             value={powerOutput}
             onChange={(e) => setPowerOutput(e.target.value)}
           />

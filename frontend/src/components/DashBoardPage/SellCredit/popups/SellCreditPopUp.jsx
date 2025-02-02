@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "./SellCreditPopUp.css";
 import "../../ClaimCredit/EarnCredit/EarnCreditsPopup.css";
 
@@ -7,6 +7,12 @@ const SellCreditPopUp = (props) => {
   
   const [amountToSell, setAmountToSell] = useState(null);
   const [unit, setUnit] = useState("CCT");
+
+   const [availableCredits, setAvailableCredits] = useState(0);
+      useEffect(() => {
+      setAvailableCredits(Number(props.availableCredits)/1e18);
+    
+      }, [props.availableCredits]);
 
  async function handleSellCredit() {
   let sellingAmount;
@@ -51,7 +57,7 @@ const SellCreditPopUp = (props) => {
           >
             <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
           </svg>{" "}
-          0 CCT
+          {availableCredits} CCT
         </h2>
       </div>
       <div className="input-container">
@@ -64,6 +70,7 @@ const SellCreditPopUp = (props) => {
             id="power-output"
             placeholder="Enter the amount"
             className="input-field-sell"
+             defaultValue=""
             value={amountToSell}
             onChange={(e) => setAmountToSell(e.target.value)}
           />

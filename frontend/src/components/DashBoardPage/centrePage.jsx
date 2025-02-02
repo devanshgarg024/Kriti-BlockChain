@@ -109,7 +109,7 @@ setAvailableCredits(props.userCCT);
       </nav>
 
       <div className="main-content">
-      {activeNav === "claimCredits" ? <ClaimCredit
+      <ClaimCredit
         credits={availableCredits}
         tokenAmount={tokenAmount}
         handleTokenChange={handleTokenChange}
@@ -120,7 +120,6 @@ setAvailableCredits(props.userCCT);
         availableCredits={availableCredits}
         popup={props.popupEarn}
       />
-        :"Unknown activeNav"}
       </div>
       <div className="graph-container">
         <img src={graphImage} alt="Graph-Image" className="graph-image" />

@@ -34,6 +34,7 @@ const BuyCreditsPopup = (props) => {
             id="power-output"
             placeholder="Enter the amount"
             className="input-field-earn"
+             defaultValue=""
             value={props.buyamount}
             onChange={(e) => props.setBuyAmount(e.target.value)}
           />

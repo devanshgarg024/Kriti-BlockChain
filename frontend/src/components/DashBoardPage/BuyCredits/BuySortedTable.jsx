@@ -79,7 +79,7 @@ const BuySortedTable = (props) => {
   const handleVerify = (id) => {
     setVerificationStatus((prevStatus) => ({
       ...prevStatus,
-      [id]: prevStatus[id] === "Verify" ? "Not-Verified" : "Buy",
+      [id]: prevStatus[id] === "Verify" ? "Buy":"Not-Verified",
     }));
   };
 

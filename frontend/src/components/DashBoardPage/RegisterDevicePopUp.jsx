@@ -38,6 +38,7 @@ const RegisterDevicePopUp = (props) => {
             id="power-output"
             placeholder="Power output"
             className="input-field-earn"
+             defaultValue=""
             value={address}
             onChange={(e) => setAddress(e.target.value)}
           />

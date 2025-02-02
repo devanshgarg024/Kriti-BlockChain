@@ -38,6 +38,9 @@ const Dashboard = (e) => {
   const [myTransactions, setMyTransactions] = useState([]);
   const [deviceRegistered, setDeviceRegistered] = useState(false);
   const [buyAmount, setBuyAmount] = useState(0);
+  const [priceToPay, setPriceToPay] = useState(0);
+  const [amountBought, setAmountBought] = useState(0);
+  const [temp, setTemp] = useState(0);
 
   const contractABI = contractArtifact.abi;
   const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
@@ -70,7 +73,7 @@ const Dashboard = (e) => {
     }
 
     getTableData();
-  }, []);
+  }, [temp]);
 
   const handleVerify= async (seller,amntToSell)=>{
 
@@ -190,6 +193,7 @@ const Dashboard = (e) => {
         console.error("Error in placing sell order:", error);
         return; // Exit function early if an error occurs
       }
+      setTemp(temp+1);
 
       setShowSellCreditPopup(4);
     } catch (error) {
@@ -343,6 +347,8 @@ const Dashboard = (e) => {
           orderId: orderId,
         }
       );
+      setTemp(temp+1);
+
 
       console.log("Response:", response.data);
     } catch (error) {
@@ -420,8 +426,9 @@ const Dashboard = (e) => {
       console.error("Error in removing batch order:", error);
       return; // Exit function early if an error occurs
     }
+  
 
-
+    setTemp(temp+1);
 
     setShowBuyCreditPopup(4);
   };
@@ -440,6 +447,8 @@ const Dashboard = (e) => {
         const priceInEther = ethers.formatUnits(minPrice, "ether");
     setFloorPrice(priceInEther);
   }
+
+
   async function fetchFloorPrice(){
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
@@ -535,6 +544,8 @@ const Dashboard = (e) => {
                   buyArray={buyArray}
                   buyAmount={buyAmount}
                   verify={handleVerify}
+                  amountBought={(x)=>setAmountBought(x)}
+                  priceToPay={(x)=>setPriceToPay(x)}
                 />
               ) : showBuyCreditPopup === 3 ? (
                 <>
@@ -544,6 +555,8 @@ const Dashboard = (e) => {
                 <BuySuccessfull
                   popup={popupBuy}
                   handleBuyCredit={handleBuyCredit}
+                  amountBought={amountBought}
+                  priceToPay={priceToPay}
                 />
               )}
             </div>

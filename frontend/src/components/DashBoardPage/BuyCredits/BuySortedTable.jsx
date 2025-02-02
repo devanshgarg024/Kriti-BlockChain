@@ -6,12 +6,21 @@ import "./BuySortedTable.css";
 const BuySortedTable = (props) => {
     const [transactions, setTransactions] = useState([]);
     const [buyConfirmed, setBuyConfirmed] = useState([]);
+    const [priceToPay, setPriceToPay] = useState(0);
+    const [amountBought, setAmountBought] = useState(0);
+
 
     useEffect(() => {
         setTransactions(props.buyArray || []); // Ensure default empty array to avoid crashes
     }, [props.buyArray]);
 
     const handleBuyCredit = () => {
+      if(buyConfirmed.length===0){
+        alert("Cannot Buy an 0 CCT");
+        return;
+      }
+      props.amountBought(amountBought);
+      props.priceToPay(priceToPay);
       props.handleBuyCredit(buyConfirmed);
       console.log("validating one");
         props.popup(3);
@@ -55,7 +64,8 @@ const BuySortedTable = (props) => {
           if (transactionToAdd) {
               setBuyConfirmed((prevConfirmed) => [...prevConfirmed, transactionToAdd]);
           }
-  
+          setPriceToPay(priceToPay+transactionToAdd.amountToBuy*transactionToAdd.pricePerToken);
+          setAmountBought(amountBought+transactionToAdd.amountToBuy);
           setVerificationStatus((prevStatus) => ({
               ...prevStatus,
               [orderId]: "Added",
@@ -118,7 +128,7 @@ const BuySortedTable = (props) => {
                     </table>
                 </div>
                 <button className="confirm-button" onClick={handleBuyCredit}>
-                    Next
+                    BUY : Price To Pay = {priceToPay} ETH
                 </button>
             </div>
         </>

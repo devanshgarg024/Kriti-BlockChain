@@ -7,9 +7,6 @@ const ValidatingPopup = (props) => {
   return (
     // <div className="ValidatingaPage-container">
     <>
-    <button className="popup-close" onClick={() => props.popup(false)}>
-        &times;
-      </button>
       <div className="ValidatingPage-text-parent">
         <h2 className="ValidatingPage-text">{props.msg}</h2>
       </div>

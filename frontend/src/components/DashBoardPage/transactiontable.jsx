@@ -55,16 +55,7 @@ const TransactionsTable = (props) => {
 
   // Delete transaction
   const handleDelete = async (id) => {
-    try {
-      await axios.delete(
-        `${import.meta.env.VITE_REACT_APP_API_URL}/deleteOrder/${id}`
-      );
-      setTransactions((prevTransactions) =>
-        prevTransactions.filter((t) => t.orderId !== id)
-      );
-    } catch (error) {
-      console.error("Error deleting order:", error);
-    }
+    return props.popupDelete(1);
   };
 
   return (
@@ -120,7 +111,18 @@ const TransactionsTable = (props) => {
                 <td>{index + 1}</td>
                 <td>{transaction.orderId}</td>
                 <td>{new Date(transaction.timestamp).toLocaleString()}</td>
-                <td>₹{transaction.pricePerToken.toFixed(5)}</td>
+                <td>
+                  {(() => {
+                    const [base, exponent] = transaction.pricePerToken
+                      .toExponential(5)
+                      .split("e");
+                    return (
+                      <>
+                        {base} × 10<sup>{exponent}</sup>
+                      </>
+                    );
+                  })()}
+                </td>
                 <td>{transaction.amountToSell}</td>
                 <td>
                   {transaction.seller === userId ? (

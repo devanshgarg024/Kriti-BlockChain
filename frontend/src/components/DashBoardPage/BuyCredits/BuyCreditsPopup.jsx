@@ -6,11 +6,10 @@ const BuyCreditsPopup = (props) => {
   
 
   const [unit, setUnit] = useState(0);
-  
-
+  const [buyAmount, setBuyAmount] = useState(0);
 
   const handleBuyCredit = ()=>{
-    return props.popup(2);
+    props.handleBuyAmount(buyAmount);
   }
 
 
@@ -35,8 +34,8 @@ const BuyCreditsPopup = (props) => {
             placeholder="Enter the amount"
             className="input-field-earn"
              defaultValue=""
-            value={props.buyamount}
-            onChange={(e) => props.setBuyAmount(e.target.value)}
+            value={buyAmount}
+            onChange={(e) => setBuyAmount(e.target.value)}
           />
           <select
             className="input-select"
@@ -44,7 +43,6 @@ const BuyCreditsPopup = (props) => {
             onChange={(e) => setUnit(e.target.value)}
           >
             <option value="CCT">CCT</option>
-            <option value="kWh">kWh</option>
           </select>
         </div>
         <button className="confirm-button" onClick={handleBuyCredit}>Confirm</button>

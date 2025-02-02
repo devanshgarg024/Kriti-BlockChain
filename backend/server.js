@@ -172,10 +172,8 @@ app.post("/logSmartMeterData", async (req, res) => {
   
 app.post("/handleGenerateAndVerifyProof", async (req, res) => {
     try {
-        console.log("ss");
       console.log(`amountToSell:- ${req.body.amountToSell}`);
       console.log(`totalBalance :- ${req.body.totalBalance}`);
-      console.log("se");
   
       const { amountToSell, totalBalance } = req.body;
   

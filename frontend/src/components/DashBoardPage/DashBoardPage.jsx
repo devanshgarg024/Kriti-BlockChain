@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Sidebar from "./SideBar.jsx";
 import RightSidebar from "./RightSideBar.jsx";
 import CentrePage from "./centrePage.jsx";
@@ -25,22 +25,83 @@ import "./DashBoardPage.css";
 const Dashboard = (e) => {
   const [showEarnCreditPopup, setShowEarnCreditPopup] = useState(0);
   const [showSellCreditPopup, setShowSellCreditPopup] = useState(0);
+  const [buyArray, setBuyArray] = useState([]);
   const [account, setAccount] = useState(null);
   const [orderId, setOrderId] = useState(0);
   const [amountToSell, setAmountToSell] = useState(0);
   const [showBuyCreditPopup, setShowBuyCreditPopup] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
+  const [transactions, setTransactions] = useState([]);
+  const [myTransactions, setMyTransactions] = useState([]);
   const [deviceRegistered, setDeviceRegistered] = useState(false);
-  const [buyamount, setBuyAmount] = useState(0);
+  const [buyAmount, setBuyAmount] = useState(0);
 
   const contractABI = contractArtifact.abi;
   const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
+
+
+  useEffect(() => {
+    async function getTableData() {
+      try {
+        const response = await axios.get("http://localhost:8080/sellOrder");
+
+        if (Array.isArray(response.data.data)) {
+          const sortedTransactions = response.data.data.sort((a, b) => a.pricePerToken - b.pricePerToken);
+          setTransactions(sortedTransactions);
+
+          // Initialize verification status
+
+        } else {
+          console.error("Unexpected data format:", response.data);
+          setTransactions([]);
+        }
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+        setTransactions([]);
+      }
+    }
+
+    getTableData();
+  }, []);
+
+  const handleVerify= async (seller,amntToSell)=>{
+
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
+    const avlbleCred=await contract.balanceOf(seller);
+    const ac2 = BigInt(Math.round(Number(avlbleCred)));
+    const am2 = BigInt(Math.round(Number(amntToSell) * 1e18));
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/handleGenerateAndVerifyProof",
+        {
+          amountToSell: am2.toString(),
+          totalBalance: ac2.toString(),
+        }
+      );
+
+      console.log("Response:", response.data);
+      if (response.data.Output === "0") {
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error("Error in proof generation:", error);
+      return; // Exit function early if an error occurs
+    }
+
+  }
 
   const handleSellCredit = async (pricePerToken) => {
     try {
       const am = ethers.parseUnits(amountToSell.toFixed(18), 18);
 
-      const ac2 = BigInt(Math.round(Number(availableCredits) * 1e18));
+      const ac2 = BigInt(Math.round(Number(availableCredits)));
       const am2 = BigInt(Math.round(Number(amountToSell) * 1e18));
 
       try {
@@ -186,10 +247,130 @@ const Dashboard = (e) => {
   //   setTimeout(5000);
   //   setShowSellCreditPopup(3);
   // };
-  const handleBuyCredit = async () => {
+  // const buyOrder=async(orderId,amountToBuy,pricePerToken)=>{
+    
+  //   const provider = new ethers.BrowserProvider(window.ethereum);
+  //   const signer = await provider.getSigner();
+  //   const contract = new ethers.Contract(
+  //     CONTRACT_ADDRESS,
+  //     contractABI,
+  //     signer
+  //   );
+  //   console.log(amountToBuy);
+  //   // const ps = ethers.parseUnits(pricePerToken.toFixed(18), 18);
+  //   // const am = ethers.parseUnits(amountToBuy.toFixed(18), 18);
+  //   // const totalPrice = am * ps;
+  //   // Convert total price to wei (BigInt)
+  //   const totalPrice = ethers.parseUnits((amountToBuy * pricePerToken).toFixed(18), 18);
+
+  //   console.log("Total Price (wei):", totalPrice.toString());
+
+  //   // Send transaction with properly formatted value
+  //   const tx = await contract.fulfillSellOrder(orderId, amountToBuy, { value: totalPrice });
+    
+  //   console.log(`Transaction sent: ${tx.hash}`);
+  //   await tx.wait();
+  //   console.log("Transaction confirmed");
+
+  // }
+
+  const buyOrder =  async(orderId, amountToBuy, pricePerToken) => {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer =  await provider.getSigner();
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
+
+    console.log(`OrderId is :- ${orderId}`);
+    console.log("Amount to Buy:", amountToBuy);
+    console.log("Price per Token:", pricePerToken);
+
+    // // Ensure amountToBuy and pricePerToken are Numbers before conversion
+    // const amountBN = ethers.parseUnits(amountToBuy.toFixed(18), 18);
+    // const priceBN = ethers.parseUnits(pricePerToken.toFixed(18), 18);
+
+    // Convert amountToBuy & pricePerToken to BigInt (in wei)
+    const amountBN = BigInt(Math.round(amountToBuy * 1e18)); 
+    const priceBN = BigInt(Math.round(pricePerToken * 1e18));
+
+    // Compute total price in wei (BigInt)
+    const totalPrice = (amountBN * priceBN) / BigInt(1e18);
+
+    // // Compute the total price in wei (BigInt)
+    // const totalPrice = (amountBN * priceBN) / ethers.parseUnits("1", 18); // Correct scaling
+
+    console.log(`Total Price (wei):${totalPrice}`);
+
+    // Send transaction with correctly formatted value
+const sellOrdersCount = await contract.sellOrders.length;
+    
+    console.log(`Total Sell Orders: ${sellOrdersCount}`);
+
+    let orders = [];
+    for (let i = 0; i < sellOrdersCount; i++) {
+        const order = await contract.sellOrders(i); // Fetch each order by index
+
+        orders.push({
+            orderId: i,
+            seller: order.seller,
+            amount: Number(order.amount), // Convert BigInt to number
+            pricePerToken: Number(order.pricePerToken) / 1e18, // Convert from wei to ETH
+            fulfilled: order.fulfilled,
+        });
+    }
+
+    console.log("Sell Orders:", orders);
+
+
+    const tx = await contract.fulfillSellOrder(orderId, amountBN , { value: totalPrice });
+
+    console.log(`Transaction sent: ${tx.hash}`);
+    await tx.wait();
+    console.log("Transaction confirmed");
+
+  };
+
+  const getOrdersToFulfill = (sellOrders, targetAmount) => {
+    let accumulatedAmount = 0;
+    let selectedOrders = [];
+
+    for (let order of sellOrders) {
+        if (accumulatedAmount >= targetAmount) break; // Stop when the target is met
+
+        let amountToTake = Math.min(order.amountToSell, targetAmount - accumulatedAmount);
+        accumulatedAmount += amountToTake;
+
+        selectedOrders.push({
+            ...order,
+            amountToBuy: amountToTake // Add the portion being taken
+        });
+    }
+
+    return selectedOrders;
+};
+  const handleBuyAmount = async (buyamount) => {
+    const sortedTransactions = transactions.sort((a, b) => a.pricePerToken - b.pricePerToken);
+    setBuyArray(getOrdersToFulfill(sortedTransactions,buyamount));
+    setBuyAmount(buyamount);
     setShowBuyCreditPopup(2);
-    setTimeout(5000);
-    setShowBuyCreditPopup(3);
+  };
+
+  const handleBuyCredit = async (buyConfirmed) => {
+    console.log(buyConfirmed);
+    const orderIds = buyConfirmed.map(tx => tx.orderId);
+    const amountsToBuy = buyConfirmed.map(tx => BigInt(Math.round(tx.amountToBuy * 1e18)));
+    const pricesPerToken = buyConfirmed.map(tx => BigInt(Math.round(tx.pricePerToken * 1e18)));
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = new ethers.Contract(
+      CONTRACT_ADDRESS,
+      contractABI,
+      signer
+    );
+    const tx = await contract.fulfillBatchOrders(orderIds, amountsToBuy, pricesPerToken);
+    
+    console.log(`Transaction sent: ${tx.hash}`);
+    await tx.wait();
+    console.log(`Transaction confirmed`);
+    setShowBuyCreditPopup(4);
   };
   async function connectedToMetamask(acnt) {
     setAccount(acnt);
@@ -269,16 +450,15 @@ const Dashboard = (e) => {
               {showBuyCreditPopup === 1 ? (
                 <BuyCreditsPopup
                   popup={popupBuy}
-                  handleBuyCredit={handleBuyCredit}
-                  buyamount={buyamount}
-                  setBuyAmount={setBuyAmount}
+                  handleBuyAmount={handleBuyAmount}
                 />
               ) : showBuyCreditPopup === 2 ? (
                 <BuySortedTable
                   popup={popupBuy}
-                  buyamount={buyamount}
-                  setBuyAmount={setBuyAmount}
                   handleBuyCredit={handleBuyCredit}
+                  buyArray={buyArray}
+                  buyAmount={buyAmount}
+                  verify={handleVerify}
                 />
               ) : showBuyCreditPopup === 3 ? (
                 <>
@@ -306,7 +486,7 @@ const Dashboard = (e) => {
             userCCT={availableCredits}
             deviceRegistered={deviceRegistered}
           />
-          <TransactionsTable userData={e.userData} />
+          <TransactionsTable userData={e.userData} transactions={transactions} verify={handleVerify} buyOrder={buyOrder} account ={account}/>
         </div>
         <RightSidebar
           userData={e.userData[0]}

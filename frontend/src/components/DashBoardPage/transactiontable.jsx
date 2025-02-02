@@ -2,62 +2,65 @@ import React, { useState, useEffect } from "react";
 import "./TransactionsTable.css";
 import axios from "axios";
 
-const TransactionsTable = () => {
-  const [transactions, setTransactions] = useState([]);
+const TransactionsTable = (props) => {
+  const [transactions, setTransactions] = useState(props.transactions);
   const [selectedRows, setSelectedRows] = useState([]);
   const [filter, setFilter] = useState("All");
   const [verificationStatus, setVerificationStatus] = useState({});
-  const [userId, setUserId] = useState("user123"); // Replace this with the actual logged-in user's ID
+  const [userId, setUserId] = useState(props.account); // Replace this with the actual logged-in user's ID
 
   useEffect(() => {
-    async function getTableData() {
-      try {
-        const response = await axios.get("http://localhost:8080/sellOrder");
+        setTransactions(props.transactions);
+        const initialStatus = props.transactions.reduce((acc, transactions) => {
+          acc[transactions.orderId] = "Verify";
+          return acc;
+        }, {});
+        console.log(initialStatus);
+        setVerificationStatus(initialStatus);
+  }, [props.transactions]);
 
-        if (Array.isArray(response.data.data)) {
-          setTransactions(response.data.data);
+  let filteredTransactions = transactions.filter((transaction) =>
+    filter === "My Orders" ? transaction.seller === userId : true
+  );
+  useEffect(() => {
+    setUserId(props.account);
+    filteredTransactions = transactions.filter((transaction) =>
+      filter === "My Orders" ? transaction.seller === props.account : true
+    );
+}, [props.account]);
+  // Toggle verification status
+  const handleVerifyClick =async  (seller,orderId,amountToBuy,pricePerToken) => {
+    if(verificationStatus[orderId]==="Verify"){
+      const response =await props.verify(seller,amountToBuy);
+      if(response){
+        setVerificationStatus((verificationStatus) => ({
+          ...verificationStatus,
+          [orderId]: "Buy",
+        }));
 
-          // Initialize verification status
-          const initialStatus = response.data.data.reduce((acc, transaction) => {
-            acc[transaction._id] = "Verify";
-            return acc;
-          }, {});
-          setVerificationStatus(initialStatus);
-        } else {
-          console.error("Unexpected data format:", response.data);
-          setTransactions([]);
-        }
-      } catch (error) {
-        console.error("Error fetching transactions:", error);
-        setTransactions([]);
+      }
+      else{
+        setVerificationStatus((verificationStatus) => ({
+          ...verificationStatus,
+          [orderId]: "Not-Verified",
+        }));
       }
     }
-
-    getTableData();
-  }, []);
-
-  // Toggle verification status
-  const handleVerifyClick = (id) => {
-    setVerificationStatus((prevStatus) => ({
-      ...prevStatus,
-      [id]: prevStatus[id] === "Verify" ? "Buy":"Not-Verified",
-    }));
+    else if(verificationStatus[orderId]==="Buy"){
+        props.buyOrder(orderId,amountToBuy,pricePerToken);
+    }
   };
 
   // Delete transaction
   const handleDelete = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/deleteOrder/${id}`);
-      setTransactions((prevTransactions) => prevTransactions.filter((t) => t._id !== id));
+      setTransactions((prevTransactions) => prevTransactions.filter((t) => t.orderId !== id));
     } catch (error) {
       console.error("Error deleting order:", error);
     }
   };
 
-  // Filter transactions based on "My Orders" or "All Orders"
-  const filteredTransactions = transactions.filter((transaction) =>
-    filter === "My Orders" ? transaction.userId === userId : true
-  );
 
   return (
     <div className="transaction-section">
@@ -103,7 +106,7 @@ const TransactionsTable = () => {
           </thead>
           <tbody>
             {filteredTransactions.map((transaction, index) => (
-              <tr key={transaction._id}>
+              <tr key={transaction.orderId}>
                 <td>{index + 1}</td>
                 <td>{transaction.orderId}</td>
                 <td>{new Date(transaction.timestamp).toLocaleString()}</td>
@@ -114,17 +117,17 @@ const TransactionsTable = () => {
                     // Show delete button if order belongs to user
                     <button
                       className="delete-button"
-                      onClick={() => handleDelete(transaction._id)}
+                      onClick={() => handleDelete(transaction.orderId)}
                     >
                       Delete
                     </button>
                   ) : (
                     // Show verify button for non-user orders
                     <button
-                      className={`verify-button ${verificationStatus[transaction._id].toLowerCase()}`}
-                      onClick={() => handleVerifyClick(transaction._id)}
+                      className={`verify-button ${verificationStatus[transaction.orderId].toLowerCase()}`}
+                      onClick={() => handleVerifyClick(transaction.seller,transaction.orderId,transaction.amountToSell,transaction.pricePerToken)}
                     >
-                      {verificationStatus[transaction._id]}
+                      {verificationStatus[transaction.orderId]}
                     </button>
                   )}
                 </td>

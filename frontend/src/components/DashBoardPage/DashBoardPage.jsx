@@ -370,13 +370,11 @@ const Dashboard = (e) => {
     let selectedOrders = [];
 
     for (let order of sellOrders) {
-      if (accumulatedAmount >= targetAmount) break; // Stop when the target is met
 
-      let amountToTake = Math.min(
-        order.amountToSell,
-        targetAmount - accumulatedAmount
-      );
-      accumulatedAmount += amountToTake;
+        if (accumulatedAmount >= targetAmount) break; // Stop when the target is met
+        if(order.seller===account)continue;
+        let amountToTake = Math.min(order.amountToSell, targetAmount - accumulatedAmount);
+        accumulatedAmount += amountToTake;
 
       selectedOrders.push({
         ...order,

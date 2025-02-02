@@ -6,29 +6,41 @@ import axios from "axios";
 
 const RightSidebar = (props) => {
   const [user, setUser] = useState(null);
-  const [account, setAccount] = useState(null);
+  const [account, setAccount] = useState(localStorage.getItem("metamaskAccount") || null);
   const [balance, setBalance] = useState(null);
-  const [isConnected, setIsConnected] = useState(false); // Track MetaMask connection
+  const [isConnected, setIsConnected] = useState(!!account);
 
   useEffect(() => {
     setUser(props.userData);
   }, [props.userData]);
 
-  const handleMetamaskLogin = async () => {
-    if (typeof window.ethereum === "undefined") {
-      alert("MetaMask is not installed. Please install it to use this feature.");
-      return;
+  useEffect(() => {
+    if (account) {
+      fetchBalance(account);
+    } else {
+      checkMetaMaskConnection();
     }
+  }, []);
 
+  const checkMetaMaskConnection = async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: "eth_accounts" });
+        if (accounts.length > 0) {
+          setAccount(accounts[0]);
+          setIsConnected(true);
+          props.connectedToMetamask(accounts[0]);
+          localStorage.setItem("metamaskAccount", accounts[0]);
+          fetchBalance(accounts[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching accounts:", error);
+      }
+    }
+  };
+
+  const fetchBalance = async (selectedAccount) => {
     try {
-      // Request accounts from MetaMask
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      const selectedAccount = accounts[0];  // Get the selected account
-      setAccount(selectedAccount);
-      // Update connection status
-      props.connectedToMetamask(selectedAccount);
-
-      // Request the account's balance
       const result = await window.ethereum.request({
         method: "eth_getBalance",
         params: [selectedAccount, "latest"],
@@ -38,16 +50,36 @@ const RightSidebar = (props) => {
       const ethBalance = wei / 10 ** 18;
       setBalance(ethBalance.toFixed(4));
 
-      // Send the wallet address to your backend
       axios.get(`http://localhost:8080/walletAddress?userWalletAddress=${selectedAccount}`)
         .then(response => {
           console.log('Response:', response.data);
-          setIsConnected(true); 
+          setIsConnected(true);
         })
         .catch(error => {
           console.error('Error connecting wallet to backend:', error);
         });
 
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+    }
+  };
+
+  const handleMetamaskLogin = async () => {
+    if (typeof window.ethereum === "undefined") {
+      alert("MetaMask is not installed. Please install it to use this feature.");
+      return;
+    }
+
+    try {
+      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+      if (accounts.length > 0) {
+        const selectedAccount = accounts[0];
+        setAccount(selectedAccount);
+        setIsConnected(true);
+        props.connectedToMetamask(selectedAccount);
+        localStorage.setItem("metamaskAccount", selectedAccount);
+        fetchBalance(selectedAccount);
+      }
     } catch (error) {
       console.error("Error connecting to MetaMask:", error);
     }
@@ -56,17 +88,15 @@ const RightSidebar = (props) => {
   return (
     <div className="rightsidebar">
       <div className="welcome-section">
-        <p>
-          Hello <b>{user?.username || "User"}</b>
-        </p>
+        <p>Hello <b>{user?.username || "User"}</b></p>
         <div className="connect-btn">
           <button className={`metamask-button ${isConnected ? "connected" : ""}`} onClick={handleMetamaskLogin}>
-            <img src="https://metamask.io/assets/icon.svg" alt="MetaMask Icon" /> 
-            {isConnected ? "Connected" : "Connect"} to MetaMask
+            <img src="https://metamask.io/assets/icon.svg" alt="MetaMask Icon" />
+            {isConnected ? "Metamask Connected" : "Connect to MetaMask"}
           </button>
         </div>
       </div>
-      
+
       <div className="card1">
         <NetMeteringCard />
       </div>

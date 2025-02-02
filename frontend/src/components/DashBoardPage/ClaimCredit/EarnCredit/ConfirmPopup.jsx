@@ -10,6 +10,7 @@ const ConfirmPopUp = (props) => {
         </button>
         <div className="popup-title-parent">
         <h1 className="popup-title">Confirmed</h1>
+        <p>{props.earnCreditAmount} CCT Recieved</p>
         </div>
         <div class="success-container">
         <div class="success-circle">

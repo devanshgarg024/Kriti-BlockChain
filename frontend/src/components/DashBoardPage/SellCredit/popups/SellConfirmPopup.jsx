@@ -11,9 +11,6 @@ const SellConfirmPopUp = (props) => {
       </button>
       <div className="popup-title-parent">
         <h2 className="popup-title">Confirm</h2>
-        <p className="popup-subtitle">
-          The new carbon credit token rate shown below
-        </p>
       </div>
      
       <div class="success-container">
@@ -35,7 +32,7 @@ const SellConfirmPopUp = (props) => {
         </div>
       </div>
       <div className="ConfirmCredit-details">
-        <h3>New Rate</h3>
+        <h3>Selling Carbon Credit Token with Rate</h3>
         <h3>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -48,7 +45,7 @@ const SellConfirmPopUp = (props) => {
             <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
           </svg>{" "}
           1 CCT ={" "}
-          <img src={ethsvg} width="16" height="16" /> {" "}0.075 ETH
+          <img src={ethsvg} width="16" height="16" /> {" "}{props.userppt} ETH
         </h3>
       </div>
       <div className="input-container">

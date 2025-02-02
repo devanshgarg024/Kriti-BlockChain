@@ -12,8 +12,8 @@ const BuySortedTable = (props) => {
     }, [props.buyArray]);
 
     const handleBuyCredit = () => {
-      console.log(buyConfirmed);
       props.handleBuyCredit(buyConfirmed);
+      console.log("validating one");
         props.popup(3);
     };
 

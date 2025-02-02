@@ -26,11 +26,14 @@ const Dashboard = (e) => {
   const [showEarnCreditPopup, setShowEarnCreditPopup] = useState(0);
   const [showSellCreditPopup, setShowSellCreditPopup] = useState(0);
   const [buyArray, setBuyArray] = useState([]);
-  const [account, setAccount] = useState(null);
+  const [account, setAccount] = useState(localStorage.getItem("metamaskAccount") || null);
   const [orderId, setOrderId] = useState(0);
   const [amountToSell, setAmountToSell] = useState(0);
+  const [userppt, setUserppt] = useState(0);
   const [showBuyCreditPopup, setShowBuyCreditPopup] = useState(0);
+  const [floorPrice, setFloorPrice] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
+  const [earnCreditAmount, setEarnCreditAmount] = useState(0);
   const [transactions, setTransactions] = useState([]);
   const [myTransactions, setMyTransactions] = useState([]);
   const [deviceRegistered, setDeviceRegistered] = useState(false);
@@ -40,6 +43,11 @@ const Dashboard = (e) => {
   const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
 
 
+  useEffect(() => {
+    if (account) {
+      connectedToMetamask(account);
+    }
+  }, []);
   useEffect(() => {
     async function getTableData() {
       try {
@@ -99,6 +107,7 @@ const Dashboard = (e) => {
 
   const handleSellCredit = async (pricePerToken) => {
     try {
+      setUserppt(pricePerToken);
       const am = ethers.parseUnits(amountToSell.toFixed(18), 18);
 
       const ac2 = BigInt(Math.round(Number(availableCredits)));
@@ -199,7 +208,7 @@ const Dashboard = (e) => {
 
   const handleEarnCredit = async (energyProduced) => {
     setShowEarnCreditPopup(2);
-
+    setEarnCreditAmount(energyProduced/100);
     let userWalletAddress = null;
     await fetch("http://localhost:8080/getWalletAddress")
       .then((response) => response.json()) // Parse the JSON from the response
@@ -300,24 +309,24 @@ const Dashboard = (e) => {
     console.log(`Total Price (wei):${totalPrice}`);
 
     // Send transaction with correctly formatted value
-const sellOrdersCount = await contract.sellOrders.length;
+// const sellOrdersCount = await contract.sellOrders.length;
     
-    console.log(`Total Sell Orders: ${sellOrdersCount}`);
+//     console.log(`Total Sell Orders: ${sellOrdersCount}`);
 
-    let orders = [];
-    for (let i = 0; i < sellOrdersCount; i++) {
-        const order = await contract.sellOrders(i); // Fetch each order by index
+//     let orders = [];
+//     for (let i = 0; i < sellOrdersCount; i++) {
+//         const order = await contract.sellOrders(i); // Fetch each order by index
 
-        orders.push({
-            orderId: i,
-            seller: order.seller,
-            amount: Number(order.amount), // Convert BigInt to number
-            pricePerToken: Number(order.pricePerToken) / 1e18, // Convert from wei to ETH
-            fulfilled: order.fulfilled,
-        });
-    }
+//         orders.push({
+//             orderId: i,
+//             seller: order.seller,
+//             amount: Number(order.amount), // Convert BigInt to number
+//             pricePerToken: Number(order.pricePerToken) / 1e18, // Convert from wei to ETH
+//             fulfilled: order.fulfilled,
+//         });
+//     }
 
-    console.log("Sell Orders:", orders);
+//     console.log("Sell Orders:", orders);
 
 
     const tx = await contract.fulfillSellOrder(orderId, amountBN , { value: totalPrice });
@@ -325,6 +334,22 @@ const sellOrdersCount = await contract.sellOrders.length;
     console.log(`Transaction sent: ${tx.hash}`);
     await tx.wait();
     console.log("Transaction confirmed");
+    const userCredits = await contract.balanceOf(account);
+    setAvailableCredits(userCredits);
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/removeSellOrder",
+        {
+          orderId: orderId,
+        }
+      );
+
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error in proof generation:", error);
+      return; // Exit function early if an error occurs
+    }
+
 
   };
 
@@ -354,9 +379,10 @@ const sellOrdersCount = await contract.sellOrders.length;
   };
 
   const handleBuyCredit = async (buyConfirmed) => {
-    console.log(buyConfirmed);
+    // console.log(buyConfirmed);
     const orderIds = buyConfirmed.map(tx => tx.orderId);
     const amountsToBuy = buyConfirmed.map(tx => BigInt(Math.round(tx.amountToBuy * 1e18)));
+    const amountsToBuyDatabase = buyConfirmed.map(tx => tx.amountToBuy);
     const pricesPerToken = buyConfirmed.map(tx => BigInt(Math.round(tx.pricePerToken * 1e18)));
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
@@ -365,21 +391,66 @@ const sellOrdersCount = await contract.sellOrders.length;
       contractABI,
       signer
     );
-    const tx = await contract.fulfillBatchOrders(orderIds, amountsToBuy, pricesPerToken);
+    let totalCost = amountsToBuy.reduce((sum, amount, index) => {
+      return sum + (amount * pricesPerToken[index]) / BigInt(1e18);
+  }, BigInt(0));
+
+    const tx = await contract.fulfillBatchOrders(orderIds, amountsToBuy, pricesPerToken,{
+      value: totalCost,
+  });
     
     console.log(`Transaction sent: ${tx.hash}`);
     await tx.wait();
     console.log(`Transaction confirmed`);
+    const userCredits = await contract.balanceOf(account);
+    setAvailableCredits(userCredits);
+    
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/removeBatchOrder",
+        {
+          orderIds,
+          amountsToBuy: amountsToBuyDatabase
+        }
+      );
+
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error in removing batch order:", error);
+      return; // Exit function early if an error occurs
+    }
+
+
+
     setShowBuyCreditPopup(4);
   };
   async function connectedToMetamask(acnt) {
+    if (!acnt) return;
     setAccount(acnt);
-    const provider = new ethers.BrowserProvider(window.ethereum); // For ethers v6
+    localStorage.setItem("metamaskAccount", acnt); // Persist connection
+    const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
     const userCredits = await contract.balanceOf(acnt);
     setAvailableCredits(userCredits);
+    const minPrice = await contract.FloorPricePerToken();
+        
+        // Convert from Wei to Ether (if needed)
+        const priceInEther = ethers.formatUnits(minPrice, "ether");
+    setFloorPrice(priceInEther);
   }
+  async function fetchFloorPrice(){
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = await provider.getSigner();
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
+    const minPrice = await contract.FloorPricePerToken();
+        
+        // Convert from Wei to Ether (if needed)
+        const priceInEther = ethers.formatUnits(minPrice, "ether");
+    setFloorPrice(priceInEther);
+  }
+
   function deviceRegister(x) {
     setDeviceRegistered(x);
   }
@@ -390,7 +461,7 @@ const sellOrdersCount = await contract.sellOrders.length;
     <>
       {showEarnCreditPopup != 0 ? (
         <>
-          <div className="popup-overlay" onClick={() => popupEarn(false)}></div>
+          <div className="popup-overlay"></div>
           <div className="earnCreditPopup">
             {showEarnCreditPopup === 1 ? (
               <EarnCreditsPopup
@@ -400,7 +471,7 @@ const sellOrdersCount = await contract.sellOrders.length;
             ) : showEarnCreditPopup === 2 ? (
               <ValidatingPopup popup={popupEarn} />
             ) : showEarnCreditPopup === 3 ? (
-              <ConfirmPopUp popup={popupEarn} />
+              <ConfirmPopUp popup={popupEarn} earnCreditAmount={earnCreditAmount} />
             ) : (
               <RegisterDevicePopUp
                 popup={popupEarn}
@@ -411,7 +482,7 @@ const sellOrdersCount = await contract.sellOrders.length;
         </>
       ) : showSellCreditPopup != 0 ? (
         <>
-          <div className="popup-overlay" onClick={() => popupSell(false)}></div>
+          <div className="popup-overlay"></div>
           <div className="earnCreditPopup">
             {showSellCreditPopup === 1 ? (
               <SellCreditsPopup
@@ -423,6 +494,9 @@ const sellOrdersCount = await contract.sellOrders.length;
               <SetTokenRate
                 popup={popupSell}
                 handleSellCredit={handleSellCredit}
+                floorPrice={floorPrice}
+                fetchFloorPrice={fetchFloorPrice}
+
               />
             ) : showSellCreditPopup === 3 ? (
               <ValidatingPopup popup={popupSell} />
@@ -430,11 +504,14 @@ const sellOrdersCount = await contract.sellOrders.length;
               <SellConfirmPopUp
                 popup={popupSell}
                 handleSellCredit={handleSellCredit}
+                userppt={userppt}
               />
             ) : (
               <SellSuccessfull
                 popup={popupSell}
                 handleSellCredit={handleSellCredit}
+                userppt={userppt}
+                amountToSell={amountToSell}
               />
             )}
           </div>
@@ -444,7 +521,6 @@ const sellOrdersCount = await contract.sellOrders.length;
           <>
             <div
               className="popup-overlay"
-              onClick={() => popupBuy(false)}
             ></div>
             <div className="earnCreditPopup">
               {showBuyCreditPopup === 1 ? (
@@ -463,7 +539,6 @@ const sellOrdersCount = await contract.sellOrders.length;
               ) : showBuyCreditPopup === 3 ? (
                 <>
                   <ValidatingPopup popup={popupBuy} />
-                  {setTimeout(() => popupBuy(4), 5000) && null}
                 </>
               ) : (
                 <BuySuccessfull

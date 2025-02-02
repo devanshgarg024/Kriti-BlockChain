@@ -17,6 +17,8 @@ const sellOrderRoutes = require("./routes/sellOrder");
 const userInfo = require("./routes/userInfo");
 const otpRoutes = require("./routes/otp");
 const fetchUserData = require("./Models/fetchUserData");
+const removeSellOrder = require("./Models/removeSellOrder");
+const removeBatchOrder = require("./Models/removeBatchOrder");
 const passportStrategy = require("./passport"); // Ensure passport is configured properly here
 
 // Initialize Express app
@@ -126,6 +128,34 @@ app.post('/registerDevice', async (req, res) => {
     } catch (error) {
         console.error("Error registering device:", error);
         res.status(500).json({ error: "Failed to register device", details: error.message });
+    }
+});
+app.post('/removeSellOrder', async (req, res) => {
+    try {
+        const result = await removeSellOrder(req.body.orderId);
+        if (result.success) {
+            storedUserData = result.data; // Store fetched user data
+            res.status(200).json(result.data);
+        } else {
+            res.status(404).json(result);
+        }
+    } catch (err) {
+        console.error("Error deleteing data:", err);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+});
+app.post('/removeBatchOrder', async (req, res) => {
+    try {
+        const result = await removeBatchOrder(req.body);
+        if (result.success) {
+            storedUserData = result.data; // Store fetched user data
+            res.status(200).json(result.data);
+        } else {
+            res.status(404).json(result);
+        }
+    } catch (err) {
+        console.error("Error deleteing data:", err);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 });
 

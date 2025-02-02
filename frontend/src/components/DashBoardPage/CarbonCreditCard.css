@@ -66,3 +66,7 @@
   .CCT strong{
     color:rgba(194, 225, 0, 1) ;
   }
+  .card-subtitle{
+    margin-left: 10%;
+    color: red;
+  }

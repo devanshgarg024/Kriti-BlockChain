@@ -17,6 +17,7 @@ const CarbonCreditCard = () => {
         </svg>{" "}
         Carbon Credit Token(CCT)*
       </h5>
+      <h4 className="card-subtitle card-title"> {" "} Current conversion Rate </h4>
       {/* <div>*1 CCT is earned for every 10 kWh of renewable energy generated.</div> */}
       <div className="card-content">
         <div className="CCT">

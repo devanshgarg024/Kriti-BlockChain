@@ -39,6 +39,7 @@ const RegisterDevicePopUp = (props) => {
             className="input-field-earn"
              defaultValue=""
             value={address}
+            placeholder="Enter"
             onChange={(e) => setAddress(e.target.value)}
           />
         </div>

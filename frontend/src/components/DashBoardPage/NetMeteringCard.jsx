@@ -2,9 +2,9 @@ import "./NetMeteringCard.css";
 
 const NetMeteringCard = () => {
   const data = [
-    { type: "Wind", value: "756.24MWh", icon: "🌀", change: "-5.50%" },
-    { type: "Solar", value: "1237.63MWh", icon: "☀", change: "-5.50%" },
-    { type: "Thermal", value: "2361.24MWh", icon: "🏭", change: "-5.50%" },
+    { type: "Wind", value: "756.24MWh", icon: "💨", change: "-5.50%" },
+    { type: "Solar", value: "1237.63MWh", icon: "🌤️", change: "-5.50%" },
+    { type: "Thermal", value: "2361.24MWh", icon: "🔥", change: "-5.50%" },
   ];
 
   return (

@@ -10,13 +10,13 @@ const TransactionsTable = (props) => {
   const [userId, setUserId] = useState(props.account); // Replace this with the actual logged-in user's ID
 
   useEffect(() => {
-        setTransactions(props.transactions);
-        const initialStatus = props.transactions.reduce((acc, transactions) => {
-          acc[transactions.orderId] = "Verify";
-          return acc;
-        }, {});
-        console.log(initialStatus);
-        setVerificationStatus(initialStatus);
+    setTransactions(props.transactions);
+    const initialStatus = props.transactions.reduce((acc, transactions) => {
+      acc[transactions.orderId] = "Verify";
+      return acc;
+    }, {});
+    console.log(initialStatus);
+    setVerificationStatus(initialStatus);
   }, [props.transactions]);
 
   let filteredTransactions = transactions.filter((transaction) =>
@@ -27,47 +27,54 @@ const TransactionsTable = (props) => {
     filteredTransactions = transactions.filter((transaction) =>
       filter === "My Orders" ? transaction.seller === props.account : true
     );
-}, [props.account]);
+  }, [props.account]);
   // Toggle verification status
-  const handleVerifyClick =async  (seller,orderId,amountToBuy,pricePerToken) => {
-    if(verificationStatus[orderId]==="Verify"){
-      const response =await props.verify(seller,amountToBuy);
-      if(response){
+  const handleVerifyClick = async (
+    seller,
+    orderId,
+    amountToBuy,
+    pricePerToken
+  ) => {
+    if (verificationStatus[orderId] === "Verify") {
+      const response = await props.verify(seller, amountToBuy);
+      if (response) {
         setVerificationStatus((verificationStatus) => ({
           ...verificationStatus,
           [orderId]: "Buy",
         }));
-
-      }
-      else{
+      } else {
         setVerificationStatus((verificationStatus) => ({
           ...verificationStatus,
           [orderId]: "Not-Verified",
         }));
       }
-    }
-    else if(verificationStatus[orderId]==="Buy"){
-        props.buyOrder(orderId,amountToBuy,pricePerToken);
+    } else if (verificationStatus[orderId] === "Buy") {
+      props.buyOrder(orderId, amountToBuy, pricePerToken);
     }
   };
 
   // Delete transaction
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${import.meta.env.VITE_REACT_APP_API_URL}/deleteOrder/${id}`);
-      setTransactions((prevTransactions) => prevTransactions.filter((t) => t.orderId !== id));
+      await axios.delete(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/deleteOrder/${id}`
+      );
+      setTransactions((prevTransactions) =>
+        prevTransactions.filter((t) => t.orderId !== id)
+      );
     } catch (error) {
       console.error("Error deleting order:", error);
     }
   };
-
 
   return (
     <div className="transaction-section">
       <div className="navbar">
         <div className="nav-buttons">
           <button
-            className={`filter-button ${filter === "My Orders" ? "active" : ""}`}
+            className={`filter-button ${
+              filter === "My Orders" ? "active" : ""
+            }`}
             onClick={() => setFilter("My Orders")}
           >
             My Orders
@@ -106,15 +113,18 @@ const TransactionsTable = (props) => {
           </thead>
           <tbody>
             {filteredTransactions.map((transaction, index) => (
-              <tr key={transaction.orderId}>
+              <tr
+                key={transaction.orderId}
+                className={transaction.seller === userId ? "my-order-row" : ""}
+              >
                 <td>{index + 1}</td>
                 <td>{transaction.orderId}</td>
                 <td>{new Date(transaction.timestamp).toLocaleString()}</td>
                 <td>₹{transaction.pricePerToken.toFixed(5)}</td>
                 <td>{transaction.amountToSell}</td>
                 <td>
-                  {transaction.userId === userId ? (
-                    // Show delete button if order belongs to user
+                  {transaction.seller === userId ? (
+                    // If the logged-in user is the seller, show Delete button
                     <button
                       className="delete-button"
                       onClick={() => handleDelete(transaction.orderId)}
@@ -122,10 +132,19 @@ const TransactionsTable = (props) => {
                       Delete
                     </button>
                   ) : (
-                    // Show verify button for non-user orders
+                    // If not the seller, show Verify/Buy button
                     <button
-                      className={`verify-button ${verificationStatus[transaction.orderId].toLowerCase()}`}
-                      onClick={() => handleVerifyClick(transaction.seller,transaction.orderId,transaction.amountToSell,transaction.pricePerToken)}
+                      className={`verify-button ${verificationStatus[
+                        transaction.orderId
+                      ].toLowerCase()}`}
+                      onClick={() =>
+                        handleVerifyClick(
+                          transaction.seller,
+                          transaction.orderId,
+                          transaction.amountToSell,
+                          transaction.pricePerToken
+                        )
+                      }
                     >
                       {verificationStatus[transaction.orderId]}
                     </button>

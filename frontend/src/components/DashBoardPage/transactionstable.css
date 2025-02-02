@@ -195,6 +195,13 @@
   background-color: #0056b3;
 }
 
+
+.my-order-row {
+  background-color: rgba(135, 186, 240, 0.2); /* Light blue background */
+  font-weight: bold;
+}
+
+
 /* Responsive design */
 @media (max-width: 768px) {
   .transaction-table th,

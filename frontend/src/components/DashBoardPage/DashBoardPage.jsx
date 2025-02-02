@@ -479,7 +479,7 @@ const Dashboard = (e) => {
                 handleEarnCredit={handleEarnCredit}
               />
             ) : showEarnCreditPopup === 2 ? (
-              <ValidatingPopup popup={popupEarn} />
+              <ValidatingPopup popup={popupEarn} msg ={"Validating...."}/>
             ) : showEarnCreditPopup === 3 ? (
               <ConfirmPopUp popup={popupEarn} earnCreditAmount={earnCreditAmount} />
             ) : (
@@ -509,7 +509,7 @@ const Dashboard = (e) => {
 
               />
             ) : showSellCreditPopup === 3 ? (
-              <ValidatingPopup popup={popupSell} />
+              <ValidatingPopup popup={popupSell} msg ={"Waiting for approval...."} />
             ) : showSellCreditPopup === 4 ? (
               <SellConfirmPopUp
                 popup={popupSell}
@@ -551,7 +551,7 @@ const Dashboard = (e) => {
                 />
               ) : showBuyCreditPopup === 3 ? (
                 <>
-                  <ValidatingPopup popup={popupBuy} />
+                  <ValidatingPopup popup={popupBuy} msg ={"Processing your request...."} />
                 </>
               ) : (
                 <BuySuccessfull

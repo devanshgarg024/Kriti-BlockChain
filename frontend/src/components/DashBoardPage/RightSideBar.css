@@ -25,6 +25,7 @@
 }
 
 .connect-btn {
+  width: 105%;
   display: flex;
   justify-content: center;
   font-weight: 100;

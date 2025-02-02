@@ -6,7 +6,7 @@ const RegisterDevicePopUp = (props) => {
 
   async function handleRegisterDevice() {
     await axios
-      .post("http://localhost:8080/registerDevice", {
+      .post(`${import.meta.env.VITE_REACT_APP_API_URL}/registerDevice`, {
         deviceAddress: address,
       })
       .then((response) => {
@@ -29,14 +29,13 @@ const RegisterDevicePopUp = (props) => {
         <h2 className="popup-title">Register Device</h2>
       </div>
       <div className="input-container">
-        <label htmlFor="power-output" className="input-label">
+        <label  className="input-label">
           Please provide your device address
         </label>
         <div className="input-group">
           <input
             type="text"
             id="power-output"
-            placeholder="Power output"
             className="input-field-earn"
              defaultValue=""
             value={address}

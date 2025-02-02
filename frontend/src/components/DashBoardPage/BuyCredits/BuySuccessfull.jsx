@@ -47,8 +47,8 @@ const BuySuccessfull = (props) => {
           >
             <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
           </svg>{" "}
-          900000 CCT ={" "}
-          <img src={ethsvg} width="16" height="16" /> {" "}6750 ETH
+          {props.amountBought} CCT ={" "}
+          <img src={ethsvg} width="16" height="16" /> {" "}{props.priceToPay} ETH
         </h3>
       </div>
       <div className="input-container">

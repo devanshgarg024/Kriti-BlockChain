@@ -7,6 +7,10 @@ import ethsvg from "./eth.svg";
 const SetTokenRate = (props) => {
   const [pricePerToken, setPricePertoken] = useState(null);
   const [unit, setUnit] = useState("kWh");
+  const [floorPrice, setFloorPrice] = useState(props.floorPrice);
+  useEffect(() => {
+      setFloorPrice(props.floorPrice); // Ensure default empty array to avoid crashes
+  }, [props.floorPrice]);
 
   async function handleSellCredit() {
     let perTokenAmount;
@@ -20,7 +24,11 @@ const SetTokenRate = (props) => {
       // Convert to integer by truncating based on decimal places
       perTokenAmount=Math.floor(num * Math.pow(10, decimalPlaces)) / Math.pow(10, decimalPlaces);
   } else {
-      alert("add a valid amount");
+      alert("Add a valid amount");
+  }
+  if(perTokenAmount<floorPrice){
+    alert("Price per token can not be lesser than floor price");
+    return;
   }
     props.handleSellCredit(perTokenAmount);
     props.popup(3);
@@ -54,9 +62,9 @@ const SetTokenRate = (props) => {
               <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
             </svg>{" "}
             1 CCT =
-            <img src={ethsvg} width="16" height="16" /> 0.1 ETH
+            <img src={ethsvg} width="16" height="16" /> {floorPrice} ETH
           </h3>
-          <button className="reload-button" >🔃</button>
+          <button className="reload-button" onClick={()=>{props.fetchFloorPrice()}} >🔃</button>
         </div>
       </div>
       <div className="input-container">

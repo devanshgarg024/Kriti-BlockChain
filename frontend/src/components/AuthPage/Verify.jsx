@@ -43,7 +43,7 @@ const Verify = (props) => {
     try {
       setTimer(50);
       setShowResend(false);
-      const response = await axios.post('http://localhost:8080/otp/send', props.updatedFormData);
+      const response = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/otp/send`, props.updatedFormData);
       console.log('OTP resent:', response.data);
     } catch (error) {
       console.error('Error resending OTP:', error);
@@ -57,7 +57,7 @@ const Verify = (props) => {
   
     try {
       // Verify OTPs
-      const verifyResponse = await axios.post('http://localhost:8080/otp/verify', {
+      const verifyResponse = await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/otp/verify`, {
         email: props.updatedFormData.email,
         otpmail,
         otpsms,
@@ -65,7 +65,7 @@ const Verify = (props) => {
       });
       console.log('OTP verified:', verifyResponse.data);
       // Submit user data after OTP verification
-      await axios.post('http://localhost:8080/user_info', props.updatedFormData, {
+      await axios.post(`${import.meta.env.VITE_REACT_APP_API_URL}/user_info`, props.updatedFormData, {
         headers: { 'Content-Type': 'application/json' },
       });
       console.log('User data submitted successfully.');

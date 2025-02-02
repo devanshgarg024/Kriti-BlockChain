@@ -36,6 +36,7 @@ const Dashboard = (e) => {
   const [userppt, setUserppt] = useState(0);
   const [showBuyCreditPopup, setShowBuyCreditPopup] = useState(0);
   const [showDeleteCreditPopup, setShowDeleteCreditPopup] = useState(0);
+  const [deleteOrderData, setDeleteOrderData] = useState(0);
   const [floorPrice, setFloorPrice] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
   const [earnCreditAmount, setEarnCreditAmount] = useState(0);
@@ -470,6 +471,25 @@ const Dashboard = (e) => {
     const priceInEther = ethers.formatUnits(minPrice, "ether");
     setFloorPrice(priceInEther);
   }
+  async function handleDeleteOrder(orderId){
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/removeSellOrder`,
+        {
+          orderId: orderId,
+        }
+      );
+      setTemp(temp + 1);
+
+    } catch (error) {
+      console.error("Error in proof generation:", error);
+      return; // Exit function early if an error occurs
+    }
+  }
+  async function deleteOrder(deleteOrderData){
+    setDeleteOrderData(deleteOrderData);
+    setShowDeleteCreditPopup(1);
+  }
 
   function deviceRegister(x) {
     setDeviceRegistered(x);
@@ -586,6 +606,8 @@ const Dashboard = (e) => {
                 <DeleteMyOrderPopup
                   popupDelete={popupDelete}
                   transactions={transactions}
+                  handleDeleteOrder={handleDeleteOrder}
+                  deleteOrderData={deleteOrderData}
                   // handleBuyAmount={handleBuyAmount}
                 />
               ) : showDeleteCreditPopup === 2 ? (
@@ -620,6 +642,7 @@ const Dashboard = (e) => {
             buyOrder={buyOrder}
             account={account}
             popupDelete={popupDelete}
+            deleteOrder={deleteOrder}
           />
         </div>
         <RightSidebar

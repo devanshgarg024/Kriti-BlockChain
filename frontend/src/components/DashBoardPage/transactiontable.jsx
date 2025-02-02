@@ -15,7 +15,6 @@ const TransactionsTable = (props) => {
       acc[transactions.orderId] = "Verify";
       return acc;
     }, {});
-    console.log(initialStatus);
     setVerificationStatus(initialStatus);
   }, [props.transactions]);
 
@@ -54,8 +53,8 @@ const TransactionsTable = (props) => {
   };
 
   // Delete transaction
-  const handleDelete = async (id) => {
-    return props.popupDelete(1);
+  const handleDelete = async (deleteOrderData) => {
+    props.deleteOrder(deleteOrderData);
   };
 
   return (
@@ -129,7 +128,7 @@ const TransactionsTable = (props) => {
                     // If the logged-in user is the seller, show Delete button
                     <button
                       className="delete-button"
-                      onClick={() => handleDelete(transaction.orderId)}
+                      onClick={() => handleDelete(transaction)}
                     >
                       Delete
                     </button>

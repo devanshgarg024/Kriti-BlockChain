@@ -6,7 +6,7 @@ const RegisterDevicePopUp = (props) => {
 
   async function handleRegisterDevice() {
     await axios
-      .post("http://localhost:8080/registerDevice", {
+      .post(`${import.meta.env.VITE_REACT_APP_API_URL}/registerDevice`, {
         deviceAddress: address,
       })
       .then((response) => {

@@ -41,7 +41,7 @@ const AccountForm = (props) => {
 
 //Sending otp
 axios
-  .post('http://localhost:8080/otp/send', updatedFormData)
+  .post(`${import.meta.env.VITE_REACT_APP_API_URL}/otp/send`, updatedFormData)
   .then((response) => console.log(response.data))
   .catch((error) => console.error(error));
 

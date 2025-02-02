@@ -50,7 +50,7 @@ const RightSidebar = (props) => {
       const ethBalance = wei / 10 ** 18;
       setBalance(ethBalance.toFixed(4));
 
-      axios.get(`http://localhost:8080/walletAddress?userWalletAddress=${selectedAccount}`)
+      axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/walletAddress?userWalletAddress=${selectedAccount}`)
         .then(response => {
           console.log('Response:', response.data);
           setIsConnected(true);

@@ -54,7 +54,7 @@ const TransactionsTable = (props) => {
   // Delete transaction
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/deleteOrder/${id}`);
+      await axios.delete(`${import.meta.env.VITE_REACT_APP_API_URL}/deleteOrder/${id}`);
       setTransactions((prevTransactions) => prevTransactions.filter((t) => t.orderId !== id));
     } catch (error) {
       console.error("Error deleting order:", error);

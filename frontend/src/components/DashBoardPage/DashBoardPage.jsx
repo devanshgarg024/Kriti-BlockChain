@@ -54,7 +54,7 @@ const Dashboard = (e) => {
   useEffect(() => {
     async function getTableData() {
       try {
-        const response = await axios.get("http://localhost:8080/sellOrder");
+        const response = await axios.get(`${import.meta.env.VITE_REACT_APP_API_URL}/sellOrder`);
 
         if (Array.isArray(response.data.data)) {
           const sortedTransactions = response.data.data.sort((a, b) => a.pricePerToken - b.pricePerToken);
@@ -89,7 +89,7 @@ const Dashboard = (e) => {
     const am2 = BigInt(Math.round(Number(amntToSell) * 1e18));
     try {
       const response = await axios.post(
-        "http://localhost:8080/handleGenerateAndVerifyProof",
+        `${import.meta.env.VITE_REACT_APP_API_URL}/handleGenerateAndVerifyProof`,
         {
           amountToSell: am2.toString(),
           totalBalance: ac2.toString(),
@@ -118,7 +118,7 @@ const Dashboard = (e) => {
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/handleGenerateAndVerifyProof",
+          `${import.meta.env.VITE_REACT_APP_API_URL}/handleGenerateAndVerifyProof`,
           {
             amountToSell: am2.toString(),
             totalBalance: ac2.toString(),
@@ -178,7 +178,7 @@ const Dashboard = (e) => {
 
       try {
         const orderResponse = await axios.post(
-          "http://localhost:8080/sellOrder",
+          `${import.meta.env.VITE_REACT_APP_API_URL}/sellOrder`,
           {
             orderId: orderId,
             seller: account,
@@ -214,7 +214,7 @@ const Dashboard = (e) => {
     setShowEarnCreditPopup(2);
     setEarnCreditAmount(energyProduced/100);
     let userWalletAddress = null;
-    await fetch("http://localhost:8080/getWalletAddress")
+    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/getWalletAddress`)
       .then((response) => response.json()) // Parse the JSON from the response
       .then((data) => {
         userWalletAddress = data.walletAddress;
@@ -227,7 +227,7 @@ const Dashboard = (e) => {
     const timestamp = Date.now();
 
     await axios
-      .post("http://localhost:8080/logSmartMeterData", {
+      .post(`${import.meta.env.VITE_REACT_APP_API_URL}/logSmartMeterData`, {
         userWalletAddress: userWalletAddress,
         energyProduced: energyProduced,
         timestamp: timestamp,
@@ -342,7 +342,7 @@ const Dashboard = (e) => {
     setAvailableCredits(userCredits);
     try {
       const response = await axios.post(
-        "http://localhost:8080/removeSellOrder",
+        `${import.meta.env.VITE_REACT_APP_API_URL}/removeSellOrder`,
         {
           orderId: orderId,
         }
@@ -414,7 +414,7 @@ const Dashboard = (e) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/removeBatchOrder",
+        `${import.meta.env.VITE_REACT_APP_API_URL}/removeBatchOrder`,
         {
           orderIds,
           amountsToBuy: amountsToBuyDatabase

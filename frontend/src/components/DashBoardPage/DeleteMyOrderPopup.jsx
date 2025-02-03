@@ -5,7 +5,8 @@ import ethsvg from "./SellCredit/popups/eth.svg";
 
 const DeleteMyOrderPopup = (props) => {
   const handleDelete = () => {
-    return props.popupDelete(2);
+    props.handleDeleteOrder(props.deleteOrderData.orderId);
+    props.popupDelete(2);
   };
   return (
     <>
@@ -58,7 +59,7 @@ const DeleteMyOrderPopup = (props) => {
           >
             <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
           </svg>{" "}
-          {props.transactions.amountToSell}
+          {props.deleteOrderData.amountToSell}
         </h3>
         <h3>Sell Order : </h3>
         <h3>
@@ -72,7 +73,7 @@ const DeleteMyOrderPopup = (props) => {
           >
             <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641z" />
           </svg>{" "}
-          1 CCT = <img src={ethsvg} width="16" height="16" /> {props.userppt}{" "}
+          1 CCT = <img src={ethsvg} width="16" height="16" /> {props.deleteOrderData.pricePerToken}{" "}
           ETH
         </h3>
       </div>

@@ -32,10 +32,12 @@ const Dashboard = (e) => {
     localStorage.getItem("metamaskAccount") || null
   );
   const [orderId, setOrderId] = useState(0);
+  const [msg, setMsg] = useState("Validating");
   const [amountToSell, setAmountToSell] = useState(0);
   const [userppt, setUserppt] = useState(0);
   const [showBuyCreditPopup, setShowBuyCreditPopup] = useState(0);
   const [showDeleteCreditPopup, setShowDeleteCreditPopup] = useState(0);
+  const [deleteOrderData, setDeleteOrderData] = useState(0);
   const [floorPrice, setFloorPrice] = useState(0);
   const [availableCredits, setAvailableCredits] = useState(0);
   const [earnCreditAmount, setEarnCreditAmount] = useState(0);
@@ -113,6 +115,7 @@ const Dashboard = (e) => {
 
   const handleSellCredit = async (pricePerToken) => {
     try {
+      setMsg("Validating...");
       setUserppt(pricePerToken);
       const am = ethers.parseUnits(amountToSell.toFixed(18), 18);
 
@@ -138,6 +141,8 @@ const Dashboard = (e) => {
         }
       } catch (error) {
         console.error("Error in proof generation:", error);
+        alert("Error Occured in Proof generation");
+        setShowSellCreditPopup(false);
         return; // Exit function early if an error occurs
       }
 
@@ -150,6 +155,7 @@ const Dashboard = (e) => {
       );
       // console.log("d");
       // Approve the marketplace contract to spend tokens on behalf of the user
+      setMsg("Waiting For Approval...");
       const approveTx = await contract.approve(CONTRACT_ADDRESS, am);
       console.log(`Approval transaction sent: ${approveTx.hash}`);
       await approveTx.wait();
@@ -159,6 +165,8 @@ const Dashboard = (e) => {
 
       // Call placeSellOrder
       const sellTx = await contract.placeSellOrder(am, ps);
+      setMsg("Processing Your Request");
+
       console.log(`Sell order transaction sent: ${sellTx.hash}`);
 
       // Wait for transaction confirmation
@@ -175,6 +183,8 @@ const Dashboard = (e) => {
         orderId = Number(event.args[0]); // Extract orderId from event arguments
         console.log(`Order placed successfully with ID: ${orderId}`);
       } else {
+        alert("SellOrderPlaced event not found in transaction logs");
+        setShowSellCreditPopup(false);
         console.log("SellOrderPlaced event not found in transaction logs");
         return; // Exit function if order ID is not found
       }
@@ -202,6 +212,8 @@ const Dashboard = (e) => {
 
       setShowSellCreditPopup(4);
     } catch (error) {
+      setShowSellCreditPopup(false);
+      alert("error in placing sell order");
       console.error("Unexpected error:", error);
     }
   };
@@ -219,6 +231,7 @@ const Dashboard = (e) => {
   };
 
   const handleEarnCredit = async (energyProduced) => {
+    setMsg("Validating...");
     setShowEarnCreditPopup(2);
     setEarnCreditAmount(energyProduced / 100);
     let userWalletAddress = null;
@@ -229,6 +242,7 @@ const Dashboard = (e) => {
         // Use the data as needed
       })
       .catch((error) => {
+        setShowEarnCreditPopup(false);
         console.error("Error fetching data:", error);
       });
 
@@ -244,6 +258,8 @@ const Dashboard = (e) => {
         console.log("Response:", response.data);
       })
       .catch((error) => {
+        setShowEarnCreditPopup(false);
+        alert("error in fetching smart meter data");
         console.error("Error:", error);
       });
 
@@ -251,7 +267,9 @@ const Dashboard = (e) => {
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
 
+    setMsg("Waiting for Approval...");
     const tx = await contract.earnCarbonCredit(energyProduced, timestamp);
+    setMsg("Processing Your Request");
     console.log(`earn credit Transaction sent: ${tx.hash}`);
     await tx.wait();
     console.log(`earn credit Transaction confirmed`);
@@ -296,6 +314,10 @@ const Dashboard = (e) => {
   // }
 
   const buyOrder = async (orderId, amountToBuy, pricePerToken) => {
+    setAmountBought(amountToBuy);
+    setPriceToPay(amountToBuy*pricePerToken);
+    setMsg("Validating...");
+    setShowBuyCreditPopup(3);
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
     const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
@@ -340,13 +362,17 @@ const Dashboard = (e) => {
 
     //     console.log("Sell Orders:", orders);
 
+    setMsg("Waiting For Approval...");
     const tx = await contract.fulfillSellOrder(orderId, amountBN, {
       value: totalPrice,
     });
+    setMsg("Processing Your Request");
 
     console.log(`Transaction sent: ${tx.hash}`);
+
     await tx.wait();
     console.log("Transaction confirmed");
+
     const userCredits = await contract.balanceOf(account);
     setAvailableCredits(userCredits);
     try {
@@ -360,9 +386,12 @@ const Dashboard = (e) => {
 
       console.log("Response:", response.data);
     } catch (error) {
-      console.error("Error in proof generation:", error);
+      console.error("Error in removing sell order:", error);
+      alert("Error in removing Sell Order");
+            setShowBuyCreditPopup(false);
       return; // Exit function early if an error occurs
     }
+    setShowBuyCreditPopup(4);
   };
 
   const getOrdersToFulfill = (sellOrders, targetAmount) => {
@@ -394,6 +423,7 @@ const Dashboard = (e) => {
   };
 
   const handleBuyCredit = async (buyConfirmed) => {
+    setMsg("Validating...");
     // console.log(buyConfirmed);
     const orderIds = buyConfirmed.map((tx) => tx.orderId);
     const amountsToBuy = buyConfirmed.map((tx) =>
@@ -410,6 +440,7 @@ const Dashboard = (e) => {
       return sum + (amount * pricesPerToken[index]) / BigInt(1e18);
     }, BigInt(0));
 
+    setMsg("Waiting For Approval...");
     const tx = await contract.fulfillBatchOrders(
       orderIds,
       amountsToBuy,
@@ -418,8 +449,10 @@ const Dashboard = (e) => {
         value: totalCost,
       }
     );
+    setMsg("Processing Your Request");
 
     console.log(`Transaction sent: ${tx.hash}`);
+
     await tx.wait();
     console.log(`Transaction confirmed`);
     const userCredits = await contract.balanceOf(account);
@@ -436,6 +469,8 @@ const Dashboard = (e) => {
 
       console.log("Response:", response.data);
     } catch (error) {
+      alert("Error in removing batch order from database");
+      setShowBuyCreditPopup(false);
       console.error("Error in removing batch order:", error);
       return; // Exit function early if an error occurs
     }
@@ -470,6 +505,28 @@ const Dashboard = (e) => {
     const priceInEther = ethers.formatUnits(minPrice, "ether");
     setFloorPrice(priceInEther);
   }
+  async function handleDeleteOrder(orderId){
+    setMsg("Validating...");
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/removeSellOrder`,
+        {
+          orderId: orderId,
+        }
+      );
+      setTemp(temp + 1);
+
+    } catch (error) {
+      alert("error in deleting your Order");
+      setShowDeleteCreditPopup(false);
+      console.error("Error in proof generation:", error);
+      return; // Exit function early if an error occurs
+    }
+  }
+  async function deleteOrder(deleteOrderData){
+    setDeleteOrderData(deleteOrderData);
+    setShowDeleteCreditPopup(1);
+  }
 
   function deviceRegister(x) {
     setDeviceRegistered(x);
@@ -489,7 +546,7 @@ const Dashboard = (e) => {
                 handleEarnCredit={handleEarnCredit}
               />
             ) : showEarnCreditPopup === 2 ? (
-              <ValidatingPopup popup={popupEarn} msg={"Validating...."} />
+              <ValidatingPopup popup={popupEarn} msg={msg} />
             ) : showEarnCreditPopup === 3 ? (
               <ConfirmPopUp
                 popup={popupEarn}
@@ -523,7 +580,7 @@ const Dashboard = (e) => {
             ) : showSellCreditPopup === 3 ? (
               <ValidatingPopup
                 popup={popupSell}
-                msg={"Waiting for approval...."}
+                msg={msg}
               />
             ) : showSellCreditPopup === 4 ? (
               <SellConfirmPopUp
@@ -564,7 +621,7 @@ const Dashboard = (e) => {
               <>
                 <ValidatingPopup
                   popup={popupBuy}
-                  msg={"Processing your request...."}
+                  msg={msg}
                 />
               </>
             ) : (
@@ -586,11 +643,13 @@ const Dashboard = (e) => {
                 <DeleteMyOrderPopup
                   popupDelete={popupDelete}
                   transactions={transactions}
+                  handleDeleteOrder={handleDeleteOrder}
+                  deleteOrderData={deleteOrderData}
                   // handleBuyAmount={handleBuyAmount}
                 />
               ) : showDeleteCreditPopup === 2 ? (
                 <>
-                  <ValidatingPopup popup={popupDelete} msg = {"Processing Your Request..."}/>
+                  <ValidatingPopup popup={popupDelete} msg = {msg}/>
                   {setTimeout(() => popupDelete(3), 2000) && null}
                 </>
               ) : (
@@ -620,6 +679,7 @@ const Dashboard = (e) => {
             buyOrder={buyOrder}
             account={account}
             popupDelete={popupDelete}
+            deleteOrder={deleteOrder}
           />
         </div>
         <RightSidebar

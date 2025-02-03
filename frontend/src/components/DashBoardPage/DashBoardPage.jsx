@@ -165,7 +165,7 @@ const Dashboard = (e) => {
 
       // Call placeSellOrder
       const sellTx = await contract.placeSellOrder(am, ps);
-      setMsg("Processing Your Request");
+      setMsg("Processing Your Request...");
 
       console.log(`Sell order transaction sent: ${sellTx.hash}`);
 
@@ -269,7 +269,7 @@ const Dashboard = (e) => {
 
     setMsg("Waiting for Approval...");
     const tx = await contract.earnCarbonCredit(energyProduced, timestamp);
-    setMsg("Processing Your Request");
+    setMsg("Processing Your Request...");
     console.log(`earn credit Transaction sent: ${tx.hash}`);
     await tx.wait();
     console.log(`earn credit Transaction confirmed`);
@@ -366,7 +366,7 @@ const Dashboard = (e) => {
     const tx = await contract.fulfillSellOrder(orderId, amountBN, {
       value: totalPrice,
     });
-    setMsg("Processing Your Request");
+    setMsg("Processing Your Request...");
 
     console.log(`Transaction sent: ${tx.hash}`);
 
@@ -449,7 +449,7 @@ const Dashboard = (e) => {
         value: totalCost,
       }
     );
-    setMsg("Processing Your Request");
+    setMsg("Processing Your Request...");
 
     console.log(`Transaction sent: ${tx.hash}`);
 

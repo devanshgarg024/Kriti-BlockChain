@@ -57,6 +57,7 @@
   position: relative;
   /* right: 5%; */
   bottom: 15%;
+  cursor: not-allowed;
 }
 
 .ValidatingPage-text-parent,.ValidatingPage-spinner,.Loading-container{

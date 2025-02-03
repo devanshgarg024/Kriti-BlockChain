@@ -61,7 +61,7 @@ axios
             required
             className="username"
             type="text"
-            placeholder="Username"
+            placeholder="Full Name"
             name="username"
             value={formData.username}
             onChange={handleInputChange}

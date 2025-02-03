@@ -106,7 +106,7 @@ const Verify = (props) => {
         </div>
         <h2>Verify your identity</h2>
         <p className="description">
-          <span className="highlight">
+          <span className="highlight tt">
             Two-Factor Authentication (2FA) process
           </span>
         </p>

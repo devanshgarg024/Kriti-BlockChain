@@ -35,7 +35,7 @@ body {
   color: #00baff;
 }
 
-.highlight {
+.highlight ,tt{
   color: #00baff;
   font-weight: bold;
 }

@@ -11,7 +11,7 @@ router.get("/login/success", (req, res) => {
         res.status(200).json({
             error: false,
             message: "Successfully Logged In",
-            user: req.user.docum,
+            user: req.user,
         });
     } else {
         console.log("helo");

@@ -78,10 +78,9 @@ passport.deserializeUser(async (email, done) => {
     try {
         const database = client.db("KritiUserData");
         const collection = database.collection(email);
-        const user = await collection.findOne({ email });
-
-        if (user) {
-            done(null, user); // This ensures req.user contains user details
+        const documents = await collection.find({}).toArray();
+        if (documents) {
+            done(null, documents);
         } else {
             done(null, false);
         }

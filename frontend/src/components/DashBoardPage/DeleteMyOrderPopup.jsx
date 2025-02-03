@@ -6,7 +6,7 @@ import ethsvg from "./SellCredit/popups/eth.svg";
 const DeleteMyOrderPopup = (props) => {
   const handleDelete = () => {
     props.handleDeleteOrder(props.deleteOrderData.orderId);
-    return props.popupDelete(2);
+    props.popupDelete(2);
   };
   return (
     <>

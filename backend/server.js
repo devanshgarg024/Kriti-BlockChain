@@ -43,7 +43,7 @@ app.use(passport.session());
 // Enable CORS
 app.use(
     cors({
-        origin: "http://localhost:5173", // Adjust this to match your frontend URL
+        origin: "https://kriti-blockchain-1.onrender.com", // Adjust this to match your frontend URL
         methods: "GET,POST,PUT,DELETE",
         credentials: true,
     })

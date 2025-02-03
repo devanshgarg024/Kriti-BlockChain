@@ -1,6 +1,6 @@
 import React from "react";
 import "./ClaimCredit/EarnCredit/ConfirmPopup.css";
-import "./SellCredit/popups/SellConfirmPopup.css";
+import "./SellCredit/popups/SellConfirmPopUp.css";
 import ethsvg from "./SellCredit/popups/eth.svg";
 
 const DeleteMyOrderSuccessfull = (props) => {

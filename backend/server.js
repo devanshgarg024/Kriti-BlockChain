@@ -32,8 +32,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded body
 app.use(
     cookieSession({
         name: "session",
-        keys: ["cyberwolve"], // Use secure keys
-        maxAge: 24 * 60 * 60 * 1000, // Session expires in 24 hours
+        keys: ["cyberwolve"], // Ensure secure key usage
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        secure: process.env.NODE_ENV === "production", // Secure cookies in production
+        httpOnly: true,
     })
 );
 
@@ -44,16 +46,13 @@ app.use(passport.session());
 
 
 const corsOptions = {
-    origin: ['https://kriti-blockchain-1.onrender.com', 'http://localhost:5173','http://localhost:5178'], // Multiple allowed origins
-    methods: ['GET', 'POST', 'PUT'], // Allowed HTTP methods
-    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
-    credentials: true // Allow cookies to be sent
-  };
-  
-  // Enable CORS for all routes globally
-  app.use(cors(corsOptions));
+    origin: ['https://kriti-blockchain-1.onrender.com', 'http://localhost:5173', 'http://localhost:5178'],
+    methods: ['GET', 'POST', 'PUT'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true // Allow credentials (cookies, sessions)
+};
 
-
+app.use(cors(corsOptions));
 // app.use(
 //     cors({
 //         origin: "https://kriti-blockchain-1.onrender.com", // Adjust this to match your frontend URL

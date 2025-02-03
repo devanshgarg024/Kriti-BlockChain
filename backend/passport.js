@@ -80,7 +80,7 @@ passport.deserializeUser(async (email, done) => {
         const collection = database.collection(email);
         const documents = await collection.find({}).toArray();
         if (documents) {
-            done(null, documents);
+            done(null,{docum: documents});
         } else {
             done(null, false);
         }

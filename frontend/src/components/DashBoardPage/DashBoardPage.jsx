@@ -20,8 +20,8 @@ import axios from "axios";
 import contractArtifact from "../../blockchain_files/CCtoken.json";
 import { ethers } from "ethers";
 
-import "./Sidebar.css";
-import "./RightSidebar.css";
+import "./SideBar.css";
+import "./RightSideBar.css";
 import "./DashBoardPage.css";
 
 const Dashboard = (e) => {

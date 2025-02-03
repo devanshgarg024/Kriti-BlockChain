@@ -20,6 +20,7 @@ const fetchUserData = require("./Models/fetchUserData");
 const removeSellOrder = require("./Models/removeSellOrder");
 const removeBatchOrder = require("./Models/removeBatchOrder");
 const passportStrategy = require("./passport"); // Ensure passport is configured properly here
+const session = require("express-session");
 
 // Initialize Express app
 const app = express();
@@ -29,13 +30,13 @@ app.use(bodyParser.json()); // Parse JSON body
 app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded body
 
 // Cookie session configuration
+
 app.use(
-    cookieSession({
-        name: "session",
-        keys: ["cyberwolve"], // Ensure secure key usage
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        secure: process.env.NODE_ENV === "production", // Secure cookies in production
-        httpOnly: true,
+    session({
+        secret: "your_secret_key", // Replace with a strong secret
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: process.env.NODE_ENV === "production" }
     })
 );
 

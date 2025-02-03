@@ -63,7 +63,7 @@
 }
 .metamask-button.connected {
   background-color: #4caf50; /* Green when connected */
-  cursor: not-allowed;
+  /* cursor: not-allowed; */
 }
 .metamask-button.connected:hover {
   background-color: #77d17a;

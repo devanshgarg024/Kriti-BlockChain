@@ -121,7 +121,7 @@ const TransactionsTable = (props) => {
                         {base} × 10<sup>{exponent}</sup>
                       </>
                     );
-                  })()}
+                  })()} ETH
                 </td>
                 <td>{transaction.amountToSell}</td>
                 <td>

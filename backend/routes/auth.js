@@ -48,15 +48,21 @@ router.get(
 router.post("/login", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
         if (err) {
+            console.log("s");
             return res.status(500).json({ success: false, message: "Internal Server Error" });
         }
         if (!user) {
+            console.log(`spassport ${info.message}`);
+
             return res.status(401).json({ success: false, message: info.message });
         }
         req.logIn(user, (err) => {
             if (err) {
+            console.log(`spassport logIN`);
                 return res.status(500).json({ success: false, message: "Login failed" });
             }
+            console.log(`spassport success`);
+
 			return res.status(200).json({ success: true, message: "Login successful", user });
 
         });

@@ -30,26 +30,38 @@ passport.use(
         { usernameField: "email", passwordField: "password" },
         async (email, password, done) => {
             try {
+            console.log(`Local strategy`);
+
 				// Ensure database connection
                 if (!client.topology?.isConnected()) {
 					await client.connect();
                 }
+            console.log(`Local strategy db connectd`);
+
                 const database = client.db("KritiUserData");
                 const collection = database.collection(email); // Generic user collection
                 const user = await collection.findOne({email});
 				
                 if (!user) {
+            console.log(`Local strategy user not found`);
+
 					return done(null, false, { message: "Invalid email or password" });
                 }
 				
                 // Validate password using bcrypt
                 const isPasswordValid = (password ===user.password);
                 if (!isPasswordValid) {
+            console.log(`Local strategy pasword error`);
+
 					return done(null, false, { message: "Invalid email or password" });
                 }
                 // Successful authentication
+                console.log(`returned lcoal strategy`);
+
                 return done(null, user);
             } catch (error) {
+            console.log("Error during authentication:", error);
+
                 console.error("Error during authentication:", error);
                 return done(error);
             }

@@ -31,15 +31,20 @@ app.use(bodyParser.urlencoded({ extended: true })); // Parse URL-encoded body
 
 // Cookie session configuration
 
+app.set("trust proxy", 1); // REQUIRED for Render (behind a proxy)
+
 app.use(
     session({
-        secret: "your_secret_key", // Replace with a strong secret
+        secret: "your_secret_key", // Replace with a strong random value
         resave: false,
-        saveUninitialized: true,
-        cookie: { secure: process.env.NODE_ENV === "production" }
+        saveUninitialized: false, // Ensure sessions are stored only after login
+        cookie: {
+            secure: true, // Only send cookies over HTTPS
+            httpOnly: true, // Prevent JavaScript access
+            sameSite: "None", // REQUIRED for cross-origin authentication
+        }
     })
 );
-
 app.use(passport.initialize());
 app.use(passport.session());
 

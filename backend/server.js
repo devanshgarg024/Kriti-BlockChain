@@ -41,13 +41,26 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Enable CORS
-app.use(
-    cors({
-        origin: "https://kriti-blockchain-1.onrender.com", // Adjust this to match your frontend URL
-        methods: "GET,POST,PUT,DELETE",
-        credentials: true,
-    })
-);
+
+
+const corsOptions = {
+    origin: ['https://kriti-blockchain-1.onrender.com"', 'http://localhost:5173','http://localhost:5178'], // Multiple allowed origins
+    methods: ['GET', 'POST', 'PUT'], // Allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+    credentials: true // Allow cookies to be sent
+  };
+  
+  // Enable CORS for all routes globally
+  app.use(cors(corsOptions));
+
+
+// app.use(
+//     cors({
+//         origin: "https://kriti-blockchain-1.onrender.com", // Adjust this to match your frontend URL
+//         methods: "GET,POST,PUT,DELETE",
+//         credentials: true,
+//     })
+// );
 
 const contractArtifact = JSON.parse(fs.readFileSync("./CCtoken.json","utf8"));
 const verifierArtifact = JSON.parse(fs.readFileSync("./Groth16Verifier.json","utf8"));

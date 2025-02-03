@@ -49,7 +49,7 @@ app.use(
     })
 );
 
-const contractArtifact = JSON.parse(fs.readFileSync("./CCToken.json","utf8"));
+const contractArtifact = JSON.parse(fs.readFileSync("./CCtoken.json","utf8"));
 const verifierArtifact = JSON.parse(fs.readFileSync("./Groth16Verifier.json","utf8"));
 
 const contractABI = contractArtifact.abi;

@@ -83,29 +83,21 @@ router.post("/login", (req, res, next) => {
 
 
 router.get("/logout", (req, res) => {
-    console.log("ds");
-    req.logout((err) => {
-    console.log("fs");
+    console.log("Before Logout - Session:", req.session);
+    console.log("Before Logout - User:", req.user);
 
+    if (!req.session) {
+        return res.status(400).json({ success: false, message: "No active session" });
+    }
+
+    req.session.destroy((err) => {
         if (err) {
-    console.log("po");
-
-            console.error("Logout error:", err);
-            return res.status(500).json({ success: false, message: "Logout failed" });
+            console.error("Session destruction error:", err);
+            return res.status(500).json({ success: false, message: "Session could not be destroyed" });
         }
-        req.session.destroy((err) => {
-            if (err) {
-    console.log("err");
-
-                console.error("Session destruction error:", err);
-                return res.status(500).json({ success: false, message: "Session could not be destroyed" });
-            }
-    console.log("cookie clearing");
-
-            res.clearCookie("connect.sid", { path: "/" }); // Explicitly remove session cookie
-            console.log("User logged out successfully");
-            return res.status(200).json({ success: true, message: "Logged out successfully" });
-        });
+        res.clearCookie("connect.sid", { path: "/" }); // Explicitly remove session cookie
+        console.log("User logged out successfully");
+        return res.status(200).json({ success: true, message: "Logged out successfully" });
     });
 });
 

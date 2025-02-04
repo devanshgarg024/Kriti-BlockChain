@@ -52,6 +52,29 @@ const Dashboard = (e) => {
   const contractABI = contractArtifact.abi;
   const CONTRACT_ADDRESS = import.meta.env.VITE_CONTRACT_ADDRESS;
 
+
+
+  const checkMetaMask = async () => {
+    if (!window.ethereum) {
+      alert("MetaMask is not installed. Please install it to continue.");
+      return false;
+    }
+    try {
+      const accounts = await window.ethereum.request({ method: "eth_accounts" });
+      if (accounts.length === 0) {
+        const newAccounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        setAccount(newAccounts[0]);
+      } else {
+        setAccount(accounts[0]);
+      }
+      return true;
+    } catch (error) {
+      console.error("Error connecting to MetaMask:", error);
+      alert("Failed to connect to MetaMask.");
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (account) {
       connectedToMetamask(account);
@@ -114,6 +137,11 @@ const Dashboard = (e) => {
   };
 
   const handleSellCredit = async (pricePerToken) => {
+
+    if (!(await checkMetaMask())) {
+      setShowSellCreditPopup(false);
+      return;
+    }
     try {
       setMsg("Validating...");
       setUserppt(pricePerToken);
@@ -136,6 +164,7 @@ const Dashboard = (e) => {
         console.log("Response:", response.data);
 
         if (response.data.Output === "0") {
+        setShowSellCreditPopup(false);
           alert("Insufficient Credits");
           return; // Exit function early
         }
@@ -231,6 +260,10 @@ const Dashboard = (e) => {
   };
 
   const handleEarnCredit = async (energyProduced) => {
+    if (!(await checkMetaMask())) {
+      setShowEarnCreditPopup(false);
+      return;
+    }
     setMsg("Validating...");
     setShowEarnCreditPopup(2);
     setEarnCreditAmount(energyProduced / 100);
@@ -268,7 +301,15 @@ const Dashboard = (e) => {
     const contract = new ethers.Contract(CONTRACT_ADDRESS, contractABI, signer);
 
     setMsg("Waiting for Approval...");
+    try{
     const tx = await contract.earnCarbonCredit(energyProduced, timestamp);
+    console.log("Response:", response.data);
+  } catch (error) {
+    alert("Error in Claiming your Request...");
+    setShowEarnCreditPopup(false);
+    console.error("Error : ", error);
+    return;
+  }
     setMsg("Processing Your Request...");
     console.log(`earn credit Transaction sent: ${tx.hash}`);
     await tx.wait();
@@ -315,7 +356,7 @@ const Dashboard = (e) => {
 
   const buyOrder = async (orderId, amountToBuy, pricePerToken) => {
     setAmountBought(amountToBuy);
-    setPriceToPay(amountToBuy*pricePerToken);
+    setPriceToPay(amountToBuy * pricePerToken);
     setMsg("Validating...");
     setShowBuyCreditPopup(3);
     const provider = new ethers.BrowserProvider(window.ethereum);
@@ -363,9 +404,17 @@ const Dashboard = (e) => {
     //     console.log("Sell Orders:", orders);
 
     setMsg("Waiting For Approval...");
-    const tx = await contract.fulfillSellOrder(orderId, amountBN, {
-      value: totalPrice,
-    });
+    try {
+      const tx = await contract.fulfillSellOrder(orderId, amountBN, {
+        value: totalPrice,
+      });
+      console.log("Response:", response.data);
+    } catch (error) {
+      alert("Error in Buying your Order");
+      setShowBuyCreditPopup(false);
+      console.error("Error in Buying Order:", error);
+      return;
+    }
     setMsg("Processing Your Request...");
 
     console.log(`Transaction sent: ${tx.hash}`);
@@ -382,13 +431,14 @@ const Dashboard = (e) => {
           orderId: orderId,
         }
       );
+
       setTemp(temp + 1);
 
       console.log("Response:", response.data);
     } catch (error) {
       console.error("Error in removing sell order:", error);
       alert("Error in removing Sell Order");
-            setShowBuyCreditPopup(false);
+      setShowBuyCreditPopup(false);
       return; // Exit function early if an error occurs
     }
     setShowBuyCreditPopup(4);
@@ -399,11 +449,13 @@ const Dashboard = (e) => {
     let selectedOrders = [];
 
     for (let order of sellOrders) {
-
-        if (accumulatedAmount >= targetAmount) break; // Stop when the target is met
-        if(order.seller===account)continue;
-        let amountToTake = Math.min(order.amountToSell, targetAmount - accumulatedAmount);
-        accumulatedAmount += amountToTake;
+      if (accumulatedAmount >= targetAmount) break; // Stop when the target is met
+      if (order.seller === account) continue;
+      let amountToTake = Math.min(
+        order.amountToSell,
+        targetAmount - accumulatedAmount
+      );
+      accumulatedAmount += amountToTake;
 
       selectedOrders.push({
         ...order,
@@ -423,6 +475,12 @@ const Dashboard = (e) => {
   };
 
   const handleBuyCredit = async (buyConfirmed) => {
+    if (!(await checkMetaMask())) {
+      setShowBuyCreditPopup(false);
+      return;
+    }
+
+
     setMsg("Validating...");
     // console.log(buyConfirmed);
     const orderIds = buyConfirmed.map((tx) => tx.orderId);
@@ -441,14 +499,22 @@ const Dashboard = (e) => {
     }, BigInt(0));
 
     setMsg("Waiting For Approval...");
-    const tx = await contract.fulfillBatchOrders(
-      orderIds,
-      amountsToBuy,
-      pricesPerToken,
-      {
-        value: totalCost,
-      }
-    );
+    try {
+      const tx = await contract.fulfillBatchOrders(
+        orderIds,
+        amountsToBuy,
+        pricesPerToken,
+        {
+          value: totalCost,
+        }
+      );
+      console.log("Response:", response.data);
+    } catch (error) {
+      alert("Error in Buying your Order");
+      setShowBuyCreditPopup(false);
+      console.error("Error in Buying Order:", error);
+      return;
+    }
     setMsg("Processing Your Request...");
 
     console.log(`Transaction sent: ${tx.hash}`);
@@ -505,7 +571,7 @@ const Dashboard = (e) => {
     const priceInEther = ethers.formatUnits(minPrice, "ether");
     setFloorPrice(priceInEther);
   }
-  async function handleDeleteOrder(orderId){
+  async function handleDeleteOrder(orderId) {
     setMsg("Validating...");
     try {
       const response = await axios.post(
@@ -515,7 +581,6 @@ const Dashboard = (e) => {
         }
       );
       setTemp(temp + 1);
-
     } catch (error) {
       alert("error in deleting your Order");
       setShowDeleteCreditPopup(false);
@@ -523,7 +588,7 @@ const Dashboard = (e) => {
       return; // Exit function early if an error occurs
     }
   }
-  async function deleteOrder(deleteOrderData){
+  async function deleteOrder(deleteOrderData) {
     setDeleteOrderData(deleteOrderData);
     setShowDeleteCreditPopup(1);
   }
@@ -578,10 +643,7 @@ const Dashboard = (e) => {
                 fetchFloorPrice={fetchFloorPrice}
               />
             ) : showSellCreditPopup === 3 ? (
-              <ValidatingPopup
-                popup={popupSell}
-                msg={msg}
-              />
+              <ValidatingPopup popup={popupSell} msg={msg} />
             ) : showSellCreditPopup === 4 ? (
               <SellConfirmPopUp
                 popup={popupSell}
@@ -619,10 +681,7 @@ const Dashboard = (e) => {
               />
             ) : showBuyCreditPopup === 3 ? (
               <>
-                <ValidatingPopup
-                  popup={popupBuy}
-                  msg={msg}
-                />
+                <ValidatingPopup popup={popupBuy} msg={msg} />
               </>
             ) : (
               <BuySuccessfull
@@ -649,12 +708,12 @@ const Dashboard = (e) => {
                 />
               ) : showDeleteCreditPopup === 2 ? (
                 <>
-                  <ValidatingPopup popup={popupDelete} msg = {msg}/>
+                  <ValidatingPopup popup={popupDelete} msg={msg} />
                   {setTimeout(() => popupDelete(3), 2000) && null}
                 </>
               ) : (
                 <>
-                  <DeleteMyOrderSuccessfull popupDelete={popupDelete}/>
+                  <DeleteMyOrderSuccessfull popupDelete={popupDelete} />
                 </>
               )}
             </div>

@@ -157,7 +157,16 @@ const BuySortedTable = (props) => {
           </table>
         </div>
         <button className="confirm-button" onClick={handleBuyCredit}>
-          BUY : Price To Pay = {priceToPay} ETH
+          BUY : Price To Pay = {(() => {
+                      const [base, exponent] = priceToPay
+                        .toExponential(5)
+                        .split("e");
+                      return (
+                        <>
+                          {base} × 10<sup>{exponent}</sup>
+                        </>
+                      );
+                    })()}{" "}ETH
         </button>
       </div>
     </>

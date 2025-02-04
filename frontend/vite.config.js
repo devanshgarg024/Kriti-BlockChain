@@ -1,20 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: 'dist',
-    rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-      },
-    },
+    outDir: "dist",  // Ensure the build output is in the dist/ folder
   },
-  server: {
-    port: 5173,
-  },
-  // Ensure Vite includes the public directory in the build
-  publicDir: "public"
+  publicDir: "public",  // Ensure Vite copies all files from public/ to dist/
 });

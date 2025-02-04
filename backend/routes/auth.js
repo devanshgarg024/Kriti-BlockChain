@@ -42,7 +42,7 @@ router.get(
 router.get(
     "/google/callback",
     passport.authenticate("google", {
-        successRedirect: "http://localhost:5173/dashboard",
+        successRedirect: "https://kriti-blockchain-1.onrender.com/dashboard",
         failureRedirect: "/login/failed",
     })
 );
@@ -83,8 +83,6 @@ router.post("/login", (req, res, next) => {
 
 
 router.get("/logout", (req, res) => {
-    console.log("Before Logout - Session:", req.session);
-    console.log("Before Logout - User:", req.user);
 
     if (!req.session) {
         return res.status(400).json({ success: false, message: "No active session" });

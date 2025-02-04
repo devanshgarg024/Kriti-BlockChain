@@ -18,6 +18,7 @@ passport.use(
                 username: profile.displayName,
                 email: profile.emails[0].value
             }
+            console.log(userData.email);
             createDatabaseForUser(userData);
             callback(null, userData); // Save or find the user in the database
         }

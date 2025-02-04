@@ -20,7 +20,7 @@ async function createDatabaseForUser(userData) {
 
     if (collectionExists) {
       console.log(`Collection '${userData.email}' already exists.`);
-      return { success: false, message: `user present` };
+      return { success: true, message: `user present` };
     } else {
       const collection = database.collection(userData.email);
 

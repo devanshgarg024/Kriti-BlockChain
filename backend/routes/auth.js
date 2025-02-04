@@ -73,12 +73,31 @@ router.post("/login", (req, res, next) => {
 });
 
 // Route for logout
-router.get("/logout", (req, res) => {
-    req.session = null; // Clear the session
-    res.clearCookie("session"); // Explicitly clear the cookie
+// router.get("/logout", (req, res) => {
+//     req.session = null; // Clear the session
+//     res.clearCookie("session"); // Explicitly clear the cookie
 
-    console.log("User logged out successfully");
-    return res.status(200).json({ success: true, message: "Logged out successfully" });
+//     console.log("User logged out successfully");
+//     return res.status(200).json({ success: true, message: "Logged out successfully" });
+// });
+
+
+router.get("/logout", (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            console.error("Logout error:", err);
+            return res.status(500).json({ success: false, message: "Logout failed" });
+        }
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Session destruction error:", err);
+                return res.status(500).json({ success: false, message: "Session could not be destroyed" });
+            }
+            res.clearCookie("connect.sid", { path: "/" }); // Explicitly remove session cookie
+            console.log("User logged out successfully");
+            return res.status(200).json({ success: true, message: "Logged out successfully" });
+        });
+    });
 });
 
 module.exports = router;

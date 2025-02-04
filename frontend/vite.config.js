@@ -1,10 +1,15 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { resolve } from 'path';
 
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: "dist",  // Ensure the build output is in the dist/ folder
+    outDir: "dist",
   },
-  publicDir: "public",  // Ensure Vite copies all files from public/ to dist/
+  publicDir: "public",  // Ensures public files are copied
+  // Explicitly copy _redirects to dist
+  esbuild: {
+    minify: true, // Keep it optimized
+  },
 });

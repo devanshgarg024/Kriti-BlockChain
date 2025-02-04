@@ -42,7 +42,7 @@ router.get(
 router.get(
     "/google/callback",
     passport.authenticate("google", {
-        successRedirect: "https://kriti-blockchain-1.onrender.com/dashboard",
+        successRedirect: "https://kriti-blockchain-1.onrender.com",
         failureRedirect: "/login/failed",
     })
 );

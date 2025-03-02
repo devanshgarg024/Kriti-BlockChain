@@ -33,6 +33,7 @@ const App = () => {
       <Route exact path="/dashboard" element={user ? <Dashboard userData={user} /> : <Navigate to="/" />} />
       <Route exact path="/signup" element={user ? <Navigate to="/dashboard" /> : <CreateAccount />} />
       <Route exact path="/verify" element={<Verify />} />
+      <Route path="*" element={<Navigate to="/" />} /> {/* Fallback route */}
     </Routes>
   );
 };

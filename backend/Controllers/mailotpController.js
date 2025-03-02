@@ -49,7 +49,7 @@ const mailotp = async (req, res) => {
     const emailBody = `<h2>Your OTP is</h2><p>${emailOtp}</p>`;
     const emailMsg = {
       to: email,
-      from: 'robertpattinson69996@gmail.com',
+      from: 'barakkriti25@gmail.com',
       subject: 'OTP for Verification',
       html: emailBody,
     };
